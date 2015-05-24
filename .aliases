@@ -1,0 +1,59 @@
+# Easier navigation: .., ..., ~ and -
+alias ..="cd .. && clear && ls -G"
+alias ...="cd ../.. && clear && ls -G"
+alias h="cd ~ && clear && ls -G"
+alias -- -="cd - && clear && ls -G"
+
+# List all files colorized in long format, including dot files
+alias ls="clear && ls -G"
+alias ll="ls -Ghla"
+
+# List only directories
+alias lsd='ls -l | grep "^d"'
+
+# Updates
+alias update='clear; brew update; brew upgrade --all; npm -g update; npm update'
+
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en1"
+alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
+alias whois="whois -h whois-servers.net"
+
+# Flush Directory Service cache
+alias flush="dscacheutil -flushcache"
+
+# Shortcuts
+alias bi="bundle install --path vendor/bundle --binstubs vendor/bundle/binstubs"
+alias d="cd ~/Dropbox && ls"
+alias g="git"
+alias p="cd ~/Proyectos && ls"
+# alias r="rails"
+alias s="sublime"
+alias subl="sublime"
+
+# Git
+alias add="git add"
+alias branch="git branch"
+alias checkout="git checkout"
+alias clone="git clone"
+alias commit="git commit"
+alias pull="git pull"
+alias push="git push"
+alias remote="git remote"
+alias status="git status"
+
+# Empty the Trash
+alias emptytrash="rm -rfv ~/.Trash"
+
+# Hidden files in Finder
+# alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
+# alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
+
+# Desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# Spotlight
+alias spotoff="sudo mdutil -a -i off"
+alias spoton="sudo mdutil -a -i on"
