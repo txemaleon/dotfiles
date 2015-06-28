@@ -11,6 +11,7 @@ alias h="cd ~ && ls"
 alias -- -="cd - && ls"
 alias d="cd ~/Dropbox && ls"
 alias p="cd ~/Proyectos && ls"
+alias dot="cd ~/.config/dotfiles"
 
 # List only directories
 alias lsd='ls -l | grep "^d"'
