@@ -42,6 +42,7 @@ alias pull="git pull"
 alias push="git push"
 alias remote="git remote"
 alias status="git status"
+alias pom="git push origin master"
 
 # Empty the Trash
 alias emptytrash="rm -rfv ~/.Trash"
