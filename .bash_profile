@@ -1,1 +1,0 @@
-/Users/leon/.config/dotfiles/bash_profile
