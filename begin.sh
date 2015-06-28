@@ -7,13 +7,14 @@
 ########## Variables
 
 dir=~/.config/dotfiles                    # dotfiles directory
-olddir=~/.config/dotfiles_old             # old dotfiles backup directory
+olddir=~/.config/dotfiles/old             # old dotfiles backup directory
 files="aliases bash_profile bash_prompt bashrc osx"    # list of files/folders to symlink in homedir
 
 ##########
 
 # create dotfiles_old in homedir
 echo "Creating $olddir for backup of any existing dotfiles in ~"
+rm -rf $olddir
 mkdir -p $olddir
 echo "...done"
 
