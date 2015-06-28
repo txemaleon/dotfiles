@@ -1,18 +1,22 @@
-# Easier navigation: .., ..., ~ and -
-alias ..="cd .. && clear && ls -G"
-alias ...="cd ../.. && clear && ls -G"
-alias h="cd ~ && clear && ls -G"
-alias -- -="cd - && clear && ls -G"
-
 # List all files colorized in long format, including dot files
 alias ls="clear && ls -G"
 alias ll="ls -Ghla"
+
+# Easier navigation: .., ..., ~ and -
+alias ..="cd .. && ls"
+alias ...="cd ../.. && ls"
+alias ....="cd ../../.. && ls"
+alias .....="cd ../../../.. && ls"
+alias h="cd ~ && ls"
+alias -- -="cd - && ls"
+alias d="cd ~/Dropbox && ls"
+alias p="cd ~/Proyectos && ls"
 
 # List only directories
 alias lsd='ls -l | grep "^d"'
 
 # Updates
-alias update='clear; brew update; brew upgrade --all; npm -g update; npm update; gem update'
+alias update='clear; sudo -v; clear; brew update; brew upgrade --all; clear; npm -g update; npm update; clear; sudo gem update; clear;'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -25,10 +29,7 @@ alias flush="dscacheutil -flushcache"
 
 # Shortcuts
 alias bi="bundle install --path vendor/bundle --binstubs vendor/bundle/binstubs"
-alias d="cd ~/Dropbox && ls"
 alias g="git"
-alias p="cd ~/Proyectos && ls"
-# alias r="rails"
 alias s="sublime"
 alias subl="sublime"
 
