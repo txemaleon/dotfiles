@@ -1,5 +1,6 @@
 # List all files colorized in long format, including dot files
 alias ls="clear && ls -G"
+alias lsa="ls -a"
 alias ll="ls -Ghl"
 alias lla="ll -a"
 
