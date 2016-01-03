@@ -49,4 +49,4 @@ alias status="git status"
 alias pom="git push origin master"
 
 # Empty the Trash
-alias emptytrash="rm -rfv ~/.Trash"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash;"
