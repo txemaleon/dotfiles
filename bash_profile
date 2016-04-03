@@ -1,10 +1,10 @@
 # Try to load rvm scripts
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# Load ~/.bash_prompt, ~/.exports, ~/.aliases and ~/.extra
+# Load ~/.bash_prompt, ~/.bashrc, ~/.aliases and ~/.extra
 # ~/.extra can be used for settings you don’t want to commit
-for file in bash_prompt exports aliases functions extra; do
-  file="$HOME/.$file"
+for file in bash_prompt bashrc aliases functions extra; do
+  file="$HOME/.config/dotfiles/$file"
   [ -e "$file" ] && source "$file"
 done
 
@@ -16,4 +16,3 @@ shopt -s nocaseglob
 
 # Add tab completion for `defaults read|write NSGlobalDomain`
 complete -W "NSGlobalDomain" defaults
-source ~/.bashrc
