@@ -36,6 +36,9 @@ alias whois="whois -h whois-servers.net"
 # Flush Directory Service cache
 alias flush="dscacheutil -flushcache"
 
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+
 # Shortcuts
 alias bi="bundle install --path vendor/bundle --binstubs vendor/bundle/binstubs"
 alias g="git"
