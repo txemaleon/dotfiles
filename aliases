@@ -34,6 +34,7 @@ alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias whois="whois -h whois-servers.net"
 
 # Flush Directory Service cache
+alias df="df -P -kHl"
 alias flush="dscacheutil -flushcache"
 
 # Recursively delete `.DS_Store` files
