@@ -43,6 +43,7 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 alias bi="bundle install --path vendor/bundle --binstubs vendor/bundle/binstubs"
 alias g="git"
 alias s="sublime"
+alias s.="s -a ."
 alias subl="sublime"
 alias artisan="php artisan"
 
