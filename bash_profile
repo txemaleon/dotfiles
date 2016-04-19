@@ -1,11 +1,10 @@
-# Try to load rvm scripts
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
 # Load ~/.bash_prompt, ~/.bashrc, ~/.aliases and ~/.extra
 # ~/.extra can be used for settings you don’t want to commit
-for file in bash_prompt bashrc aliases functions extra; do
-  file="$HOME/.config/dotfiles/$file"
-  [ -e "$file" ] && source "$file"
+for file in bash_prompt bashrc aliases functions inputrc; do
+  dotfile="$HOME/.config/dotfiles/$file"
+  [ -e "$dotfile" ] && source "$dotfile"
+  homefile="$HOME/.$file"
+  [ -e "$homefile" ] && source "$homefile"
 done
 
 # Case-insensitive globbing (used in pathname expansion)
