@@ -25,7 +25,7 @@ alias egrep='egrep --color=auto'
 alias lsd='ls -l | grep "^d"'
 
 # Updates
-alias update='clear; sudo softwareupdate -i -a; clear; brew update; brew upgrade --all; brew cleanup; clear; npm -g update; clear; sudo gem update; sudo gem clean; clear;'
+alias update='clear; sudo softwareupdate -i -a; clear; brew update; brew upgrade --all; brew cleanup; clear; npm -g update; clear; sudo gem update; sudo gem clean; clear; composer global update;'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
