@@ -11,4 +11,11 @@ export HISTCONTROL=ignoredups
 # Make some commands not show up in history
 export HISTIGNORE="ls:ls *"
 
-export PATH=vendor/bundle/binstubs:$PATH
+# Set Path
+# Node.js Path
+NPM_PACKAGES=~/.npm-packages
+NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+PATH="$NPM_PACKAGES/bin:$PATH"
+# Composer Path
+COMPOSER_PATH=~/.composer/vendor/bin
+PATH="$COMPOSER_PATH:$PATH"

@@ -1,6 +1,6 @@
 # Load ~/.bash_prompt, ~/.bashrc, ~/.aliases and ~/.extra
 # ~/.extra can be used for settings you don’t want to commit
-for file in bash_prompt bashrc aliases functions inputrc; do
+for file in bash_prompt aliases functions inputrc; do
   dotfile="$HOME/.config/dotfiles/$file"
   [ -e "$dotfile" ] && source "$dotfile"
   homefile="$HOME/.$file"
