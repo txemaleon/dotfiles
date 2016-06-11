@@ -11,8 +11,11 @@ alias ....="cd ../../.. && ls"
 alias .....="cd ../../../.. && ls"
 alias h="cd ~ && ls"
 alias -- -="cd - && ls"
-alias d="cd ~/Dropbox && ls"
+
+# Main folder Navigation
+alias d="cd ~/Desktop && ls"
 alias p="cd ~/Developer && ls"
+alias db="cd ~/Dropbox && ls"
 alias dot="cd ~/.config/dotfiles"
 
 # Always enable colored `grep` output
