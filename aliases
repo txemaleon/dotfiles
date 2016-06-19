@@ -36,12 +36,15 @@ alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias whois="whois -h whois-servers.net"
 
+
 # Flush Directory Service cache
-alias df="df -P -kHl"
 alias flush="dscacheutil -flushcache"
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+
+# Show in df only things I care
+alias df="df -P -kHl"
 
 # Dev Shortcuts
 alias g="git"
