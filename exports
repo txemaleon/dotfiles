@@ -1,5 +1,5 @@
 # Make subl the default editor
-export EDITOR="subl -w"
+export EDITOR="sublime -w"
 
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
