@@ -3,10 +3,12 @@
 for file in bash_prompt aliases exports functions inputrc; do
   dotfile="$HOME/.config/dotfiles/$file"
   [ -e "$dotfile" ] && source "$dotfile"
+  dotfilelocal="$HOME/.config/dotfiles/local/$file"
+  [ -e "$dotfilelocal" ] && source "$dotfilelocal"
   homefile="$HOME/.$file"
   [ -e "$homefile" ] && source "$homefile"
 done
-unset dotfile homefile
+unset dotfile dotfilelocal homefile
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
