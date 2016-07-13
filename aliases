@@ -74,3 +74,4 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo 
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 alias pw="pwgen -sy 12 1|pbcopy"
 alias whereami="uname -n"
+alias fixpermissions="find . -type d -exec chmod 0755 {} \;; find . -type f -exec chmod 0644 {} \;"
