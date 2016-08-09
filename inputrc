@@ -11,7 +11,7 @@ set mark-symlinked-directories on
 # List all matches in case multiple possible completions are possible
 set show-all-if-ambiguous on
 
-#
+# These will make completions appear immediately after pressing TAB once
 set show-all-if-unmodified on
 
 # hyphens === underscores
