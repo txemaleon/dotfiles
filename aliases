@@ -62,7 +62,7 @@ alias commit="git commit"
 alias pull="git pull"
 alias push="git push"
 alias remote="git remote"
-alias status="git status"
+alias status="git status -sb"
 alias pom="git push origin master"
 
 # Empty the Trash on all mounted volumes and the main HDD.
