@@ -16,6 +16,7 @@ alias -- -="cd - && ls"
 alias d="cd ~/Desktop && ls"
 alias p="cd ~/Developer && ls"
 alias db="cd ~/Dropbox && ls"
+alias si="cd ~/Sites && ls"
 alias dot="cd ~/.config/dotfiles"
 
 # Always enable colored `grep` output
@@ -48,7 +49,6 @@ alias df="df -P -kHl"
 # Dev Shortcuts
 alias g="git"
 alias s="sublime"
-alias s.="s ."
 alias subl="sublime"
 alias artisan="php artisan"
 
@@ -62,7 +62,6 @@ alias pull="git pull"
 alias push="git push"
 alias remote="git remote"
 alias status="git status -sb"
-alias pom="git push origin master"
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
@@ -71,6 +70,5 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo 
 
 # Utilities
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-alias pw="pwgen -cnsy 12 1|pbcopy"
-alias whereami="uname -n"
+alias pw="pwgen -cnsy 16 1|pbcopy"
 alias fixpermissions="find . -type d -exec chmod 0755 {} \;; find . -type f -exec chmod 0644 {} \;"
