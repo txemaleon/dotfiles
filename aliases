@@ -48,7 +48,7 @@ alias df="df -P -kHl"
 # Dev Shortcuts
 alias g="git"
 alias s="sublime"
-alias s.="s -a ."
+alias s.="s ."
 alias subl="sublime"
 alias artisan="php artisan"
 
