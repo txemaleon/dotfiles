@@ -4,12 +4,13 @@ export EDITOR="sublime -w"
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
-# Larger bash history (allow 32³ entries; default is 500)
-export HISTSIZE=32768
-export HISTFILESIZE=$HISTSIZE
+export HISTFILE="~/.config/bash_history"
+# History Management
 export HISTCONTROL=ignoredups
 # Make some commands not show up in history
-export HISTIGNORE="ls:ls *"
+export HISTIGNORE="ls:ls *:lsa:ll:lla:ssh"
+# Display time in History
+HISTTIMEFORMAT='%F %T '
 
 # Set Path
 # Node.js Path
