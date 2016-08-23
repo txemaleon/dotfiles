@@ -8,7 +8,7 @@ export HISTFILE="~/.config/bash_history"
 # History Management
 export HISTCONTROL=ignoredups
 # Make some commands not show up in history
-export HISTIGNORE="ls:ls *:lsa:ll:lla:ssh *:history"
+export HISTIGNORE="ls:ls *:lsa:ll:lla:ssh *:history:clear"
 # Display time in History
 export HISTTIMEFORMAT='%F %T '
 
