@@ -4,3 +4,10 @@
 function cd {
 	builtin cd "$@" && ls
 }
+
+function wpupdate {
+	wp core update
+	wp plugin update --all
+	wp theme update --all
+	wp core translations update
+}
