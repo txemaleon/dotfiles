@@ -4,6 +4,7 @@ export EDITOR="sublime -w"
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
+# Move bash_history
 export HISTFILE="~/.config/bash_history"
 # History Management
 export HISTCONTROL=ignoredups
@@ -13,11 +14,11 @@ export HISTIGNORE="clear"
 # Display time in History
 export HISTTIMEFORMAT='%F %T '
 
-# Set Path
-# Node.js Path
+# Set Node.js Path
 NPM_PACKAGES=~/.npm-packages
 NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 PATH="$NPM_PACKAGES/bin:$PATH"
-# Composer Path
+
+# Set Composer Path
 COMPOSER_PATH=~/.composer/vendor/bin
 PATH="$COMPOSER_PATH:$PATH"
