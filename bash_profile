@@ -1,12 +1,17 @@
 # Load bash_prompt aliases exports functions inputrc from ~/.config/dotfiles
 # and from ~/.* for per-system overrides
 for file in bash_prompt aliases exports functions; do
+  # Main dotfile
   dotfile="$HOME/.config/dotfiles/$file"
-  [ -e "$dotfile" ] && source "$dotfile"
+  [ -f "$dotfile" ] && source "$dotfile"
+  [ -d "$dotfile" ] && for f in $dotfile/*; do source "$f"; done
+  # Local dotfile
   dotfilelocal="$HOME/.config/dotfiles/local/$file"
-  [ -e "$dotfilelocal" ] && source "$dotfilelocal"
+  [ -f "$dotfilelocal" ] && source "$dotfilelocal"
+  [ -d "$dotfilelocal" ] && for f in $dotfilelocal/*; do source "$f"; done
+  # Home dotfile
   homefile="$HOME/.$file"
-  [ -e "$homefile" ] && source "$homefile"
+  [ -f "$homefile" ] && source "$homefile"
 done
 unset dotfile dotfilelocal homefile
 

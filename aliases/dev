@@ -1,0 +1,5 @@
+# Dev Shortcuts
+alias g="git"
+alias s="sublime"
+alias subl="sublime"
+alias artisan="php artisan"
