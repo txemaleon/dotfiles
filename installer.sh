@@ -64,6 +64,7 @@ brew install \
 	python3 \
 	readline \
 	ruby \
+	speedtest-cli \
 	sqlite \
 	ssh-copy-id \
 	texi2html \
