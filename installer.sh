@@ -103,50 +103,30 @@ npm install -yg \
 	bipio \
 	bower \
 	bower-installer \
-	clean-css \
-	cordova \
 	electron \
-	electron-prebuilt \
 	generator-electrode \
-	grunt \
-	grunt-cli \
 	gulp \
-	hbcrawler \
-	how-to-npm \
-	html-minifier \
 	ios-deploy \
 	ios-sim \
-	javascripting \
 	js-beautify \
 	jshint \
-	kerberos \
-	learnyoumongo \
-	learnyounode \
-	mean-cli \
 	minjson \
 	mocha \
-	mongodb-core \
-	muffin \
-	muffin-cli \
 	mversion \
 	now \
 	npm \
-	perfschool \
-	phantomjs \
-	rabbit.js \
 	scope-chains-closures \
 	sinclair-cli \
-	stream-adventure \
 	svgo \
-	takana \
 	test-anything \
 	uglify-js \
 	uglifycss \
 	uglifyjs \
 	underscores \
 	webpack \
-	yo \
+	yo
 
 rm -rf ~/.bash* ~/.inputrc
 ln -s ~/.config/dotfiles/bashrc ~/.bashrc
 ln -s ~/.config/dotfiles/inputrc ~/.inputrc
+ln -s ~/.config/dotfiles/gitconfig ~/.gitconfig
