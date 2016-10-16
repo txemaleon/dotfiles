@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Bash Functions
 
 # Makes cd to perform a ls

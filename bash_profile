@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Load bash_prompt aliases exports functions inputrc from ~/.config/dotfiles
 # and from ~/.* for per-system overrides
 for file in bash_prompt aliases exports functions; do
