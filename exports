@@ -18,10 +18,10 @@ export HISTIGNORE="clear"
 export HISTTIMEFORMAT='%F %T '
 
 # Set Node.js Path
-# NPM_PACKAGES=~/.npm-packages
-# NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-# PATH="$NPM_PACKAGES/bin:$PATH"
+# export NPM_PACKAGES=~/.npm-packages
+# export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+# export PATH="$NPM_PACKAGES/bin:$PATH"
 
 # Set Composer Path
-COMPOSER_PATH=~/.composer/vendor/bin
-PATH="$COMPOSER_PATH:$PATH"
+export COMPOSER_PATH=~/.composer/vendor/bin
+export PATH="$COMPOSER_PATH:$PATH"
