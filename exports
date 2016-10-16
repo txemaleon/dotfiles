@@ -1,4 +1,4 @@
-# Make subl the default editor
+# Make nano the default editor
 export EDITOR="nano"
 
 # Add user@host to Tab Name
