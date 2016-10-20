@@ -1,0 +1,7 @@
+#!/bin/bash
+# Vagrant
+alias v="vagrant"
+alias vssh="vagrant ssh"
+alias vsh="ssh vagrant"
+alias vup="vagrant up"
+alias vh="vagrant halt"
