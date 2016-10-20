@@ -1,0 +1,5 @@
+#!/bin/bash
+# Ansible
+alias ans="ansible"
+alias anp="ansible-playbook"
+alias anv="ansible-vault"
