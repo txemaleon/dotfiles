@@ -1,3 +1,4 @@
+#!/bin/bash
 # Dev Shortcuts
 alias g="git"
 alias s="sublime"

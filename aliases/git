@@ -1,3 +1,4 @@
+#!/bin/bash
 # Git
 alias add="git add"
 alias branch="git branch"
