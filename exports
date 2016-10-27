@@ -8,8 +8,6 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
-# Move bash_history
-export HISTFILE="~/.config/bash_history"
 # History Management
 export HISTCONTROL=ignoredups
 # Make some commands not show up in history
