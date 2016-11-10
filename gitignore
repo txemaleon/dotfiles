@@ -26,8 +26,11 @@ Temporary Items
 .apdisk
 
 # Dev Files
+*.sublime-(project|workspace)
 .env
+bower_components
 node_modules
+sftp-config*.json
 
 # Custom Helpers
 *.retry
