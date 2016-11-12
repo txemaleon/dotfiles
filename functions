@@ -7,8 +7,9 @@ function cd {
 }
 
 function wpupdate {
-	wp core update
-	wp plugin update --all
-	wp theme update --all
-	wp core language update
+	$user = $(stat -c '%U' .)
+	sudo -u $user wp core update
+	sudo -u $user wp plugin update --all
+	sudo -u $user wp theme update --all
+	sudo -u $user wp core language update
 }
