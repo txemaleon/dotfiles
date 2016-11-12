@@ -7,7 +7,7 @@ function cd {
 }
 
 function wpupdate {
-	$user = $(stat -c '%U' .)
+	user = $(stat -c '%U' .)
 	sudo -u $user wp core update
 	sudo -u $user wp plugin update --all
 	sudo -u $user wp theme update --all
