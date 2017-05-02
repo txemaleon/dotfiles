@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source ~/.profile
 
 # Load bash_prompt aliases exports functions inputrc from ~/.config/dotfiles
 # and from ~/.* for per-system overrides
