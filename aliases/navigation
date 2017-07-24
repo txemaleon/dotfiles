@@ -1,6 +1,16 @@
 #!/bin/bash
+
 # List all files colorized in long format, including dot files
-alias ls="clear && ls -G"
+
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+	colorflag="--color"
+else # macOS `ls`
+	colorflag="-G"
+fi
+
+# List all files colorized in long format
+alias ls="ls ${colorflag}"
 alias l="ls"
 alias lsa="ls -A"
 alias ll="ls -hl"
