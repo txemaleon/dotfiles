@@ -15,6 +15,10 @@ alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resource
 alias pw="pwgen -cnsy 16 1|pbcopy"
 alias fixpermissions="find . -type d -exec chmod 0755 {} \;; find . -type f -exec chmod 0644 {} \;"
 
+# Sound
+alias mute="osascript -e 'set volume output muted true'"
+alias hear="osascript -e 'set volume output volume 100'"
+
 # Always enable colored `grep` output
 # Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
 alias grep='grep --color=auto'
@@ -23,3 +27,12 @@ alias egrep='egrep --color=auto'
 
 # Reload dotfiles
 alias resource="source ~/.config/dotfiles/bash_profile"
+
+# Canonical hex dump; some systems have this symlinked
+command -v hd > /dev/null || alias hd="hexdump -C"
+
+# macOS has no `md5sum`, so use `md5` as a fallback
+command -v md5sum > /dev/null || alias md5sum="md5"
+
+# macOS has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
