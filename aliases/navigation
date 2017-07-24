@@ -8,16 +8,16 @@ alias lla="ll -A"
 alias lsd='ls -l | grep "^d"'
 
 # Easier navigation: .., ..., ~ and -
-alias ..="cd .. && ls"
-alias ...="cd ../.. && ls"
-alias ....="cd ../../.. && ls"
-alias .....="cd ../../../.. && ls"
-alias h="cd ~ && ls"
-alias -- -="cd - && ls"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias h="cd ~"
+alias -- -="cd -"
 
 # Main folder Navigation
-alias d="cd ~/Desktop && ls"
-alias p="cd ~/Developer && ls"
-alias db="cd ~/Dropbox && ls"
-alias si="cd ~/Sites && ls"
+alias d="cd ~/Desktop"
+alias p="cd ~/Developer"
+alias db="cd ~/Dropbox"
+alias si="cd ~/Sites"
 alias dot="cd ~/.config/dotfiles"
