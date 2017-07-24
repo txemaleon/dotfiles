@@ -29,4 +29,8 @@ function parse_git_branch() {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$DIRTY/"
 }
 
-PS1="\[$BLUE\]\w \$(parse_git_branch)\n\[$ORANGE\]❯ \[$RESET\]";
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  remote="${ORANGE}\h${GRAY}:"
+fi
+
+export PS1="${remote}\[$BLUE\]\w \$(parse_git_branch)\n\[$ORANGE\]❯ \[$RESET\]";
