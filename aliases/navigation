@@ -15,7 +15,7 @@ alias l="ls"
 alias lsa="ls -A"
 alias ll="ls -hl"
 alias lla="ll -A"
-alias lsd='ls -l | grep "^d"'
+alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 
 # Easier navigation: .., ..., ~ and -
 alias ..="cd .."
