@@ -61,7 +61,9 @@
 	rb = rebase -i @{u}
 	f = fetch
 	prb = pull --rebase
-	ignored = !git ls-files -v | grep "^[[:lower:]]"
+	ignore = update-index --assume-unchanged
+	unignore = update-index --no-assume-unchanged
+	list-ignored = !git ls-files -v | grep "^[[:lower:]]"
 
 [filter "media"]
 	clean = git media clean %f
