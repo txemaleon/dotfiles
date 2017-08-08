@@ -6,11 +6,3 @@ function cd {
 	builtin cd "$@"
 	ls
 }
-
-function wpupdate {
-	user=$(stat -c '%U' .)
-	sudo -u $user $( which wp ) core update
-	sudo -u $user $( which wp ) plugin update --all
-	sudo -u $user $( which wp ) theme update --all
-	sudo -u $user $( which wp ) core language update
-}

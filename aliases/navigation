@@ -10,7 +10,7 @@ else # macOS `ls`
 fi
 
 # List all files colorized in long format
-alias ls="ls ${colorflag}"
+alias ls="clear; ls ${colorflag}"
 alias l="ls"
 alias lsa="ls -A"
 alias ll="ls -hl"
