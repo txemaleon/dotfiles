@@ -9,3 +9,6 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes/*; sudo rm -rfv ~/.Trash/*; s
 
 # Show in df only things I care
 alias df="df -P -kHl"
+
+# mkdir -p made quicker
+alias mkdirp="mkdir -p"
