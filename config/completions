@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob
+
+# Autocompletions
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
+
+# Brew installed Autocompletes
+[ -d /usr/local/etc/bash_completion\.d ] && \
+for f in /usr/local/etc/bash_completion.d/*; do
+	source $f;
+done

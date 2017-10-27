@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bash Functions
+# Bash Functions Navigation
 
 # Makes cd to perform a ls
 function cd {
