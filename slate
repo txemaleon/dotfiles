@@ -1,0 +1,125 @@
+# Configs
+config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+config secondsBetweenRepeat 0.1
+config checkDefaultsOnLoad true
+config focusCheckWidthMax 3000
+config keyboardLayout qwerty
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+#config windowHintsDuration 5
+config windowHintsSpread true
+#config windowHintsOrder persist
+
+# Monitor Aliases
+alias mon-laptop 0
+alias mon-dell   1
+
+# Misc Aliases
+alias showHintsLeftHand hint AOEUIYQJKX
+alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
+alias browser 'Safari'
+alias editor 'Sublime Text'
+
+# Abstract positions
+alias full          move screenOriginX;screenOriginY                  screenSizeX;screenSizeY
+alias lefthalf      move screenOriginX;screenOriginY                  screenSizeX/2;screenSizeY
+alias righthalf     move screenOriginX+screenSizeX/2;screenOriginY    screenSizeX/2;screenSizeY
+alias rightmost     move screenOriginX+screenSizeX*0.4;screenOriginY  screenSizeX*0.6;screenSizeY
+alias rightless     move screenOriginX+screenSizeX*0.6;screenOriginY  screenSizeX*0.4;screenSizeY
+alias leftmost      move screenOriginX;screenOriginY                  screenSizeX*0.6;screenSizeY
+alias leftless      move screenOriginX;screenOriginY                  screenSizeX*0.4;screenSizeY
+alias windowcenter	move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
+alias center		move screenSizeX*0.1;screenSizeY*0.1  screenSizeX*0.8;screenSizeY*0.8
+
+# Concrete positions
+alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY                                          ${mon-laptop}
+alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY                                        ${mon-laptop}
+alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY                          ${mon-laptop}
+alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY                                        ${mon-dell}
+alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY                          ${mon-dell}
+alias 2-righttop    move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2                        ${mon-dell}
+alias 2-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${mon-dell}
+
+# 2 Monitor layout
+layout 2monitors 'Terminal':MAIN_FIRST				    ${2-rightbottom} | ${1-left}
+layout 2monitors 'Safari':REPEAT				        ${1-full}
+layout 2monitors 'Sublime Text':REPEAT				    ${1-full}
+layout 2monitors 'Mail':MAIN_FIRST				        ${2-left}
+layout 2monitors 'Xcode':REPEAT				            ${1-full}
+layout 2monitors 'iTunes':REPEAT				        ${1-full}
+layout 2monitors 'Spotify':REPEAT				        ${1-full}
+
+# 1 Monitor layout
+layout 1monitor 'Terminal':MAIN_FIRST				    ${1-right}
+layout 1monitor 'Sublime Text':MAIN_FIRST				${1-left}
+layout 1monitor 'Safari':REPEAT				            ${1-full}
+layout 1monitor 'Mail':MAIN_FIRST				        ${1-full}
+layout 1monitor 'Xcode':REPEAT				            ${1-full}
+layout 1monitor 'iTunes':REPEAT				            ${1-full}
+layout 1monitor 'Spotify':REPEAT				        ${1-full}
+
+# Default Layouts
+default 2monitors resolutions:${mon-laptop};${mon-dell};
+default 1monitor  resolutions:${mon-laptop}
+
+# Numpad location Bindings
+# bind pad0 ${showHintsLeftHand}
+# bind pad1 ${leftless}
+# bind pad2 push bottom bar-resize:screenSizeY/2
+# bind pad3 ${rightless}
+# bind pad4 ${lefthalf}
+# bind pad5 ${full}
+# bind pad6 ${righthalf}
+# bind pad7 ${leftmost}
+# bind pad8 push top bar-resize:screenSizeY/2
+# bind pad9 ${rightmost}
+# bind padEnter grid padding:5 ${mon-laptop}:6,2 ${mon-dell}:8,3
+# bind pad+ throw next
+# bind pad. focus behind
+# bind pad* layout 2monitors
+# bind pad/ layout 1monitor
+
+# bind e:cmd  ${showNormalHint}
+
+# ======================================
+# The HYPER key
+# ======================================
+
+alias hyper ctrl;alt;cmd
+alias duper ctrl;shift;alt;cmd
+
+# Location bindings
+bind left:${hyper} ${lefthalf}
+bind up:${hyper} ${full}
+bind right:${hyper} ${righthalf}
+bind down:${hyper} ${center}
+bind down:${duper} ${windowcenter}
+bind ,:${hyper} throw next
+bind .:${hyper} throw next
+bind g:${hyper} grid padding:5 0:6,6 1:6,6
+
+
+# Resize Bindings
+#bind r:${hyper} ${leftmost}
+#bind g:${hyper} ${rightmost}
+
+# Focus Bindings
+bind j:${hyper}		focus left
+bind k:${hyper}		focus up
+bind l:${hyper}		focus down
+bind ;:${hyper}		focus right
+# bind ñ:${hyper}		focus right
+
+# App bindings
+# bind e:${hyper} focus ${browser}
+# bind u:${hyper} focus ${editor}
+# bind x:${hyper} focus 'Xcode'
+# bind g:${hyper} focus 'GitHub'
+# bind m:${hyper} focus 'Mail'
+# bind i:${hyper} focus 'Terminal'
+bind space:${hyper} hint ASDFGHJKLQWERTYUIOPCVBN # use whatever keys you want
+
+# Slate
+bind backslash:${hyper} relaunch
