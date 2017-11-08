@@ -104,6 +104,15 @@ bind g:${hyper} grid padding:5 0:6,6 1:6,6
 # Resize Bindings
 #bind r:${hyper} ${leftmost}
 #bind g:${hyper} ${rightmost}
+# Resize Bindings (Using fn Key)
+bind end:alt             resize +10% +0
+bind home:alt            resize -10% +0
+bind pageUp:alt          resize +0   -10%
+bind pageDown:alt        resize +0   +10%
+bind end:ctrl;alt        resize -10% +0 bottom-right
+bind home:ctrl;alt       resize +10% +0 bottom-right
+bind pageUp:ctrl;alt     resize +0   +10% bottom-right
+bind pageDown:ctrl;alt   resize +0   -10% bottom-right
 
 # Focus Bindings
 bind j:${hyper}		focus left
@@ -113,12 +122,13 @@ bind ;:${hyper}		focus right
 # bind ñ:${hyper}		focus right
 
 # App bindings
-# bind e:${hyper} focus ${browser}
-# bind u:${hyper} focus ${editor}
-# bind x:${hyper} focus 'Xcode'
-# bind g:${hyper} focus 'GitHub'
-# bind m:${hyper} focus 'Mail'
-# bind i:${hyper} focus 'Terminal'
+bind y:${hyper} focus ${browser}
+bind u:${hyper} focus 'Terminal'
+bind i:${hyper} focus ${editor}
+bind o:${hyper} focus 'Google Chrome'
+bind p:${hyper} focus 'Source Tree'
+bind m:${hyper} focus 'Mail'
+bind s:${hyper} focus 'Skype'
 bind space:${hyper} hint ASDFGHJKLQWERTYUIOPCVBN # use whatever keys you want
 
 # Slate
