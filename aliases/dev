@@ -1,5 +1,17 @@
 #!/bin/bash
+
 # Dev Shortcuts
 alias s="subl"
 alias sublime="subl"
 alias artisan="php artisan"
+
+# Node Shortcuts
+alias nr="clear; npm run"
+alias nd="clear; npm run dev"
+alias ns="clear; npm run start"
+alias ni="clear; npm install"
+alias nis="clear; npm install --save"
+alias nid="clear; npm install --save-dev"
+alias y="yarn"
+alias ys="yarn start"
+alias yd="yarn dev"
