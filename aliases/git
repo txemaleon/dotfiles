@@ -2,10 +2,9 @@
 # Git
 alias g="git"
 alias add="git add"
-alias branch="git branch"
-alias checkout="git checkout"
+alias gb="git branch"
+alias gco="git checkout"
 alias clone="git clone"
-alias commit="git commit"
 alias cam="git commit -am"
 alias gd="git diff"
 alias glg="git lg"
