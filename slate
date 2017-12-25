@@ -14,7 +14,7 @@ config windowHintsSpread true
 
 # Monitor Aliases
 alias mon-main 0
-alias mon-ext  1
+alias mon-ext 1
 
 # Misc Aliases
 alias browser 'Safari'
@@ -22,70 +22,67 @@ alias editor 'Sublime Text'
 alias music 'Spotify'
 
 # Abstract positions
-alias full          move screenOriginX;screenOriginY                  screenSizeX;screenSizeY
-alias lefthalf      move screenOriginX;screenOriginY                  screenSizeX/2;screenSizeY
-alias righthalf     move screenOriginX+screenSizeX/2;screenOriginY    screenSizeX/2;screenSizeY
-alias rightmost     move screenOriginX+screenSizeX*0.4;screenOriginY  screenSizeX*0.6;screenSizeY
-alias rightless     move screenOriginX+screenSizeX*0.6;screenOriginY  screenSizeX*0.4;screenSizeY
-alias leftmost      move screenOriginX;screenOriginY                  screenSizeX*0.6;screenSizeY
-alias leftless      move screenOriginX;screenOriginY                  screenSizeX*0.4;screenSizeY
+alias full			move screenOriginX;screenOriginY					screenSizeX;screenSizeY
+alias lefthalf		move screenOriginX;screenOriginY					screenSizeX/2;screenSizeY
+alias righthalf		move screenOriginX+screenSizeX/2;screenOriginY		screenSizeX/2;screenSizeY
+alias rightmost		move screenOriginX+screenSizeX*0.4;screenOriginY	screenSizeX*0.6;screenSizeY
+alias rightless		move screenOriginX+screenSizeX*0.6;screenOriginY	screenSizeX*0.4;screenSizeY
+alias leftmost		move screenOriginX;screenOriginY					screenSizeX*0.6;screenSizeY
+alias leftless		move screenOriginX;screenOriginY					screenSizeX*0.4;screenSizeY
+alias center		move screenSizeX*0.1;screenSizeY*0.1				screenSizeX*0.8;screenSizeY*0.8
 alias windowcenter	move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
-alias center		move screenSizeX*0.1;screenSizeY*0.1  screenSizeX*0.8;screenSizeY*0.8
 
 # Concrete positions
-alias 1-full        ${full}      ${mon-main}
-alias 1-left        ${lefthalf}  ${mon-main}
-alias 1-right       ${righthalf} ${mon-main}
-alias 1-center      ${center}    ${mon-main}
-alias 2-full        ${full}      ${mon-ext}
-alias 2-left        ${lefthalf}  ${mon-ext}
-alias 2-right       ${righthalf} ${mon-ext}
-alias 2-center      ${center}    ${mon-ext}
+alias 1-full	${full}			${mon-main}
+alias 1-left	${lefthalf}		${mon-main}
+alias 1-right	${righthalf}	${mon-main}
+alias 1-center	${center}		${mon-main}
+alias 2-full	${full}			${mon-ext}
+alias 2-left	${lefthalf}		${mon-ext}
+alias 2-right	${righthalf}	${mon-ext}
+alias 2-center	${center}		${mon-ext}
 
 # 2 Monitor layout
-layout 2monitors 'Terminal':MAIN_LAST				    ${2-center} | ${1-center}
-layout 2monitors 'Safari':REPEAT				        ${2-full} | ${1-full}
-layout 2monitors 'Sublime Text':REPEAT				    ${2-center} | ${1-center}
-layout 2monitors 'Mail':MAIN_FIRST				        ${2-full} | ${1-full}
-layout 2monitors 'Xcode':REPEAT				            ${2-full} | ${1-full}
-layout 2monitors 'iTunes':REPEAT				        ${2-full} | ${1-full}
-layout 2monitors 'Spotify':REPEAT				        ${2-full} | ${1-full}
+layout 2monitors 'Terminal':MAIN_LAST		${2-center} | ${1-center}
+layout 2monitors 'Safari':REPEAT			${2-full} | ${1-full}
+layout 2monitors 'Sublime Text':REPEAT		${2-center} | ${1-center}
+layout 2monitors 'Mail':MAIN_FIRST			${2-full} | ${1-full}
+layout 2monitors 'Xcode':REPEAT				${2-full} | ${1-full}
+layout 2monitors 'iTunes':REPEAT			${2-full} | ${1-full}
+layout 2monitors 'Spotify':REPEAT			${2-full} | ${1-full}
 
 # 1 Monitor layout
-layout 1monitor 'Terminal':MAIN_FIRST				    ${1-right}
-layout 1monitor 'Sublime Text':MAIN_FIRST				${1-center}
-layout 1monitor 'Safari':REPEAT				            ${1-full}
-layout 1monitor 'Mail':MAIN_FIRST				        ${1-full}
-layout 1monitor 'Xcode':REPEAT				            ${1-full}
-layout 1monitor 'iTunes':REPEAT				            ${1-full}
-layout 1monitor 'Spotify':REPEAT				        ${1-full}
+layout 1monitor 'Terminal':MAIN_FIRST		${1-right}
+layout 1monitor 'Sublime Text':MAIN_FIRST	${1-center}
+layout 1monitor 'Safari':REPEAT				${1-full}
+layout 1monitor 'Mail':MAIN_FIRST			${1-full}
+layout 1monitor 'Xcode':REPEAT				${1-full}
+layout 1monitor 'iTunes':REPEAT				${1-full}
+layout 1monitor 'Spotify':REPEAT			${1-full}
 
 # Default Layouts
-default 2monitors resolutions:${mon-main};${mon-ext};
-default 1monitor  resolutions:${mon-main}
+default 2monitors	resolutions:${mon-main};${mon-ext};
+default 1monitor	resolutions:${mon-main}
 
-# ======================================
-# The HYPER key
-# ======================================
-
+# The HYPER and DUPER key
 alias hyper ctrl;alt;cmd
 alias duper ctrl;shift;alt;cmd
 
 # Location bindings
-bind left:${hyper} ${lefthalf}
-bind up:${hyper} ${full}
-bind right:${hyper} ${righthalf}
-bind down:${hyper} ${center}
-bind down:${duper} ${windowcenter}
-bind ,:${hyper} throw next resize
-bind .:${hyper} throw next resize
-bind space:${hyper} grid padding:4 ${mon-main}:6,6 ${mon-ext}:6,6
+bind left:${hyper}		${lefthalf}
+bind up:${hyper}		${full}
+bind right:${hyper}		${righthalf}
+bind down:${hyper}		${center}
+bind down:${duper}		${windowcenter}
+bind ,:${hyper}			throw next
+bind .:${hyper}			throw next
+bind space:${hyper}		grid padding:4 ${mon-main}:6,6 ${mon-ext}:6,6
 
 # Focus Bindings
-bind home:${hyper}				focus left
-bind end:${hyper}				focus right
-bind pageUp:${hyper}			focus up
-bind pageDown:${hyper}			focus down
+bind home:${hyper}		focus left
+bind end:${hyper}		focus right
+bind pageUp:${hyper}	focus up
+bind pageDown:${hyper}	focus down
 
 # App bindings
 bind y:${hyper} focus ${browser}
@@ -96,7 +93,7 @@ bind p:${hyper} focus 'Source Tree'
 bind m:${hyper} focus 'Mail'
 bind s:${hyper} focus 'Skype'
 bind a:${hyper} focus ${music}
-bind z:${hyper} focus 'WhatsApp'
+bind w:${hyper} focus 'WhatsApp'
 
 bind g:${hyper} hint ASDFGHJKLQWERTYUIOPCVBN # use whatever keys you want
 
