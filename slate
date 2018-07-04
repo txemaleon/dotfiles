@@ -29,7 +29,8 @@ alias rightmost		move screenOriginX+screenSizeX*0.4;screenOriginY	screenSizeX*0.
 alias rightless		move screenOriginX+screenSizeX*0.6;screenOriginY	screenSizeX*0.4;screenSizeY
 alias leftmost		move screenOriginX;screenOriginY					screenSizeX*0.6;screenSizeY
 alias leftless		move screenOriginX;screenOriginY					screenSizeX*0.4;screenSizeY
-alias center		move screenSizeX*0.1;screenSizeY*0.1				screenSizeX*0.8;screenSizeY*0.8
+# alias center		move screenOriginX*1.2;screenSizeY*0.2				screenSizeX*0.8;screenSizeY*0.8
+alias center		move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) screenSizeX*.8;screenSizeY*.8
 alias windowcenter	move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
 
 # Concrete positions
@@ -43,22 +44,22 @@ alias 2-right	${righthalf}	${mon-ext}
 alias 2-center	${center}		${mon-ext}
 
 # 2 Monitor layout
-layout 2monitors 'Terminal':MAIN_LAST		${2-center} | ${1-center}
-layout 2monitors 'Safari':REPEAT			${2-full} | ${1-full}
-layout 2monitors 'Sublime Text':REPEAT		${2-center} | ${1-center}
-layout 2monitors 'Mail':MAIN_FIRST			${2-full} | ${1-full}
-layout 2monitors 'Xcode':REPEAT				${2-full} | ${1-full}
-layout 2monitors 'iTunes':REPEAT			${2-full} | ${1-full}
-layout 2monitors 'Spotify':REPEAT			${2-full} | ${1-full}
+layout 2monitors 'Terminal':MAIN_LAST		            ${2-center} | ${1-center}
+layout 2monitors 'Safari':REPEAT			            ${2-full} | ${1-full}
+layout 2monitors 'Sublime Text':REPEAT		            ${2-center} | ${1-center}
+layout 2monitors 'Microsoft Outlook':MAIN_FIRST			${2-full} | ${1-full}
+layout 2monitors 'Xcode':REPEAT				            ${2-full} | ${1-full}
+layout 2monitors 'iTunes':REPEAT			            ${2-full} | ${1-full}
+layout 2monitors 'Spotify':REPEAT			            ${2-full} | ${1-full}
 
 # 1 Monitor layout
-layout 1monitor 'Terminal':MAIN_FIRST		${1-right}
-layout 1monitor 'Sublime Text':MAIN_FIRST	${1-center}
-layout 1monitor 'Safari':REPEAT				${1-full}
-layout 1monitor 'Mail':MAIN_FIRST			${1-full}
-layout 1monitor 'Xcode':REPEAT				${1-full}
-layout 1monitor 'iTunes':REPEAT				${1-full}
-layout 1monitor 'Spotify':REPEAT			${1-full}
+layout 1monitor 'Terminal':MAIN_FIRST		            ${1-right}
+layout 1monitor 'Sublime Text':MAIN_FIRST	            ${1-center}
+layout 1monitor 'Safari':REPEAT				            ${1-full}
+layout 1monitor 'Microsoft Outlook':MAIN_FIRST			${1-full}
+layout 1monitor 'Xcode':REPEAT				            ${1-full}
+layout 1monitor 'iTunes':REPEAT				            ${1-full}
+layout 1monitor 'Spotify':REPEAT			            ${1-full}
 
 # Default Layouts
 default 2monitors	resolutions:${mon-main};${mon-ext};
@@ -85,11 +86,12 @@ bind pageUp:${hyper}	focus up
 bind pageDown:${hyper}	focus down
 
 # App bindings
+bind j:${hyper} focus 'Things'
 bind y:${hyper} focus ${browser}
 bind u:${hyper} focus 'Terminal'
 bind i:${hyper} focus ${editor}
 bind o:${hyper} focus 'Google Chrome'
-bind p:${hyper} focus 'Source Tree'
+bind p:${hyper} focus 'Sourcetree'
 bind m:${hyper} focus 'Mail'
 bind s:${hyper} focus 'Skype'
 bind a:${hyper} focus ${music}
