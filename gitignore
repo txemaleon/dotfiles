@@ -37,5 +37,5 @@ sftp-config*.json
 *.retry
 .idea
 .vagrant
-help
+tmp
 z_*
