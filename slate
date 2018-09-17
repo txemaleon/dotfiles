@@ -18,7 +18,7 @@ alias mon-ext 1
 
 # Misc Aliases
 alias browser 'Safari'
-alias editor 'Sublime Text'
+alias editor 'Code'
 alias music 'Spotify'
 
 # Abstract positions
