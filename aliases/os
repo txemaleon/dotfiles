@@ -1,6 +1,6 @@
 #!/bin/bash
 # Updates
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm -g update; sudo gem update; sudo gem clean; composer global update;'
+alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm -g update; sudo gem update; sudo gem clean; composer global update; composer global clearcache'
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
