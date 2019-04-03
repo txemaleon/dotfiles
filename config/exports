@@ -21,6 +21,9 @@ export HISTTIMEFORMAT='%F %T '
 # export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 # export PATH="$NPM_PACKAGES/bin:$PATH"
 
+export RUBY_PATH=/usr/local/lib/ruby/gems/2.6.0/bin
+export PATH="$RUBY_PATH/bin:$PATH"
+
 # Set Composer Path
 export COMPOSER_PATH=~/.composer/vendor/bin
 export PATH="$COMPOSER_PATH:$PATH"
