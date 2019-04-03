@@ -93,7 +93,7 @@ bind i:${hyper} focus ${editor}
 bind o:${hyper} focus 'Google Chrome'
 bind p:${hyper} focus 'Sourcetree'
 bind m:${hyper} focus 'Mail'
-bind s:${hyper} focus 'Skype'
+bind s:${hyper} focus 'Slack'
 bind a:${hyper} focus ${music}
 bind w:${hyper} focus 'WhatsApp'
 
