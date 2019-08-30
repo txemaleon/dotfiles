@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Dev Shortcuts
+alias c="code"
 alias s="subl"
 alias sublime="subl"
 alias artisan="php artisan"
