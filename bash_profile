@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
 DOTFILES=$HOME/.config/dotfiles
-for dir in aliases functions local; do
-	dir=$DOTFILES/$dir/
-	[ -d "$dir" ] && for f in $dir/*; do source "$f"; done
+for dir in config aliases functions local; do
+    dir=$DOTFILES/$dir
+    [ -d "$dir" ] && for f in $dir/*; do source "$f"; done
 done
 
-# If exists, allow per enviroment ~/.exports
-[ -f ~/.exports ] && source ~/.exports
+# If exists, allow per enviroment $HOME/.exports
+[ -f $HOME/.exports ] && source $HOME/.exports
+
+[ -f $HOME/.profile ] && source $HOME/.profile
+
 ZSH_TMUX_AUTOSTART=true
