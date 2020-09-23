@@ -1,14 +1,18 @@
 #!/bin/bash
 # Updates
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm -g update; composer global update; composer global clearcache'
+alias update='clear; sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm -g update; composer global update; composer global clearcache;'
+
+#  sudo gem update --system; sudo gem update; sudo gem cleanup;
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
 # Finally, clear download history from quarantine. https://mths.be/bum
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes/*; sudo rm -rfv ~/.Trash/*; sudo rm -rfv ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes/*; sudo rm -rfv $HOME/.Trash/*; sudo rm -rfv $HOME/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 $HOME/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
 
 # Show in df only things I care
 alias df="df -P -kHl"
 
 # mkdir -p made quicker
 alias mkdirp="mkdir -p"
+
+alias path='echo -e ${PATH//:/\\n}'
