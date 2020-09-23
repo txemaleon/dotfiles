@@ -4,7 +4,7 @@
 	username = txemaleon
 
 [core]
-	excludesfile = ~/.config/dotfiles/gitignore
+	excludesfile = $HOME/.config/dotfiles/gitignore
 	pager = less -r
 
 [push]

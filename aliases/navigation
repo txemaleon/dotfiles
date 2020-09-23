@@ -26,8 +26,6 @@ alias h="cd ~"
 alias -- -="cd -"
 
 # Main folder Navigation
-alias d="cd ~/Desktop"
-alias p="cd ~/Developer"
-alias db="cd ~/Dropbox"
-alias si="cd ~/Sites"
-alias dot="cd ~/.config/dotfiles"
+alias d="cd $HOME/Desktop"
+alias p="cd $HOME/Developer"
+alias dot="cd $HOME/.config/dotfiles"
