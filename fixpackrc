@@ -1,41 +1,24 @@
 {
+	"files": ["package.json"],
+	"quiet": false,
+	"required": ["name", "version"],
+	"requiredOnPrivate": [],
+	"sortedSubItems": ["dependencies", "devDependencies", "keywords", "jshintConfig"],
 	"sortToTop": [
 		"name",
 		"description",
 		"author",
 		"version",
-		"homepage",
-		"repository",
-		"private",
 		"scripts",
 		"main",
+		"homepage",
+		"repository",
 		"bugs",
+		"private",
 		"dependencies",
 		"devDependencies"
 	],
-	"required": [
-		"name",
-		"version"
-	],
-	"warn": [
-		"description",
-		"author",
-		"repository",
-		"keywords",
-		"main",
-		"bugs",
-		"homepage",
-		"license"
-	],
-	"requiredOnPrivate": [],
+	"warn": ["description", "author", "repository", "keywords", "main", "bugs", "homepage", "license"],
 	"warnOnPrivate": ["name", "version", "description", "main"],
-	"sortedSubItems": [
-		"dependencies",
-		"devDependencies",
-		"keywords",
-		"jshintConfig"
-	],
-	"quiet": false,
-	"files": ["package.json"],
 	"wipe": false
 }
