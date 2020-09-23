@@ -1,0 +1,8 @@
+function updateReactEnv {
+	npx react-codemod manual-bind-to-arrow --force
+	git commit "Remove React Component Binds"
+	npx react-codemod pure-component --force
+	git commit "Remove React Classes"
+	# npx react-codemod update-react-imports --force
+	# git commit "Remove React Imports"
+}
