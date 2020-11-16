@@ -1,3 +1,5 @@
+#!/bin/env bash
+
 function updateReactEnv {
 	npx react-codemod manual-bind-to-arrow $1 --force
 	git commit "Remove React Component Binds"
