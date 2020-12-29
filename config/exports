@@ -18,7 +18,7 @@ export HISTTIMEFORMAT='%F %T '
 
 # Set Node.js Path
 export NODE_PATH=/usr/local/opt/node@12/bin
-export PATH="$NODE_PATH:$PATH"
+export PATH="$PATH:$NODE_PATH"
 # export NPM_PACKAGES=$HOME/.npm-packages
 # export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 # export PATH="$NPM_PACKAGES/bin:$PATH"
