@@ -10,5 +10,3 @@ done
 [ -f $HOME/.exports ] && source $HOME/.exports
 
 [ -f $HOME/.profile ] && source $HOME/.profile
-
-ZSH_TMUX_AUTOSTART=true

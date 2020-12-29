@@ -73,6 +73,8 @@ plugins=(git colorize pip python brew osx tmux zsh-syntax-highlighting zsh-autos
 source $ZSH/oh-my-zsh.sh
 source $HOME/.bash_profile
 
+ZSH_TMUX_AUTOSTART=true
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
