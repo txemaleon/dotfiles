@@ -2,6 +2,8 @@
 
 # Dev Shortcuts
 alias c="code"
+alias c.="code ."
+alias code.="code ."
 alias s="subl"
 alias sublime="subl"
 alias artisan="php artisan"
@@ -16,3 +18,7 @@ alias nid="clear; npm install --save-dev"
 alias y="yarn"
 alias ys="yarn start"
 alias yd="yarn dev"
+
+# Now Shortcuts
+alias now="vercel"
+alias deploy="vercel -C --prod"

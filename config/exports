@@ -30,3 +30,6 @@ export PATH="$RUBY_PATH/bin:$PATH"
 # Set Composer Path
 export COMPOSER_PATH=$HOME/.composer/vendor/bin
 export PATH="$COMPOSER_PATH:$PATH"
+
+# Java the Hut
+export PATH="/usr/local/opt/openjdk@8/bin:$PATH"
