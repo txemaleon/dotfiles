@@ -1,10 +1,10 @@
 [user]
-	name = Txema León
+	name = Txema León
 	email = soy@txemaleon.com
 	username = txemaleon
 
 [core]
-	excludesfile = $HOME/.gitignore
+	excludesfile = /Users/txemaleon/.config/dotfiles/gitignore
 	pager = less -r
 
 [push]
@@ -82,3 +82,15 @@
 
 [mergetool]
 	keepBackup = false
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[commit]
+	template = /Users/txemaleon/.pull]
+	rebase = true
