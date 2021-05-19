@@ -31,6 +31,7 @@ Temporary Items
 .env
 bower_components
 node_modules
+.npmrc
 sftp-config*.json
 
 # Custom Helpers
