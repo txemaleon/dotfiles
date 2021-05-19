@@ -37,3 +37,5 @@
 
 # export PS1="${remote}\[$BLUE\]\w \$(parse_git_branch)\n\[$ORANGE\]❯ \[$RESET\]";
 # export PS2=" \[$ORANGE\]➜ \[$RESET\]";
+
+export CLICOLOR=1
