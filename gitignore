@@ -29,6 +29,7 @@ Temporary Items
 /.vscode
 *.sublime-(project|workspace)
 .env
+.eslintcache
 bower_components
 node_modules
 .npmrc
