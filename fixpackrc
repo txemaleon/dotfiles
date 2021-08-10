@@ -1,6 +1,6 @@
 {
 	"files": ["package.json"],
-	"quiet": false,
+	"quiet": true,
 	"required": ["name", "version"],
 	"requiredOnPrivate": [],
 	"indent": "\t",
@@ -13,16 +13,19 @@
 	"sortToTop": [
 		"name",
 		"description",
-		"author",
+		"license",
 		"version",
-		"scripts",
+		"author",
+		"authors",
 		"main",
+		"bin",
 		"homepage",
+		"scripts",
+		"dependencies",
+		"devDependencies",
 		"repository",
 		"bugs",
-		"private",
-		"dependencies",
-		"devDependencies"
+		"private"
 	],
 	"warn": [
 		// "description",
