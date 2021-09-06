@@ -1,6 +1,6 @@
 #!/bin/bash
 # Updates
-alias update='clear; sudo softwareupdate -i -a; brew update; brew upgrade; brew cu -qay --clean; brew cleanup -s; npm -g update; composer global update; composer global clearcache;'
+alias update='clear; sudo softwareupdate -i -a; brew update; brew upgrade; brew cu -qay --clean; brew cleanup -s; npm -g update;'
 
 #  sudo gem update --system; sudo gem update; sudo gem cleanup;
 
