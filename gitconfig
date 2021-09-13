@@ -4,7 +4,7 @@
 	username = txemaleon
 
 [core]
-	excludesfile = /Users/txemaleon/.config/dotfiles/gitignore
+	excludesfile = ~/.config/dotfiles/gitignore
 	pager = less -r
 
 [push]
@@ -99,3 +99,6 @@
 
 [merge]
 	ff = false
+
+[pull]
+	ff = only
