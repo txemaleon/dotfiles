@@ -92,8 +92,10 @@
 	trustExitCode = true
 
 [commit]
-	template = /Users/txemaleon/.pull]
 	rebase = true
 
 [init]
 	defaultBranch = main
+
+[merge]
+	ff = false
