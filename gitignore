@@ -41,3 +41,4 @@ sftp-config*.json
 .vagrant
 tmp
 z_*
+.*_
