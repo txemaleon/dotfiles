@@ -4,7 +4,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+#Icon
 
 
 # Thumbnails
@@ -41,3 +41,4 @@ sftp-config*.json
 .vagrant
 tmp
 z_*
+.*_

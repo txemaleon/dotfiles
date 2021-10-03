@@ -4,7 +4,7 @@
 	username = txemaleon
 
 [core]
-	excludesfile = /Users/txemaleon/.config/dotfiles/gitignore
+	excludesfile = ~/.config/dotfiles/gitignore
 	pager = less -r
 
 [push]
@@ -64,6 +64,13 @@
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]"
+	tracking = "!f() { git for-each-ref --format '%(refname:short):%(upstream:short)' 'refs/heads' | egrep -v ':$'; }; f"
+	is-clean-workdir = "!f() { git diff --stat --exit-code || { echo \"Workdir dirty\"; exit 1; }; }; f"
+	is-clean-index = "!f() { git diff --stat --cached --exit-code || { echo \"Index dirty\"; exit 2; }; }; f"
+	is-clean = "!f() { git is-clean-workdir && git is-clean-index; }; f"
+	co-merge = "!f() { local=\"$1\"; remote=\"$2\"; git checkout \"$local\"; git merge --ff-only \"$remote\"; }; f"
+	current-branch = rev-parse --abbrev-ref HEAD
+	sync = "!f() { git is-clean || { echo Aborting sync.; exit 1; }; current=$(git current-branch); git fetch --all; git tracking | while IFS=: read local remote; do echo \"Merging $local with $remote\"; git co-merge \"$local\" \"$remote\"; done 3>&1 1>&2 2>&3 | egrep -i --color 'fatal|$' 3>&1 1>&2 2>&3; git checkout \"$current\"; }; f"
 
 [filter "media"]
 	clean = git media clean %f
@@ -92,8 +99,13 @@
 	trustExitCode = true
 
 [commit]
-	template = /Users/txemaleon/.pull]
 	rebase = true
 
 [init]
 	defaultBranch = main
+
+[merge]
+	ff = false
+
+[pull]
+	ff = only
