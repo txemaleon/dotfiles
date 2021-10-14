@@ -61,6 +61,7 @@
 	b = branch
 	rb = rebase -i @{u}
 	f = fetch
+	p = pull
 	prb = pull --rebase
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
