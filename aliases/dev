@@ -3,10 +3,7 @@
 # Dev Shortcuts
 alias c="code"
 alias c.="code ."
-alias code.="code ."
-alias s="subl"
-alias sublime="subl"
-alias artisan="php artisan"
+alias .="code ."
 
 # Node Shortcuts
 alias nr="clear; npm run"

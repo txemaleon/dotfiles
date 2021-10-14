@@ -7,6 +7,7 @@
 	"sortedSubItems": [
 		"dependencies",
 		"devDependencies",
+		"peerDependencies",
 		"keywords",
 		"jshintConfig"
 	],
@@ -24,6 +25,7 @@
 		"scripts",
 		"dependencies",
 		"devDependencies",
+		"peerDependencies",
 		"bugs",
 		"private"
 	],
