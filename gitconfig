@@ -111,12 +111,3 @@
 
 [pull]
 	ff = only
-
-[branch "master"]
-	mergeOptions = --squash
-
-[branch "main"]
-	mergeOptions = --squash
-
-[branch "staging"]
-	mergeOptions = --squash
