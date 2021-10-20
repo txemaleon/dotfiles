@@ -71,7 +71,7 @@ HIST_STAMPS="dd/mm/yyyy"
 plugins=(git colorize pip python brew osx node tmux zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
-source $HOME/.bash_profile
+source $HOME/.profile
 
 ZSH_TMUX_AUTOSTART=true
 
