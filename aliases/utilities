@@ -13,7 +13,7 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete > /dev/null &"
 
 # Utilities
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-alias pw="pwgen -cns 32 1|pbcopy"
+alias pw="pwgen -csn 6 3 | xargs -n 3 | sed \"s/ /-/g\" | tr -d '\n' | pbcopy"
 alias fixpermissions="find . -type d -exec chmod 0755 {} \;; find . -type f -exec chmod 0644 {} \;"
 
 # Sound
