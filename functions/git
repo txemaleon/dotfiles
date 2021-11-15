@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# alias syncall="find . -type d -depth 1 -exec git --git-dir={}/.git --work-tree=$PWD/{} sync origin master \;"
-alias git-branch-clean="git branch | grep -v \"master\"| grep -v \"main\"| grep -v \"develop\"| grep -v \"staging\" | xargs git branch -D"
-alias pr='gh pr create -f -t \"$(git current-branch)\" -a \"@me\" -B'
-
 function release {
 	if [ -z "$1" ]; then
 		echo "Please, suppy a branch to release";
