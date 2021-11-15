@@ -66,6 +66,7 @@
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]"
+	clb = "!f() { git branch | grep -v \"master\" | grep -v \"main\" | grep -v \"develop\" | grep -v \"staging\" | xargs git branch -D; }; f"
 	tracking = "!f() { git for-each-ref --format '%(refname:short):%(upstream:short)' 'refs/heads' | egrep -v ':$'; }; f"
 	is-clean-workdir = "!f() { git diff --stat --exit-code || { echo \"Workdir dirty\"; exit 1; }; }; f"
 	is-clean-index = "!f() { git diff --stat --cached --exit-code || { echo \"Index dirty\"; exit 2; }; }; f"
