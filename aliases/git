@@ -16,4 +16,4 @@ alias status="git status -sb"
 alias gmdm="git sync"
 alias sync="git sync"
 alias syncall="find . -name \".git\" -type d -exec git --git-dir={} --work-tree={}/.. sync \;"
-alias pr='gh pr create -f -t \"$(git current-branch)\" -a \"@me\" -B'
+alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'
