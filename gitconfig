@@ -63,6 +63,7 @@
 	f = fetch
 	p = pull
 	prb = pull --rebase
+	amend = commit --amend --no-edit
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]"
