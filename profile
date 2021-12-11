@@ -8,3 +8,5 @@ done
 
 # If exists, allow per enviroment $HOME/.exports
 [ -f $HOME/.exports ] && source $HOME/.exports
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
