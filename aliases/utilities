@@ -9,7 +9,7 @@ alias getip="dig +short "
 alias flush="dscacheutil -flushcache"
 
 # Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete > /dev/null &"
+alias cleanup="find . -type f -name '*.DS_Store' -delete"
 
 # Utilities
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
