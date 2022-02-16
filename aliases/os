@@ -16,5 +16,3 @@ alias df="df -P -kHl"
 alias mkdirp="mkdir -p"
 
 alias path='echo -e ${PATH//:/\\n}'
-
-alias speedtest='speed-test'
