@@ -9,9 +9,10 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
 export MANPAGER="less -X"
 
 # History Management
-export HISTCONTROL=ignoredups
+setopt HIST_IGNORE_ALL_DUPS
+
 # Make some commands not show up in history
-export HISTIGNORE="clear"
+export HISTORY_IGNORE="(clear|status|update|cat|chmod|kraken|rainbow)"
 
 # Display time in History
 export HISTTIMEFORMAT='%F %T '
