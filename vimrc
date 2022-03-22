@@ -29,6 +29,8 @@ Plugin 'jelera/vim-javascript-syntax'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+colorscheme base16-default-dark
+
 set autoread " detect when a file is changed
 
 " make backspace behave in a sane manner
@@ -37,7 +39,7 @@ set backspace=indent,eol,start
 " Tab control
 set noexpandtab   " tabs ftw
 set smarttab      " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
-set tabstop=2     " the visible width of tabs
+set tabstop=4     " the visible width of tabs
 set softtabstop=4 " edit as if the tabs are 4 characters wide
 set shiftwidth=4  " number of spaces to use for indent and unindent
 set shiftround    " round indent to a multiple of 'shiftwidth'
@@ -45,6 +47,11 @@ set shiftround    " round indent to a multiple of 'shiftwidth'
 set clipboard=unnamed
 
 " faster redrawing
+syntax on
+set noerrorbells
+set hidden
+set relativenumber
+set nu
 set ttyfast
 
 " code folding settings
@@ -56,6 +63,9 @@ set foldlevel=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nnoremap n nzz
+nnoremap N Nzz
 
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=0
