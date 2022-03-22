@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env zsh
 
 # List all files colorized in long format, including dot files
 

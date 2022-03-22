@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env zsh
 # Git
 alias g="git"
 alias add="git add"
@@ -13,7 +13,7 @@ alias pull="git pull"
 alias push="git push"
 alias remote="git remote"
 alias status="git status -sb"
-alias gmdm="git sync"
-alias sync="git sync"
-alias syncall="find . -name \".git\" -type d -exec git --git-dir={} --work-tree={}/.. sync \;"
+alias gmdm="gitup ."
+alias sync="gitup ."
+alias syncall="gitup ."
 alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'

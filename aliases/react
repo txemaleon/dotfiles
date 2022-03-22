@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/env zsh
 alias cra="yarn create react-app"
 alias crna="yarn create react-native-app"

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env zsh
 
 DOTFILES=$HOME/.config/dotfiles
 for dir in config aliases functions local; do

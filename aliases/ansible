@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env zsh
 # Ansible
 alias ans="ansible"
 alias anp="ansible-playbook"
