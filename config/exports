@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env zsh
 # Make nano the default editor
 export EDITOR="nano"
 
@@ -28,8 +28,8 @@ export CLICOLOR=1
 # export PATH="$NPM_PACKAGES/bin:$PATH"
 
 # Set Ruby Path
-# export RUBY_PATH=/usr/local/lib/ruby/gems/2.7.0
-# export PATH="$RUBY_PATH/bin:$PATH"
+export RUBY_PATH=/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin
+export PATH="$RUBY_PATH/bin:$PATH"
 
 # Set Composer Path
 # export COMPOSER_PATH=$HOME/.composer/vendor/bin
