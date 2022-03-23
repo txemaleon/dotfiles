@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 function updateReactEnv {
 	npx react-codemod manual-bind-to-arrow $1 --force

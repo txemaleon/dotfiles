@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/usr/bin/env zsh
 # Updates
 alias update='clear; brew update; brew upgrade; brew cu -qay --clean; brew cleanup -s; npm -g update; mas upgrade; sudo softwareupdate -i -a;'
 

@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/usr/bin/env zsh
 # Bash Functions Navigation
 
 # Makes cd to perform a ls

@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/usr/bin/env zsh
 
 for f in profile fixpackrc gitconfig gitignore inputrc npmrc slate tmux.conf vimrc zshrc;
 do
