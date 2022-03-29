@@ -68,7 +68,7 @@ HIST_STAMPS="%d/%m/%y"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize pip python brew macos node tmux zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git colorize pip python brew macos node tmux zsh-syntax-highlighting zsh-autosuggestions autojump)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.profile
