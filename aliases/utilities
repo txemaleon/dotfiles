@@ -29,5 +29,5 @@ alias egrep='egrep --color=auto'
 # Reload dotfiles
 alias resource="source $HOME/.config/dotfiles/profile"
 
-alias cat="bat -p"
+alias cat="bat"
 alias youtube-dl="yt-dlp"
