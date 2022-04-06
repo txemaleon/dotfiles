@@ -5,7 +5,7 @@
 
 # Autocompletions
 # Add tab completion for SSH hostnames based on $HOME/.ssh/config, ignoring wildcards
-# [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" rsync scp sftp ssh
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" rsync scp sftp ssh
 
 # Brew Bash Completion
 # if [ -f /usr/local/share/bash-completion/bash_completion ]; then
