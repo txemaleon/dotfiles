@@ -45,7 +45,7 @@ DISABLE_UPDATE_PROMPT="true"
 ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -60,6 +60,8 @@ ENABLE_CORRECTION="true"
 # see 'man strftime' for details.
 HIST_STAMPS="%d/%m/%y"
 
+# ZSH_TMUX_AUTOSTART=true
+
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -70,10 +72,8 @@ HIST_STAMPS="%d/%m/%y"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git autojump npm colorize brew macos node zsh-syntax-highlighting zsh-autosuggestions)
 
-source $ZSH/oh-my-zsh.sh
 source $HOME/.profile
-
-ZSH_TMUX_AUTOSTART=true
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
