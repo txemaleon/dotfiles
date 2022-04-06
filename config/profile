@@ -5,5 +5,3 @@ for dir in aliases functions local; do
     dir=$DOTFILES/$dir
     [ -d "$dir" ] && for f in $dir/*; do source "$f"; done
 done
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
