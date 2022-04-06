@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-DOTFILES=$HOME/.config/dotfiles
-for f in $DOTFILES/exports/*; do
-    source "$f";
-done
