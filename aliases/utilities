@@ -27,7 +27,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # Reload dotfiles
-alias resource="source $HOME/.config/dotfiles/profile"
+alias resource="source $HOME/.profile"
 
 alias cat="bat"
 alias youtube-dl="yt-dlp"
