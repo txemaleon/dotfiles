@@ -36,5 +36,8 @@ set input-meta on
 set output-meta on
 set convert-meta off
 
+# History Management
+setopt HIST_IGNORE_ALL_DUPS
+
 # Use Alt/Meta + Delete to delete the preceding word
 "\e[3;3~": kill-word
