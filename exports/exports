@@ -8,11 +8,8 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
-# History Management
-setopt HIST_IGNORE_ALL_DUPS
-
 # Make some commands not show up in history
-export HISTORY_IGNORE="(clear|status|update|cat|chmod|kraken|rainbow)"
+export HISTORY_IGNORE="(clear|status|update|cat|chmod|kraken|rainbow|ls|ll|l|cd|rm)"
 
 # Display time in History
 export HISTTIMEFORMAT='%F %T '
