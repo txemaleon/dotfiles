@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+
+alias update='clear; updateNPM; updateApps;'
+
+updateApps() {
+	brew update;
+	brew upgrade;
+	brew cu -qay --clean;
+	brew cleanup -s;
+	mas upgrade;
+	sudo softwareupdate -i -a;
+}
+
+updateNPM() {
+	npm -g update;
+}
+
+updateRuby() {
+	sudo gem update --system;
+	sudo gem update;
+	sudo gem cleanup;
+}

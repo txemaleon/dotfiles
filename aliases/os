@@ -1,8 +1,4 @@
 #!/usr/bin/env zsh
-# Updates
-alias update='clear; brew update; brew upgrade; brew cu -qay --clean; brew cleanup -s; npm -g update; mas upgrade; sudo softwareupdate -i -a;'
-
-#  sudo gem update --system; sudo gem update; sudo gem cleanup;
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
