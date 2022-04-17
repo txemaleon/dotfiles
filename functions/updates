@@ -1,12 +1,14 @@
 #!/usr/bin/env zsh
 
-alias update='clear; updateNPM; updateApps;'
+alias update='clear; updateCommands; updateNPM; updateApps; updateDock; updatesCleanup;'
 
-updateApps() {
+updateCommands() {
 	brew update;
 	brew upgrade;
+}
+
+updateApps() {
 	brew cu -qay --clean;
-	brew cleanup -s;
 	mas upgrade;
 	sudo softwareupdate -i -a;
 }
@@ -19,4 +21,30 @@ updateRuby() {
 	sudo gem update --system;
 	sudo gem update;
 	sudo gem cleanup;
+}
+
+updatesCleanup() {
+	brew cleanup -s;
+}
+
+updateDock() {
+	dockutil -r all \
+		-a /Applications/Safari.app \
+		-a /Applications/Google\ Chrome.app \
+		-a /System/Applications/Mail.app \
+		-a /System/Applications/Calendar.app \
+		-a /Applications/Things3.app \
+		-a /System/Applications/Notes.app \
+		-a /Applications/Notion.app \
+		-a /Applications/Obsidian.app \
+		-a /Applications/Visual\ Studio\ Code.app \
+		-a /System/Applications/Utilities/Terminal.app \
+		-a /Applications/Twitter.app \
+		-a /Applications/Whatsapp.app \
+		-a /Applications/Slack.app \
+		-a /Applications/Discord.app \
+		-a /System/Applications/Podcasts.app \
+		-a /System/Applications/Music.app \
+		-a /System/Applications/System\ Preferences.app \
+		-a ~/Downloads
 }
