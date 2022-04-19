@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-# Make nano the default editor
-export EDITOR="nano"
+
+export EDITOR="vim"
 
 # Add user@host to Tab Name
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
