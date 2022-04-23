@@ -50,7 +50,7 @@
 	d = diff
 	a = add
 	sh = show
-	s = switch
+	s = switch -q
 	ci = commit
 	fix = commit --amend --no-edit
 	co = checkout
