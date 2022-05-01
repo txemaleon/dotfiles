@@ -2,32 +2,32 @@
 
 alias update='clear; updateCommands; updateNPM; updateApps; updateDock; updatesCleanup;'
 
-updateCommands() {
+function updateCommands {
 	brew update;
 	brew upgrade;
 }
 
-updateApps() {
+function updateApps {
 	brew cu -qay --clean;
 	mas upgrade;
 	sudo softwareupdate -i -a;
 }
 
-updateNPM() {
+function updateNPM {
 	npm -g update;
 }
 
-updateRuby() {
+function updateRuby {
 	sudo gem update --system;
 	sudo gem update;
 	sudo gem cleanup;
 }
 
-updatesCleanup() {
+function updatesCleanup {
 	brew cleanup -s;
 }
 
-updateDock() {
+function updateDock {
 	dockutil -r all \
 		-a /Applications/Safari.app \
 		-a /Applications/Google\ Chrome.app \
