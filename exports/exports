@@ -26,7 +26,7 @@ export CLICOLOR=1
 
 # Set Ruby Path
 export RUBY_PATH=/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin
-export PATH="$RUBY_PATH/bin:$PATH"
+export PATH="$RUBY_PATH:$PATH"
 
 # Set Composer Path
 # export COMPOSER_PATH=$HOME/.composer/vendor/bin
