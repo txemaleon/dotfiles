@@ -46,35 +46,34 @@
 	insteadOf = "gist:"
 
 [alias]
-	who = shortlog -sn
-	d = diff
 	a = add
-	sh = show
-	s = switch -q
-	ci = commit
-	fix = commit --amend --no-edit
+	b = branch
+	c = commit
+	cam = commit -am
+	cb = checkout -b
+	clb = !git branch --merged $(git mb) | grep -v \"master\" | grep -v \"main\" | grep -v \"develop\" | grep -v \"staging\" | xargs git branch -D
 	co = checkout
+	cp = cherry-pick
+	d = diff
+	del = branch -D
+	f = fetch
+	fix = commit --amend --no-edit
 	l = log --date=local
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	c = diff --cached
-	cp = cherry-pick
-	b = branch
-	rb = rebase -i @{u}
-	f = fetch
+	mb = !git branch -l master main | sed 's/^* //'
 	p = pull
 	prb = pull --rebase
-	amend = commit --amend --no-edit
+	r = remote
+	rb = rebase -i @{u}
+	s = switch -q
+	st = status -sb
+	sh = show
+	sz = !git branch | fzf --reverse | cut -f1 | xargs -n1 git switch -q
+	who = shortlog -sn
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]"
-	clb = "!f() { git branch --merged main | grep -v \"master\" | grep -v \"main\" | grep -v \"develop\" | grep -v \"staging\" | xargs git branch -D; }; f"
-	tracking = "!f() { git for-each-ref --format '%(refname:short):%(upstream:short)' 'refs/heads' | egrep -v ':$'; }; f"
-	is-clean-workdir = "!f() { git diff --stat --exit-code || { echo \"Workdir dirty\"; exit 1; }; }; f"
-	is-clean-index = "!f() { git diff --stat --cached --exit-code || { echo \"Index dirty\"; exit 2; }; }; f"
-	is-clean = "!f() { git is-clean-workdir && git is-clean-index; }; f"
-	co-merge = "!f() { local=\"$1\"; remote=\"$2\"; git checkout \"$local\"; git merge --ff-only \"$remote\"; }; f"
 	current-branch = rev-parse --abbrev-ref HEAD
-	sync = "!f() { git is-clean || { echo Aborting sync.; exit 1; }; current=$(git current-branch); git fetch --all; git tracking | while IFS=: read local remote; do echo \"Merging $local with $remote\"; git co-merge \"$local\" \"$remote\"; done 3>&1 1>&2 2>&3 | egrep -i --color 'fatal|$' 3>&1 1>&2 2>&3; git checkout \"$current\"; }; f"
 
 [filter "media"]
 	clean = git media clean %f
