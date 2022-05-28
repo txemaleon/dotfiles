@@ -48,6 +48,7 @@
 [alias]
 	a = add
 	b = branch
+	bd = branch -D
 	c = commit
 	cam = commit -am
 	cb = checkout -b
@@ -55,7 +56,6 @@
 	co = checkout
 	cp = cherry-pick
 	d = diff
-	del = branch -D
 	f = fetch
 	fix = commit --amend --no-edit
 	l = log --date=local
