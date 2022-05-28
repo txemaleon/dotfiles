@@ -69,6 +69,7 @@
 	st = status -sb
 	sh = show
 	sz = !git branch | fzf --reverse | cut -f1 | xargs -n1 git switch -q
+	undo = reset --soft HEAD~1
 	who = shortlog -sn
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
