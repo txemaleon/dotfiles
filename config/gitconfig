@@ -57,6 +57,7 @@
 	cp = cherry-pick
 	d = diff
 	f = fetch
+	fp = fetch --prune
 	fix = commit --amend --no-edit
 	l = log --date=local
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
