@@ -11,7 +11,7 @@ tap "planetscale/tap"
 tap "shinokada/tera"
 tap "yt-dlp/taps"
 brew "act"
-brew "asimov"
+brew "asimov", restart_service: true
 brew "atomicparsley"
 brew "autojump"
 brew "bash"
@@ -32,11 +32,12 @@ brew "gitup"
 brew "htop"
 brew "imagemagick"
 brew "instalooter"
+brew "jq"
 brew "mackup"
 brew "mas"
 brew "yt-dlp"
 brew "mpv"
-brew "node@14", link: true
+brew "node@14"
 brew "pwgen"
 brew "rclone"
 brew "reattach-to-user-namespace"
@@ -57,11 +58,11 @@ brew "yt-dlp/taps/yt-dlp"
 cask "adobe-acrobat-reader"
 cask "aerial"
 cask "authy"
+cask "autofirma"
 cask "battle-net"
 cask "caffeine"
+cask "camo-studio"
 cask "discord"
-cask "docker"
-cask "figma"
 cask "firefox"
 cask "font-ia-writer-duo"
 cask "font-ia-writer-duospace"
@@ -102,6 +103,7 @@ mas "AdGuard for Safari", id: 1440147259
 mas "Collected", id: 1511343960
 mas "Data Jar", id: 1453273600
 mas "Developer", id: 640199958
+mas "Hand Mirror", id: 1502839586
 mas "Hush", id: 1544743900
 mas "Jayson", id: 1468691718
 mas "Quick Draft", id: 1496067471

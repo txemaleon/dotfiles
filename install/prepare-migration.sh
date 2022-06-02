@@ -1,9 +1,18 @@
 #!/usr/bin/env zsh
 
-clear;
+clear
 
-brew bundle dump --force;
+function dumpBrew { brew bundle dump --force; }
 
-find $(npm root -g) -type d -depth 1 -print0 | sort -z | xargs -r0 basename > Npmfile;
+function dumpNPM { find $(npm root -g) -type d -depth 1 -print0 | sort -z | xargs -r0 basename >Npmfile; }
 
-mackup backup --force;
+function dumpMackup { mackup backup --force; }
+
+function prepare {
+	clear
+	dumpBrew
+	dumpNPM
+	dumpMackup
+}
+
+prepare
