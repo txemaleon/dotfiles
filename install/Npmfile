@@ -1,8 +1,7 @@
-corepack
 fixpack
 mversion
 nodemon
-npm
+pnpm
 prettier
 speed-test
 vercel

@@ -18,7 +18,7 @@ export HISTTIMEFORMAT='%F %T '
 export CLICOLOR=1
 
 # Set Node.js Path
-export NODE_PATH=/usr/local/opt/node@16/bin
+export NODE_PATH=/usr/local/opt/node@14/bin
 export PATH="$PATH:$NODE_PATH"
 # export NPM_PACKAGES=$HOME/.npm-packages
 # export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
