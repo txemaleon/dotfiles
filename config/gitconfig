@@ -67,6 +67,7 @@
 	prb = pull --rebase
 	r = remote
 	rb = rebase -i @{u}
+	root = rev-parse --show-toplevel
 	s = switch -q
 	st = status -sb
 	sh = show
