@@ -77,7 +77,7 @@
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]"
-	current-branch = rev-parse --abbrev-ref HEAD
+	current-branch = bn
 
 [filter "media"]
 	clean = git media clean %f
