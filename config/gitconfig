@@ -51,6 +51,7 @@
 	bd = branch -D
 	bn = rev-parse --abbrev-ref HEAD
 	c = commit
+	cm = commit -m
 	cam = commit -am
 	cb = checkout -b
 	clb = !git branch --merged $(git mb) | grep -v \"master\" | grep -v \"main\" | grep -v \"develop\" | grep -v \"staging\" | xargs git branch -D
