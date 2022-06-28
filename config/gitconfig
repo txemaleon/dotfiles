@@ -49,6 +49,7 @@
 	a = add
 	b = branch
 	bd = branch -D
+	bn = rev-parse --abbrev-ref HEAD
 	c = commit
 	cam = commit -am
 	cb = checkout -b
@@ -69,7 +70,7 @@
 	s = switch -q
 	st = status -sb
 	sh = show
-	sz = !git branch | fzf --reverse | cut -f1 | xargs -n1 git switch -q
+	sz = "!f() { if [[ -z $1 ]]; then git branch | fzf --reverse | sed 's/^* //' | cut -f1 | xargs -n1 git switch -q; else git switch -q $1; fi; }; f"
 	undo = reset --soft HEAD~1
 	who = shortlog -sn
 	ignore = update-index --assume-unchanged
