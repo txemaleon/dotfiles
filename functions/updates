@@ -1,33 +1,33 @@
 #!/usr/bin/env zsh
 
-alias update='clear; updateCommands; updateNPM; updateApps; updateDock; updatesCleanup;'
+alias update='clear; __updateCommands; __updateNPM; __updateApps; __updateDock; __updatesCleanup;'
 
-function updateCommands {
-	brew update;
-	brew upgrade;
+function __updateCommands {
+	brew update
+	brew upgrade
 }
 
-function updateApps {
-	brew cu -qay --clean;
-	mas upgrade;
-	sudo softwareupdate -i -a;
+function __updateApps {
+	brew cu -qay --clean
+	mas upgrade
+	sudo softwareupdate -i -a
 }
 
-function updateNPM {
-	npm -g update;
+function __updateNPM {
+	npm -g update
 }
 
-function updateRuby {
-	sudo gem update --system;
-	sudo gem update;
-	sudo gem cleanup;
+function __updateRuby {
+	sudo gem update --system
+	sudo gem update
+	sudo gem cleanup
 }
 
-function updatesCleanup {
-	brew cleanup -s;
+function __updatesCleanup {
+	brew cleanup -s
 }
 
-function updateDock {
+function __updateDock {
 	dockutil -r all \
 		-a /Applications/Safari.app \
 		-a /Applications/Google\ Chrome.app \
