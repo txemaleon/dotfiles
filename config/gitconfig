@@ -50,6 +50,7 @@
 	b = branch
 	bd = branch -D
 	bn = rev-parse --abbrev-ref HEAD
+	br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
 	c = commit
 	cm = commit -m
 	cam = commit -am
