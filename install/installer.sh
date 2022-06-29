@@ -10,9 +10,9 @@ DOTFILES=$(dirname ${0:a:h})
 for FILE in $DOTFILES/config/*;
 do
 	f=$(basename $FILE);
-	# rm -rf ~/.$f;
+	rm -rf ~/.$f;
 	echo "Linking $FILE => .$f"
-	# ln -s $FILE ~/.$f;
+	ln -s $FILE ~/.$f;
 done
 
 # Install HomeBrew
