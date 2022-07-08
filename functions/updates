@@ -35,7 +35,7 @@ function __updateDock {
 		-a /System/Applications/Calendar.app \
 		-a /Applications/Things3.app \
 		-a /Applications/Visual\ Studio\ Code.app \
-		-a /System/Applications/Utilities/Terminal.app \
+		-a /Applications/iTerm.app \
 		-a /Applications/Whatsapp.app \
 		-a /Applications/Slack.app \
 		-a /System/Applications/Podcasts.app \
