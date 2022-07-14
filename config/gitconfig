@@ -80,8 +80,8 @@
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]" | cut -c 3-
 	current-branch = bn
-	nfeat = !git cb feature/$1 $(git mb)
-	nfix = !git cb bugfix/$1 $(git mb)
+	nfeat = "!f() { git checkout -b feature/$1 $(git mb); }; f"
+	nfix = "!f() { git checkout -b bugfix/$1 $(git mb); }; f"
 
 [filter "media"]
 	clean = git media clean %f
