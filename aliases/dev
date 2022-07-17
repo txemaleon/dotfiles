@@ -19,4 +19,4 @@ alias yd="yarn dev"
 
 # Now Shortcuts
 alias now="vercel"
-alias deploy="vercel -C --prod"
+alias deploy="vercel --prod"
