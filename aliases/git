@@ -18,3 +18,4 @@ alias status="git st"
 alias sync="gitup ."
 alias syncall="gitup"
 alias lg="lazygit"
+alias cdgr='cd $(git root)'
