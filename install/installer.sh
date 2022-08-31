@@ -30,6 +30,9 @@ mackup restore
 # Install node tools
 sed 's/#.*//' Npmfile | xargs npm install -g
 
+# Install ssh key
+./gitconfig.sh
+
 # Configure macos
 . ./macos.sh
 

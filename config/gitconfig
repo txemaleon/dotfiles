@@ -7,9 +7,25 @@
 	excludesfile = ~/.gitignore
 	pager = less -r
 
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
 [push]
 	default = current
 	autoSetupRemote = true
+
+[merge]
+	ff = false
+
+[commit]
+	rebase = true
+	gpgsign = true
+
+[gpg]
+	format = ssh
 
 [color]
 	ui = auto
@@ -109,15 +125,3 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-
-[commit]
-	rebase = true
-
-[init]
-	defaultBranch = main
-
-[merge]
-	ff = false
-
-[pull]
-	rebase = true
