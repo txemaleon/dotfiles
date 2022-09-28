@@ -65,7 +65,8 @@
 [alias]
 	a = add
 	b = branch
-	bd = branch -D
+	bd = branch -d
+	bD = branch -D
 	bn = rev-parse --abbrev-ref HEAD
 	br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
 	c = commit
@@ -79,13 +80,10 @@
 	f = fetch
 	fp = fetch --prune
 	fix = commit --amend --no-edit
+	im = "!f() { git is-merged $1 $(git bn); }; f"
 	l = log --date=local
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	mb = !git branch -l master main | sed 's/^* //'
-	p = pull
-	prb = pull --rebase
-	r = remote
-	rb = rebase -i @{u}
 	root = rev-parse --show-toplevel
 	s = switch -q
 	st = status -sb
@@ -99,7 +97,7 @@
 	current-branch = bn
 	nfeat = "!f() { git checkout -b feature/$1 $(git mb); }; f"
 	nfix = "!f() { git checkout -b bugfix/$1 $(git mb); }; f"
-	is-merged = "!f() { local merge_destination_branch=$1; local merge_source_branch=$2; local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch); local merge_source_current_commit=$(git rev-parse $merge_source_branch); if [[ $merge_base = $merge_source_current_commit ]]; then echo $merge_source_branch is merged into $merge_destination_branch; return 0; else echo $merge_source_branch is not merged into $merge_destination_branch; return 1; fi }; f"
+        is-merged = "!f() { local merge_destination_branch=$1; local merge_source_branch=$2; local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch); local merge_source_current_commit=$(git rev-parse $merge_source_branch); if [[ $merge_base = $merge_source_current_commit ]]; then echo $merge_source_branch is merged into $merge_destination_branch; return 0; else echo $merge_source_branch is not merged into $merge_destination_branch; return 1; fi }; f"
 
 [filter "media"]
 	clean = git media clean %f
