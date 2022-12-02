@@ -1,5 +1,5 @@
 [user]
-	name = Txema León
+	name = Txema León
 	email = soy@txemaleon.com
 	username = txemaleon
 
@@ -11,7 +11,7 @@
 	defaultBranch = main
 
 [pull]
-	rebase = true
+	ff = true
 
 [push]
 	default = current
@@ -115,11 +115,3 @@
 
 [mergetool]
 	keepBackup = false
-
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
-
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
