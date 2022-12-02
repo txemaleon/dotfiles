@@ -25,7 +25,7 @@ export PATH="$PATH:$NODE_PATH"
 # export PATH="$NPM_PACKAGES/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/txemaleon/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
