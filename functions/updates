@@ -8,7 +8,7 @@ function __updateCommands {
 }
 
 function __updateApps {
-	brew cu -qay --clean
+	brew cu
 	mas upgrade
 	sudo softwareupdate -i -a
 }
