@@ -32,3 +32,7 @@ alias resource="source $HOME/.profile"
 alias cat="bat"
 alias youtube-dl="yt-dlp"
 alias yt-audio="yt-dlp -x --audio-format mp3 "
+
+# SpeedTest:
+alias speedtest="fast -u --single-line"
+alias speed-test="fast -u --single-line"
