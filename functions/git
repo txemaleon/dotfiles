@@ -14,3 +14,42 @@ git-is-merged() {
     return 1
   fi
 }
+
+# Check if merged
+alias isind='git is-merged develop $(git bn)'
+alias isins='git is-merged staging $(git bn)'
+alias isinm='git is-merged $(git mb) $(git bn)'
+
+# Git flow
+function nfeat {
+  local slug=$(__getNewBranchName $@)
+  [[ -z $slug ]] && echo "Error: You must supply a branch name" && return
+  git nfeat $slug
+}
+
+function nfix {
+  local slug=$(__getNewBranchName $@)
+  [[ -z $slug ]] && echo "Error: You must supply a branch name" && return
+  git nfix $slug
+}
+
+# Merging
+
+function qm {
+  [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+  local CURRENT_BRANCH=$(git bn)
+  git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`"
+  git checkout --theirs . && git push && git switch $CURRENT_BRANCH
+}
+
+alias qmm='qm $(git mb)'
+
+function __getNewBranchName {
+  if [[ -z $1 ]]; then
+    read "new_branch_name?Enter your new branch name: "
+  else
+    new_branch_name=$@
+  fi
+
+  echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z
+}
