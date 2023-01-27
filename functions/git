@@ -34,7 +34,6 @@ function nfix {
 }
 
 # Merging
-
 function qm {
   [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
   local CURRENT_BRANCH=$(git bn)
@@ -43,6 +42,16 @@ function qm {
 }
 
 alias qmm='qm $(git mb)'
+
+function qmd {
+  [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+
+  local CURRENT_BRANCH=$(git bn)
+
+  qm $1 && git switch $1 && git branch -D $CURRENT_BRANCH && git push origin --delete $CURRENT_BRANCH 2>/dev/null
+}
+
+alias qmmd='qmd $(git mb)'
 
 function __getNewBranchName {
   if [[ -z $1 ]]; then
