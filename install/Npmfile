@@ -1,8 +1,11 @@
-corepack
+@antfu/ni
+fast-cli
 fixpack
 mversion
 nodemon
+npm
 pnpm
 prettier
-speed-test
+typescript-language-server
+typescript
 vercel
