@@ -48,11 +48,19 @@ function qmd {
 
   local CURRENT_BRANCH=$(git bn)
 
-  qm $1 && git switch $1 && git branch -D $CURRENT_BRANCH && git push origin --delete $CURRENT_BRANCH 2>/dev/null
+  qm $1 && git switch $1 && gqdb $CURRENT_BRANCH
 }
 
 alias qmmd='qmd $(git mb)'
 
+# Deleting
+function gqdb {
+  [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+
+  git branch -D $1 && git push origin --delete $1 2>/dev/null
+}
+
+# Getting branch info
 function __getNewBranchName {
   if [[ -z $1 ]]; then
     read "new_branch_name?Enter your new branch name: "
