@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 
 function tt {
-	local $DOCUMENTPATH=~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Ideas/Journals/$(date +%Y-%m-%d).md
+	local DOCUMENTPATH=~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Ideas/Journals/$(date +%Y-%m-%d).md
 
 	if [ ! -f $DOCUMENTPATH ]; then
-		echo '# $(date +%Y-%m-%d)\n\n' >$DOCUMENTPATH
+		echo "# $(date +%Y-%m-%d)\n\n" >$DOCUMENTPATH
 	fi
 
 	vim -c 'normal Gi' $DOCUMENTPATH
