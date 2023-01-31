@@ -16,9 +16,9 @@ git-is-merged() {
 }
 
 # Check if merged
-alias isind='git is-merged develop $(git bn)'
-alias isins='git is-merged staging $(git bn)'
-alias isinm='git is-merged $(git mb) $(git bn)'
+alias isind='git is-merged develop $(git current-branch)'
+alias isins='git is-merged staging $(git current-branch)'
+alias isinm='git is-merged $(git mb) $(git current-branch)'
 
 # Git flow
 function nfeat {
@@ -36,7 +36,7 @@ function nfix {
 # Merging
 function qm {
   [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
-  local CURRENT_BRANCH=$(git bn)
+  local CURRENT_BRANCH=$(git current-branch)
   git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`"
   git checkout --theirs . && git push && git switch $CURRENT_BRANCH
 }
@@ -46,19 +46,21 @@ alias qmm='qm $(git mb)'
 function qmd {
   [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
 
-  local CURRENT_BRANCH=$(git bn)
+  local CURRENT_BRANCH=$(git current-branch)
 
   qm $1 && git switch $1 && gqdb $CURRENT_BRANCH
 }
 
-alias qmmd='qmd $(git mb)'
+alias qmmd='qmd $(git current-branch)'
 
 # Deleting
-function gqdb {
+function gdb {
   [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
 
   git branch -D $1 && git push origin --delete $1 2>/dev/null
 }
+
+alias gqdb='gqdb $(git current-branch)'
 
 # Getting branch info
 function __getNewBranchName {
