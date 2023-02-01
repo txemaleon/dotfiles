@@ -48,7 +48,7 @@ function qmd {
 
   local CURRENT_BRANCH=$(git current-branch)
 
-  qm $1 && git switch $1 && gqdb $CURRENT_BRANCH
+  qm $1 && git switch $1 && gdb $CURRENT_BRANCH
 }
 
 alias qmmd='qmd $(git current-branch)'
@@ -60,7 +60,11 @@ function gdb {
   git branch -D $1 && git push origin --delete $1 2>/dev/null
 }
 
-alias gqdb='gqdb $(git current-branch)'
+function gqdb {
+  local CURRENT_BRANCH=$(git current-branch)
+
+  git switch $(git mb) && gdb $CURRENT_BRANCH
+}
 
 # Getting branch info
 function __getNewBranchName {
