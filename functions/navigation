@@ -3,6 +3,5 @@
 
 # Makes cd to perform a ls
 function cd {
-	builtin cd "$@"
-	ls
+	builtin cd "$@" && ls
 }
