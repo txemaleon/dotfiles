@@ -1,25 +1,5 @@
 #!/usr/bin/env zsh
 
-git-is-merged() {
-  local merge_destination_branch=$1
-  local merge_source_branch=$2
-
-  local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
-  local merge_source_current_commit=$(git rev-parse $merge_source_branch)
-  if [[ $merge_base = $merge_source_current_commit ]]; then
-    echo $merge_source_branch is merged into $merge_destination_branch
-    return 0
-  else
-    echo $merge_source_branch is not merged into $merge_destination_branch
-    return 1
-  fi
-}
-
-# Check if merged
-alias isind='git is-merged develop $(git current-branch)'
-alias isins='git is-merged staging $(git current-branch)'
-alias isinm='git is-merged $(git mb) $(git current-branch)'
-
 # Git flow
 function nfeat {
   local slug=$(__getNewBranchName $@)
@@ -66,6 +46,26 @@ function gqdb {
 
   git switch $(git mb) && gdb $CURRENT_BRANCH
 }
+
+# Check if merged
+git-is-merged() {
+  local merge_destination_branch=$1
+  local merge_source_branch=$2
+
+  local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
+  local merge_source_current_commit=$(git rev-parse $merge_source_branch)
+  if [[ $merge_base = $merge_source_current_commit ]]; then
+    echo $merge_source_branch is merged into $merge_destination_branch
+    return 0
+  else
+    echo "$merge_source_branch is \033[1;31mnot\033[0m merged into $merge_destination_branch"
+    return 1
+  fi
+}
+
+alias isind='git-is-merged develop $(git current-branch)'
+alias isins='git-is-merged staging $(git current-branch)'
+alias isinm='git-is-merged $(git mb) $(git current-branch)'
 
 # Getting branch info
 function __getNewBranchName {
