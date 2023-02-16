@@ -52,7 +52,7 @@ function qmd {
   qm $1 && git switch $1 && gdb $CURRENT_BRANCH
 }
 
-alias qmmd='qmd $(git current-branch)'
+alias qmmd='qmd $(git mb)'
 
 # Deleting
 function gdb {
