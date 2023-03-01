@@ -70,7 +70,7 @@ HIST_STAMPS="%d/%m/%y"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git autojump npm fzf colorize brew macos node zsh-syntax-highlighting zsh-autosuggestions fzf-tab)
+plugins=(macos git autojump npm fzf fzf-tab colorize brew node zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
