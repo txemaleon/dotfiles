@@ -66,6 +66,7 @@ git-is-merged() {
 alias isind='git-is-merged develop $(git current-branch)'
 alias isins='git-is-merged staging $(git current-branch)'
 alias isinm='git-is-merged $(git mb) $(git current-branch)'
+alias ism='isind; isins; isinm'
 
 # Getting branch info
 function __getNewBranchName {
