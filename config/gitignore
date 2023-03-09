@@ -26,7 +26,6 @@ Temporary Items
 .apdisk
 
 # Dev Files
-/.vscode
 *.sublime-(project|workspace)
 .env
 .env.*
@@ -40,6 +39,7 @@ bower_components
 node_modules
 .npmrc
 sftp-config*.json
+tsconfig.tsbuildinfo
 
 # Custom Helpers
 *.retry
