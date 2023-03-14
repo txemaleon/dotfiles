@@ -28,5 +28,6 @@ alias -- -="cd -"
 
 # Main folder Navigation
 alias d="cd $HOME/Desktop"
-alias p="cd $HOME/Developer"
+alias p="cd $HOME/Developer/Proyectos"
+alias w="cd $HOME/Developer/Work"
 alias dot="cd $HOME/.config/dotfiles"
