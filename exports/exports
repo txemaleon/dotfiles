@@ -16,26 +16,3 @@ export HISTTIMEFORMAT='%F %T '
 
 # Cli COLOR
 export CLICOLOR=1
-
-# Set Node.js Path
-export NODE_PATH=/usr/local/opt/node@16/bin
-export PATH="$PATH:$NODE_PATH"
-# export NPM_PACKAGES=$HOME/.npm-packages
-# export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-# export PATH="$NPM_PACKAGES/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-
-# Set Ruby Path
-export RUBY_PATH=/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin
-export PATH="$RUBY_PATH:$PATH"
-
-# Set Composer Path
-# export COMPOSER_PATH=$HOME/.composer/vendor/bin
-# export PATH="$COMPOSER_PATH:$PATH"
-
-# Java the Hut
-export PATH="/usr/local/opt/openjdk@8/bin:$PATH"
