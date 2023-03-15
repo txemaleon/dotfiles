@@ -18,5 +18,4 @@ alias y="ni"
 alias r="npm run "
 
 # Now Shortcuts
-alias now="vercel"
 alias deploy="vercel --prod"
