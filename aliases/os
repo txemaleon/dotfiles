@@ -19,4 +19,5 @@ alias mkdirp="mkdir -p"
 
 alias path='echo -e ${PATH//:/\\n}'
 
-alias rmr='trash'
+alias rmr='rm -rf '
+alias t='trash'
