@@ -52,6 +52,10 @@ git-is-merged() {
 	local merge_destination_branch=$1
 	local merge_source_branch=$2
 
+	if [[ -z $(git branch -l $merge_destination_branch 2>/dev/null) ]]; then
+		return 1
+	fi
+
 	local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
 	local merge_source_current_commit=$(git rev-parse $merge_source_branch)
 	if [[ $merge_base == $merge_source_current_commit ]]; then
