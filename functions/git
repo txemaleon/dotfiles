@@ -17,7 +17,7 @@ function nfix {
 function qm {
   [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
   local CURRENT_BRANCH=$(git current-branch)
-  git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`"
+  git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs
   [[ $? != 0 ]] && echo "Error merging $(g bn) in $1" && return $?
   git push && git switch $CURRENT_BRANCH
 }
