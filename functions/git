@@ -2,65 +2,65 @@
 
 # Git flow
 function nfeat {
-  local slug=$(__getNewBranchName $@)
-  [[ -z $slug ]] && echo "Error: You must supply a branch name" && return
-  git nfeat $slug
+	local slug=$(__getNewBranchName $@)
+	[[ -z $slug ]] && echo "Error: You must supply a branch name" && return
+	git nfeat $slug
 }
 
 function nfix {
-  local slug=$(__getNewBranchName $@)
-  [[ -z $slug ]] && echo "Error: You must supply a branch name" && return
-  git nfix $slug
+	local slug=$(__getNewBranchName $@)
+	[[ -z $slug ]] && echo "Error: You must supply a branch name" && return
+	git nfix $slug
 }
 
 # Merging
 function qm {
-  [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
-  local CURRENT_BRANCH=$(git current-branch)
-  git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs
-  [[ $? != 0 ]] && echo "Error merging $(g bn) in $1" && return $?
-  git push && git switch $CURRENT_BRANCH
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+	local CURRENT_BRANCH=$(git current-branch)
+	git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs
+	[[ $? != 0 ]] && echo "Error merging $(g bn) in $1" && return $?
+	git push && git switch $CURRENT_BRANCH
 }
 
 alias qmm='qm $(git mb)'
 
 function qmd {
-  [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
 
-  local CURRENT_BRANCH=$(git current-branch)
+	local CURRENT_BRANCH=$(git current-branch)
 
-  qm $1 && git switch $1 && gdb $CURRENT_BRANCH
+	qm $1 && git switch $1 && gdb $CURRENT_BRANCH
 }
 
 alias qmmd='qmd $(git mb)'
 
 # Deleting
 function gdb {
-  [[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
 
-  git branch -D $1 && git push origin --delete $1 2>/dev/null
+	git branch -D $1 && git push origin --delete $1 2>/dev/null
 }
 
 function gqdb {
-  local CURRENT_BRANCH=$(git current-branch)
+	local CURRENT_BRANCH=$(git current-branch)
 
-  git switch $(git mb) && gdb $CURRENT_BRANCH
+	git switch $(git mb) && gdb $CURRENT_BRANCH
 }
 
 # Check if merged
 git-is-merged() {
-  local merge_destination_branch=$1
-  local merge_source_branch=$2
+	local merge_destination_branch=$1
+	local merge_source_branch=$2
 
-  local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
-  local merge_source_current_commit=$(git rev-parse $merge_source_branch)
-  if [[ $merge_base = $merge_source_current_commit ]]; then
-    echo $merge_source_branch is merged into $merge_destination_branch
-    return 0
-  else
-    echo "$merge_source_branch is \033[1;31mnot\033[0m merged into $merge_destination_branch"
-    return 1
-  fi
+	local merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
+	local merge_source_current_commit=$(git rev-parse $merge_source_branch)
+	if [[ $merge_base == $merge_source_current_commit ]]; then
+		echo $merge_source_branch is merged into $merge_destination_branch
+		return 0
+	else
+		echo "$merge_source_branch is \033[1;31mnot\033[0m merged into $merge_destination_branch"
+		return 1
+	fi
 }
 
 alias isind='git-is-merged develop $(git current-branch)'
@@ -70,11 +70,11 @@ alias ism='isind; isins; isinm'
 
 # Getting branch info
 function __getNewBranchName {
-  if [[ -z $1 ]]; then
-    read "new_branch_name?Enter your new branch name: "
-  else
-    new_branch_name=$@
-  fi
+	if [[ -z $1 ]]; then
+		read "new_branch_name?Enter your new branch name: "
+	else
+		new_branch_name=$@
+	fi
 
-  echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z
+	echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z
 }
