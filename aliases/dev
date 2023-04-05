@@ -6,16 +6,9 @@ alias c.="code ."
 alias .="code ."
 
 # Node Shortcuts
-# alias nr="clear; pnpm run"
-# alias nd="clear; pnpm run dev"
-# alias ns="clear; pnpm run start"
-# alias ni="clear; pnpm install"
-# alias nig="clear; npm install -g"
-# alias nis="clear; pnpm install -S"
-# alias nid="clear; pnpm install -D"
-# alias npx="pnpx"
 alias y="ni"
-alias r="npm run "
+alias r="nr "
+alias rx="nlx"
 
 # Now Shortcuts
 alias deploy="vercel --prod"
