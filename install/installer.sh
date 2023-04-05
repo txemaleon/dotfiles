@@ -38,3 +38,7 @@ sed 's/#.*//' Npmfile | xargs npm install -g
 
 # Oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+cd ~/.oh-my-zsh/custom/plugins
+gh repo clone Aloxaf/fzf-tab
+gh repo clone zsh-users/zsh-autosuggestions
+gh repo clone zsh-users/zsh-syntax-highlighting
