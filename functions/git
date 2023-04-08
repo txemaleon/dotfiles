@@ -13,13 +13,21 @@ function nfix {
 	git nfix $slug
 }
 
+function repo_has_remote {
+	[[ -z $(git ls-remote >/dev/null 2>&1) ]] && return 1 || return 0
+}
+
 # Merging
 function qm {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
 	local CURRENT_BRANCH=$(git current-branch)
-	git switch $1 && git pull && git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs
+	# check if repo has remote
+	git switch $1
+	repo_has_remote && git pull
+	git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs
 	[[ $? != 0 ]] && echo "Error merging $(g bn) in $1" && return $?
-	git push && git switch $CURRENT_BRANCH
+	repo_has_remote && git push
+	git switch $CURRENT_BRANCH
 }
 
 alias qmm='qm $(git mb)'
