@@ -11,3 +11,6 @@ export PATH="$PATH:$NODE_PATH"
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+
+# NI
+export NI_CONFIG_FILE="$DOTFILES/config/nirc"
