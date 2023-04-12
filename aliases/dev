@@ -5,6 +5,8 @@ alias c="code"
 alias c.="code ."
 alias .="code ."
 
+alias bump="nu && cam 'Bump versions' && push"
+
 # Node Shortcuts
 alias y="ni"
 alias r="nr "
