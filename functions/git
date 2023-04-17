@@ -14,7 +14,7 @@ function nfix {
 }
 
 function repo_has_remote {
-	[[ -z $(git remote -v) ]] && echo "Error: No remote found" && return 1
+	[[ -z $(git remote -v 2>/dev/null) ]] && return 1
 	return 0
 }
 
