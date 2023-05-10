@@ -46,6 +46,7 @@ brew "reattach-to-user-namespace"
 brew "rename"
 brew "ruby"
 brew "ssh-copy-id"
+brew "tldr"
 brew "tmux"
 brew "trash"
 brew "tree"
@@ -60,6 +61,7 @@ brew "planetscale/tap/pscale"
 brew "yt-dlp/taps/yt-dlp"
 cask "adobe-acrobat-reader"
 cask "aerial"
+cask "arc"
 cask "authy"
 cask "autofirma"
 cask "battle-net"
@@ -125,3 +127,4 @@ mas "Telegram", id: 747648890
 mas "TestFlight", id: 899247664
 mas "Things", id: 904280696
 mas "Tot", id: 1491071483
+mas "Velja", id: 1607635845
