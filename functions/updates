@@ -30,7 +30,6 @@ function __updatesCleanup {
 function __updateDock {
 	dockutil -r all \
 		-a /System/Cryptexes/App/System/Applications/Safari.app \
-		-a /Applications/Google\ Chrome.app \
 		-a /Applications/Arc.app \
 		-a /System/Applications/Mail.app \
 		-a /System/Applications/Calendar.app \
@@ -39,11 +38,8 @@ function __updateDock {
 		-a /Applications/Visual\ Studio\ Code.app \
 		-a /Applications/iTerm.app \
 		-a /Applications/Whatsapp.app \
-		-a /Applications/Telegram.app \
 		-a /Applications/Slack.app \
-		-a /System/Applications/Podcasts.app \
 		-a /Applications/YouTube\ Music.app \
-		-a /System/Applications/System\ Settings.app \
 		-a ~/Desktop \
 		-a ~/Downloads
 }
