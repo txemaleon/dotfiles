@@ -36,6 +36,7 @@ function __updateDock {
 		-a /Applications/Notion.app \
 		-a /Applications/Things3.app \
 		-a /Applications/Visual\ Studio\ Code.app \
+		-a /Applications/Visual\ Studio\ Code\ -\ Insiders.app \
 		-a /Applications/iTerm.app \
 		-a /Applications/Whatsapp.app \
 		-a /Applications/Slack.app \

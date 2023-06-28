@@ -44,6 +44,7 @@ tsconfig.tsbuildinfo
 # Custom Helpers
 *.retry
 .idea
+.vscode
 .vagrant
 tmp
 z_*
