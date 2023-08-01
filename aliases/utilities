@@ -35,4 +35,3 @@ alias yt-audio="yt-dlp -x --audio-format mp3 "
 
 # SpeedTest:
 alias speedtest="fast -u --single-line"
-alias speed-test="fast -u --single-line"
