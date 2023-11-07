@@ -72,14 +72,13 @@
 	cm = commit -m
 	cam = commit -am
 	cb = checkout -b
-	clb = !git branch --merged $(git mb) | grep -v \"master\" | grep -v \"main\" | grep -v \"develop\" | grep -v \"staging\" | xargs git branch -D
+	clb = !git branch --merged $(git mb) | grep -v \"master\" | grep -v \"main\" | grep -v \"develop\" | grep -v \"staging\" | grep -v \"sandbox\" | xargs git branch -D
 	co = checkout
 	cp = cherry-pick
 	d = diff
 	f = fetch
 	fp = fetch --prune
 	fix = commit --amend --no-edit
-	im = "!f() { git is-merged $1 $(git bn); }; f"
 	l = log --date=local
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	mb = !git branch -l master main | sed 's/^* //'
@@ -94,8 +93,6 @@
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]" | cut -c 3-
 	current-branch = bn
-	nfeat = "!f() { git checkout -b feature/$1 $(git mb); }; f"
-	nfix = "!f() { git checkout -b bugfix/$1 $(git mb); }; f"
 
 [filter "media"]
 	clean = git media clean %f
