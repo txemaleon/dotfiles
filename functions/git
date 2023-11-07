@@ -78,8 +78,9 @@ git-is-merged() {
 
 alias isindev='git-is-merged develop $(git current-branch)'
 alias isinstg='git-is-merged staging $(git current-branch)'
+alias isinsnd='git-is-merged sandbox $(git current-branch)'
 alias isinm='git-is-merged $(git mb) $(git current-branch)'
-alias ism='isindev; isinstg; isinm'
+alias ism='isindev; isinstg; isinsnd; isinm'
 
 # Getting branch info
 function __getNewBranchName {
@@ -89,5 +90,5 @@ function __getNewBranchName {
 		new_branch_name=$@
 	fi
 
-	echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z
+	echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9\/]+/-/g' | sed -E 's/^-+|-+$//g' | sed -E 's/^feature\///g' | sed -E 's/^bugfix\///g' | tr A-Z a-z
 }
