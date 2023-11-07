@@ -14,7 +14,7 @@ cd dotfiles/install
 To sign commits in the new machine, generate your ssh key and run
 
 ```sh
-git config --system user.signingkey "$(cat ~/.ssh/id_rsa.pub)"
+git config --global user.signingkey "~/.ssh/id_rsa.pub"
 ```
 
 ## To prepare a migration to a new computer

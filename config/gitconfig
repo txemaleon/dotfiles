@@ -2,6 +2,7 @@
 	name = Txema León
 	email = soy@txemaleon.com
 	username = txemaleon
+	signingkey = ~/.ssh/id_rsa.pub
 
 [core]
 	excludesfile = ~/.gitignore
