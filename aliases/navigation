@@ -5,17 +5,19 @@
 # Detect which `ls` flavor is in use
 if ls --color >/dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
+	directoriesflag="--group-directories-first"
 else # macOS `ls`
 	colorflag="-G"
+	directoriesflag=""
 fi
 
 # List all files colorized in long format
-alias ls="clear; ls ${colorflag}"
+alias ls="clear; ls ${colorflag} ${directoriesflag}"
 alias l="ls"
 alias lsa="ls -A"
 alias ll="ls -hl"
 alias lla="ll -A"
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+alias lsd="ls -lF ${colorflag} ${directoriesflag} | grep --color=never '^d'"
 alias pwdl="ls; echo; pwd"
 
 # Easier navigation: .., ..., ~ and -
