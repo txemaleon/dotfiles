@@ -22,10 +22,10 @@ done
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew bundle
 
-# Link mackup
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/.config/.mackup ~/.mackup
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/.config/.mackup.cfg ~/.mackup.cfg
-mackup restore
+# Link mackup - Disabled bc of problems when syncing configs this way
+# ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/.config/.mackup ~/.mackup
+# ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/.config/.mackup.cfg ~/.mackup.cfg
+# mackup restore
 
 # Install node tools
 sed 's/#.*//' Npmfile | xargs npm install -g
