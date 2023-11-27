@@ -17,6 +17,17 @@ alias pp='git pull && git push'
 alias remote="git remote"
 alias status="git st 2>/dev/null"
 alias cdgr='cd $(git root)'
-alias sync="gitup ."
+alias sync="cdgr && gitup ."
 alias syncall="gitup"
 alias lg="lazygit"
+
+# Projects
+
+# Pruning local branches no longer needed
+alias clb='git clb'
+
+# PRs
+alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'
+alias prm='push && pr $(git mb)'
+alias prdev='pr develop'
+alias prstg='pr staging'
