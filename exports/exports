@@ -16,3 +16,6 @@ export HISTTIMEFORMAT='%F %T '
 
 # Cli COLOR
 export CLICOLOR=1
+
+# Coreutils
+PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
