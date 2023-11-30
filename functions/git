@@ -90,5 +90,5 @@ function __getNewBranchName {
 		new_branch_name=$@
 	fi
 
-	echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9\/]+/-/g' | sed -E 's/^-+|-+$//g' | sed -E 's/^feature\///g' | sed -E 's/^bugfix\///g' | tr A-Z a-z
+	echo $new_branch_name | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9\/]+/-/g' | sed -E 's/^-+|-+$//g' | sed -E 's/^feature\///g' | sed -E 's/^bugfix\///g' | sed -E 's/^fix\///g' | tr A-Z a-z
 }
