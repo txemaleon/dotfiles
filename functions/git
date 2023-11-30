@@ -4,13 +4,13 @@
 function nfeat {
 	local slug=$(__getNewBranchName $@)
 	[[ -z $slug ]] && echo "Error: You must supply a branch name" && return
-	git checkout -b feature/$1 $(git mb)
+	git checkout -b feature/$slug $(git mb)
 }
 
 function nfix {
 	local slug=$(__getNewBranchName $@)
 	[[ -z $slug ]] && echo "Error: You must supply a branch name" && return
-	git checkout -b fix/$1 $(git mb)
+	git checkout -b fix/$slug $(git mb)
 }
 
 function repo_has_remote {
