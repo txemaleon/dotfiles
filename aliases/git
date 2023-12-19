@@ -13,6 +13,7 @@ alias glg="git lg"
 alias gs="git sz"
 alias pull="repo_has_remote && git pull || echo 'No remote set'"
 alias push="repo_has_remote && git push || echo 'No remote set'"
+alias pushf="repo_has_remote && git push --force || echo 'No remote set'"
 alias pp='git pull && git push'
 alias remote="git remote"
 alias status="git st 2>/dev/null"
@@ -31,3 +32,6 @@ alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'
 alias prm='push && pr $(git mb)'
 alias prdev='pr develop'
 alias prstg='pr staging'
+
+# Gitlab CLI
+alias gl='glab'
