@@ -4,3 +4,13 @@ timezsh() {
 	shell=${1-$SHELL}
 	for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
+
+runsub() {
+	for dir in ./*; do
+		cd $dir
+		clear
+		echo "Ejecutando $1 en $dir"
+		eval $1
+		cd ..
+	done
+}
