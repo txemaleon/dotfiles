@@ -1,5 +1,6 @@
 @antfu/ni
 aicommits
+corepack
 fast-cli
 fixpack
 mversion

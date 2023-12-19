@@ -37,7 +37,7 @@ brew "mas"
 brew "yt-dlp"
 brew "mpv"
 brew "neovim"
-brew "node@18"
+brew "node@18", link: true
 brew "openldap"
 brew "pwgen"
 brew "rclone"
@@ -65,6 +65,7 @@ cask "autofirma"
 cask "battle-net"
 cask "caffeine"
 cask "camo-studio"
+cask "dbngin"
 cask "discord"
 cask "docker"
 cask "font-ia-writer-duo"
@@ -111,7 +112,6 @@ mas "Amazing AI", id: 1660147028
 mas "Collected", id: 1511343960
 mas "Data Jar", id: 1453273600
 mas "Developer", id: 640199958
-mas "Disk Speed Test", id: 425264550
 mas "GarageBand", id: 682658836
 mas "Hand Mirror", id: 1502839586
 mas "Hush", id: 1544743900
@@ -126,6 +126,7 @@ mas "Telegram", id: 747648890
 mas "TestFlight", id: 899247664
 mas "Things", id: 904280696
 mas "Tot", id: 1491071483
+mas "Userscripts-Mac-App", id: 1463298887
 mas "Velja", id: 1607635845
 mas "WireGuard", id: 1451685025
 mas "WhatsApp", id: 310633997
