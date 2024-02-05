@@ -8,6 +8,7 @@ alias clone="git clone"
 alias gb="git branch"
 alias gc="git checkout"
 alias gcb="git checkout -b"
+alias grb="git rebase"
 alias gd="git diff"
 alias glg="git lg"
 alias gs="git sz"
@@ -35,3 +36,9 @@ alias prstg='pr staging'
 
 # Gitlab CLI
 alias gl='glab'
+
+# Gitlab PRs
+alias glpr='gl mr create -t $(git current-branch) -f --fill-commit-body -y -a \"@me\" -b'
+alias glprm='push && glpr $(git mb)'
+alias glprd='glpr develop'
+alias glprs='glpr staging'
