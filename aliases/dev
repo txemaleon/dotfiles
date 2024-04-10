@@ -2,15 +2,19 @@
 
 # Dev Shortcuts
 alias c="code"
-alias c.="code ."
+alias v="vim"
 alias .="code ."
+alias c.="code ."
+alias v.="vim ."
 
 alias bump="nu && cam 'Bump versions' && push"
 
 # Node Shortcuts
 alias y="ni"
 alias r="nr "
-alias rx="nlx"
+alias rd="r dev"
+alias rt="r test"
+alias rr="nlx"
 
 # Now Shortcuts
 alias deploy="vercel --prod"
