@@ -13,8 +13,9 @@ alias bump="nu && cam 'Bump versions' && push"
 alias y="ni"
 alias r="nr "
 alias rd="r dev"
-alias rt="r test"
-alias rr="nlx"
+alias rj="clear; r jest"
+alias rt="clear; r test"
+alias rr="clear; nlx"
 
 # Now Shortcuts
 alias deploy="vercel --prod"
