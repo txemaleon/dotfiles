@@ -3,6 +3,7 @@ aicommits
 corepack
 fast-cli
 fixpack
+google-indexing-script
 mversion
 nodemon
 npm
@@ -11,3 +12,4 @@ prettier
 typescript-language-server
 typescript
 vercel
+yarn
