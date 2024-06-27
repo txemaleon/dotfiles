@@ -3,3 +3,5 @@
 alias v="nvim"
 alias vim="nvim"
 alias nv="nvim"
+alias n="nvim"
+alias n.="nvim ."
