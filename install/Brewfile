@@ -17,7 +17,7 @@ brew "folly"
 brew "unbound"
 brew "gnutls"
 brew "harfbuzz"
-brew "ffmpeg@6"
+brew "ffmpeg@6", link: true
 brew "fx"
 brew "fzf"
 brew "gh"
