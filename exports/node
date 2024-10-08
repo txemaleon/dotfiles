@@ -14,3 +14,4 @@ export PATH="$PNPM_HOME:$PATH"
 
 # NI
 export NI_CONFIG_FILE="$DOTFILES/config/nirc"
+export COREPACK_ENABLE_AUTO_PIN=0
