@@ -7,7 +7,7 @@ alias .="code ."
 alias c.="code ."
 alias v.="vim ."
 
-alias bump="nu && cam 'Bump versions' && push"
+alias bump="nu && cam 'chore: Bump versions' && push"
 
 # Node Shortcuts
 alias y="ni"
