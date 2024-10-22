@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 
 # Dev Shortcuts
-alias c="code"
+alias c="cursor"
+alias .="cursor ."
+alias c.="cursor ."
 alias v="vim"
-alias .="code ."
-alias c.="code ."
 alias v.="vim ."
 
 alias bump="nu && cam 'chore: Bump versions' && push"
