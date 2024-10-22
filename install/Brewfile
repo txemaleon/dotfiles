@@ -14,8 +14,6 @@ brew "bat"
 brew "glib"
 brew "coreutils"
 brew "folly"
-brew "unbound"
-brew "gnutls"
 brew "harfbuzz"
 brew "ffmpeg@6", link: true
 brew "fx"
@@ -33,7 +31,7 @@ brew "libusb"
 brew "mackup"
 brew "mas"
 brew "neovim"
-brew "node@20", link: true
+brew "node@20"
 brew "openldap"
 brew "pwgen"
 brew "rclone"
@@ -62,6 +60,7 @@ cask "autofirma"
 cask "battle-net"
 cask "caffeine"
 cask "camo-studio"
+cask "cursor"
 cask "dbngin"
 cask "discord"
 cask "docker"
@@ -84,6 +83,7 @@ cask "notion"
 cask "obs"
 cask "obs-websocket"
 cask "obsidian"
+cask "openmtp"
 cask "openvpn-connect"
 cask "oracle-jdk"
 cask "postman"
@@ -97,7 +97,6 @@ cask "scummvm"
 cask "slack"
 cask "sony-ps-remote-play"
 cask "tableplus"
-cask "the-unarchiver"
 cask "transmission"
 cask "transmit"
 cask "via"
@@ -118,6 +117,7 @@ mas "iMovie", id: 408981434
 mas "Jayson", id: 1468691718
 mas "Minimal Theme for Twitter / X", id: 1668204600
 mas "Paper", id: 1143513744
+mas "Parcel", id: 639968404
 mas "Photomator", id: 1444636541
 mas "Quick Draft", id: 1496067471
 mas "Refined GitHub", id: 1519867270
