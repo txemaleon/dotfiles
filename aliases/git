@@ -25,6 +25,10 @@ alias lg="lazygit"
 
 # Projects
 
+alias grm='git rebase $(git mb)'
+alias grom='git rebase -X ours $(git mb)'
+alias grtm='git rebase -X theirs $(git mb)'
+
 # Pruning local branches no longer needed
 alias clb='git clb'
 
@@ -33,9 +37,6 @@ alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'
 alias prm='push && pr $(git mb)'
 alias prdev='pr develop'
 alias prstg='pr staging'
-
-# Gitlab CLI
-alias gl='glab'
 
 # Gitlab PRs
 alias glpr='gl mr create -t $(git current-branch) -f --fill-commit-body -y -a \"@me\" -b'
