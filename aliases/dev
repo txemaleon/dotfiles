@@ -13,7 +13,7 @@ alias bump="nu && cam 'chore: Bump versions' && push"
 alias y="ni"
 alias r="nr "
 alias rd="r dev"
-alias rj="clear; r jest"
+alias rj="clear; r jest --collectCoverageFrom --coverage"
 alias rt="clear; r test"
 alias rr="clear; nlx"
 
