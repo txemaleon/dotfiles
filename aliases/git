@@ -30,7 +30,7 @@ alias grom='git rebase -X ours $(git mb)'
 alias grtm='git rebase -X theirs $(git mb)'
 
 # Pruning local branches no longer needed
-alias clb='git clb'
+alias clb='sync && git clb'
 
 # PRs
 alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'
