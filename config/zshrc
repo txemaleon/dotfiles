@@ -65,6 +65,25 @@ HIST_STAMPS="%d/%m/%y"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# Configuraciones específicas de ZSH
+setopt HIST_IGNORE_ALL_DUPS  # Ignora duplicados en el historial
+setopt HIST_NO_FUNCTIONS     # No guarda funciones en el historial
+
+# Configuración de completado
+autoload -U compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Ignorar mayúsculas/minúsculas
+zstyle ':completion:*' menu select    # Menú de selección interactivo
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # Colorear completados
+zstyle ':completion:*' special-dirs true # Completado para directorios especiales
+zstyle ':completion:*' file-list all   # Mostrar todos los archivos en completado
+
+# Búsqueda en historial con flechas
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
+
+# Configuración para borrar palabra con Alt+Delete
+bindkey '^[^[[3~' kill-word
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $HOME/.oh-my-zsh/plugins/*
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
