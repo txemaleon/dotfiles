@@ -31,7 +31,7 @@ brew "libusb"
 brew "mackup"
 brew "mas"
 brew "neovim"
-brew "node@20"
+brew "node@20", link: true
 brew "openldap"
 brew "pwgen"
 brew "rclone"
@@ -41,7 +41,6 @@ brew "ruby"
 brew "ssh-copy-id"
 brew "tldr"
 brew "tmux"
-brew "trash"
 brew "tree"
 brew "uni2ascii"
 brew "watchman"
@@ -70,6 +69,7 @@ cask "font-ia-writer-mono"
 cask "font-ia-writer-quattro"
 cask "font-jetbrains-mono"
 cask "fontsmoothingadjuster"
+cask "ghostty"
 cask "handbrake"
 cask "httpie"
 cask "iterm2"
@@ -106,9 +106,9 @@ mas "Actions", id: 1586435171
 mas "AdGuard for Safari", id: 1440147259
 mas "Amazing AI", id: 1660147028
 mas "Bridges", id: 6466660721
-mas "Collected", id: 1511343960
 mas "Data Jar", id: 1453273600
 mas "Developer", id: 640199958
+mas "Flighty", id: 1358823008
 mas "GarageBand", id: 682658836
 mas "Hand Mirror", id: 1502839586
 mas "Hush", id: 1544743900
@@ -116,10 +116,10 @@ mas "Hyperduck", id: 6444667067
 mas "iMovie", id: 408981434
 mas "Jayson", id: 1468691718
 mas "Minimal Theme for Twitter / X", id: 1668204600
-mas "Paper", id: 1143513744
 mas "Parcel", id: 639968404
 mas "Photomator", id: 1444636541
 mas "Quick Draft", id: 1496067471
+mas "Raycast Companion", id: 6738274497
 mas "Refined GitHub", id: 1519867270
 mas "Telegram", id: 747648890
 mas "TestFlight", id: 899247664
