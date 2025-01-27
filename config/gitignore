@@ -40,6 +40,8 @@ tsconfig.tsbuildinfo
 # Custom Helpers
 *.retry
 .idea
+.cursorrules
+.cursor
 .vscode
 .vagrant
 tmp
