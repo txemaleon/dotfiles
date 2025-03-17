@@ -24,10 +24,14 @@ alias syncall="gitup"
 alias lg="lazygit"
 
 # Projects
-
 alias grm='git rebase $(git mb)'
 alias grom='git rebase -X ours $(git mb)'
 alias grtm='git rebase -X theirs $(git mb)'
+alias gmm='git merge $(git mb)'
+alias gma='git merge --abort'
+alias gmc='git merge --continue'
+alias gra='git rebase --abort'
+alias grc='git rebase --continue'
 
 # Pruning local branches no longer needed
 alias clb='sync && git clb'
@@ -43,3 +47,7 @@ alias glpr='gl mr create -t $(git current-branch) -f --fill-commit-body -y -a \"
 alias glprm='push && glpr $(git mb)'
 alias glprd='glpr develop'
 alias glprs='glpr staging'
+
+# Git remotes
+alias grhttps='git remote set-url origin $(git remote get-url origin | sed -E "s|git@([^:]+):(.*)|https://\1/\2|")'
+alias grssh='git remote set-url origin $(git remote get-url origin | sed -E "s|https://([^:]+)/(.*)|git@\1:\2|")'
