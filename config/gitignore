@@ -47,3 +47,5 @@ tsconfig.tsbuildinfo
 tmp
 z_*
 .*_
+__pycache__
+test_local.*
