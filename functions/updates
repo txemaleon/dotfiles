@@ -32,13 +32,10 @@ function __updateDock {
 		-a /System/Applications/Mail.app \
 		-a /System/Cryptexes/App/System/Applications/Safari.app \
 		-a /Applications/Arc.app \
-		-a /Applications/Things3.app \
-		-a /Applications/Notion.app \
 		-a /Applications/Cursor.app \
 		-a /Applications/Ghostty.app \
 		-a /Applications/Whatsapp.app \
 		-a /Applications/Slack.app \
-		-a /System/Applications/iPhone\ Mirroring.app \
 		-a ~/Desktop \
 		-a ~/Downloads
 	killall Dock
