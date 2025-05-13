@@ -40,11 +40,9 @@ tsconfig.tsbuildinfo
 # Custom Helpers
 *.retry
 .idea
-.cursorignore
-.cursorrules
-.cursor
 .vscode
 .vagrant
+mcp.json
 tmp
 z_*
 .*_
