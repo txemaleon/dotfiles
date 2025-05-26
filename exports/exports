@@ -19,3 +19,6 @@ export CLICOLOR=1
 
 # Coreutils
 PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
+
+# Localpath
+PATH="$HOME/.local/bin:$PATH"
