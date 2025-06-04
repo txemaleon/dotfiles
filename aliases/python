@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-
-alias python='python3'
-alias pip='pipx'
