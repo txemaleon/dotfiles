@@ -11,6 +11,9 @@ alias flush="dscacheutil -flushcache"
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -delete"
 
+# Delete empty directories in current working directory
+alias cleanEmpty="find . -type d -empty -delete"
+
 # Utilities
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 alias pw="pwgen -csn 6 3 | xargs -n 3 | sed \"s/ /-/g\" | tr -d '\n' | pbcopy"
