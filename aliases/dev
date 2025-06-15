@@ -2,7 +2,7 @@
 
 # Dev Shortcuts
 alias c="cursor"
-alias .="cursor ."
+alias .='[[ "$PWD" == ~/Developer/Work/* ]] && code . || cursor .'
 alias c.="cursor ."
 alias v="vim"
 alias v.="vim ."
