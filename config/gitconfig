@@ -98,6 +98,10 @@
 	unignore = update-index --no-assume-unchanged
 	list-ignored = !git ls-files -v | grep "^[[:lower:]]" | cut -c 3-
 	current-branch = bn
+	wt = worktree
+	wta = worktree add
+	wtl = worktree list
+	wtr = worktree remove
 
 [filter "media"]
 	clean = git media clean %f
