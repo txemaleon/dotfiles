@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+cleandesk() {
+	# Definir el formato del nombre de la carpeta
+	local folder_name=$(date +"%Y%m%d")
+
+	# Definir la ruta de la carpeta en Documentos de iCloud y Desktop
+	# Asegúrate de que la ruta corresponda a tu localización de iCloud
+	local target_folder="$HOME/Documents/@@Ordenar/$folder_name/"
+
+	# Crear la carpeta en Documentos de iCloud
+	mkdir -p $target_folder
+
+	# mover el contenido sólo creando subcarpetas cuando haya algo que mover
+	if [ -n "$(ls -1 "$HOME/Desktop" 2>/dev/null)" ]; then
+		mkdir -p "$target_folder/Desktop"
+		mv "$HOME/Desktop"/* "$target_folder/Desktop"
+	fi
+	if [ -n "$(ls -1 "$HOME/Downloads" 2>/dev/null)" ]; then
+		mkdir -p "$target_folder/Downloads"
+		mv "$HOME/Downloads"/* "$target_folder/Downloads"
+	fi
+	local icloud_downloads_path="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Downloads"
+	if [ -d "$icloud_downloads_path" ] && [ -n "$(ls -1 "$icloud_downloads_path" 2>/dev/null)" ]; then
+		mkdir -p "$target_folder/iCloud-Downloads"
+		mv "$icloud_downloads_path"/* "$target_folder/iCloud-Downloads"
+	fi
+
+	cd "$target_folder"
+
+	open "$target_folder"
+}
