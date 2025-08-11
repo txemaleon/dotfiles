@@ -32,7 +32,7 @@ alias egrep='egrep --color=auto'
 # Reload dotfiles
 alias resource="source $HOME/.profile"
 
-alias cat="bat"
+# alias cat="bat"
 alias youtube-dl="yt-dlp"
 alias yt-audio="yt-dlp --ignore-config --extract-audio --audio-format mp3 --audio-quality 0 --embed-thumbnail --convert-thumbnails jpg "
 alias yt-audio-volume="yt-audio --postprocessor-args '-af volume=2'"
