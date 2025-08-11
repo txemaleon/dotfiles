@@ -41,6 +41,7 @@ alias pr='gh pr create -f -t $(git current-branch) -a \"@me\" -B'
 alias prm='push && pr $(git mb)'
 alias prdev='pr develop'
 alias prstg='pr staging'
+alias prap='gh pr review --approve '
 
 # Gitlab PRs
 alias glpr='gl mr create -t $(git current-branch) -f --fill-commit-body -y -a \"@me\" -b'

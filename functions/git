@@ -13,6 +13,12 @@ function nfix {
 	git checkout -b fix/$slug $(git mb)
 }
 
+function nchore {
+	local slug=$(__getNewBranchName $@)
+	[[ -z $slug ]] && echo "Error: You must supply a branch name" && return
+	git checkout -b chore/$slug $(git mb)
+}
+
 function repo_has_remote {
 	[[ -z $(git remote -v 2>/dev/null) ]] && return 1
 	return 0
@@ -22,26 +28,105 @@ function repo_has_remote {
 function qm {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
 	local CURRENT_BRANCH=$(git current-branch)
-	# check if repo has remote
-	git switch $1
-	repo_has_remote && git pull
-	git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs
-	[[ $? != 0 ]] && echo "Error merging $(g bn) in $1" && return $?
-	repo_has_remote && git push
-	git switch $CURRENT_BRANCH
+	git switch $1 || {
+		echo "Error switching to $1"
+		return 1
+	}
+	if repo_has_remote; then
+		git pull || {
+			echo "Error pulling $1"
+			git switch $CURRENT_BRANCH >/dev/null 2>&1
+			return 1
+		}
+	fi
+	git merge $CURRENT_BRANCH -m "Merge branch \`$CURRENT_BRANCH\` into \`$1\`" --strategy-option theirs || {
+		echo "Error merging $(g bn) in $1"
+		git merge --abort >/dev/null 2>&1
+		git switch $CURRENT_BRANCH >/dev/null 2>&1
+		return 1
+	}
+	if repo_has_remote; then
+		git push || {
+			echo "Error pushing $1"
+			git switch $CURRENT_BRANCH >/dev/null 2>&1
+			return 1
+		}
+	fi
+	git switch $CURRENT_BRANCH || return 1
 }
 
 alias qmm='qm $(git mb)'
 
 function qmd {
-	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
 
 	local CURRENT_BRANCH=$(git current-branch)
 
-	qm $1 && git switch $1 && gdb $CURRENT_BRANCH
+	qm $1 || {
+		echo "Merge failed. Not deleting $CURRENT_BRANCH"
+		return 1
+	}
+	git switch $1 || {
+		echo "Error switching back to $1. Not deleting $CURRENT_BRANCH"
+		return 1
+	}
+	gdb $CURRENT_BRANCH
 }
 
 alias qmmd='qmd $(git mb)'
+
+function qms {
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
+
+	local CURRENT_BRANCH=$(git current-branch)
+	git switch $1 || {
+		echo "Error switching to $1"
+		return 1
+	}
+	if repo_has_remote; then
+		git pull || {
+			echo "Error pulling $1"
+			git switch $CURRENT_BRANCH >/dev/null 2>&1
+			return 1
+		}
+	fi
+	git merge --squash -X theirs $CURRENT_BRANCH || {
+		echo "Error squash-merging $(g bn) in $1"
+		git merge --abort >/dev/null 2>&1
+		git switch $CURRENT_BRANCH >/dev/null 2>&1
+		return 1
+	}
+	git commit -m "Squash merge branch \`$CURRENT_BRANCH\` into \`$1\`" || {
+		echo "Error committing squash merge in $1"
+		git switch $CURRENT_BRANCH >/dev/null 2>&1
+		return 1
+	}
+	if repo_has_remote; then
+		git push || {
+			echo "Error pushing $1"
+			git switch $CURRENT_BRANCH >/dev/null 2>&1
+			return 1
+		}
+	fi
+	git switch $CURRENT_BRANCH || return 1
+}
+
+function qmsd {
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
+
+	local CURRENT_BRANCH=$(git current-branch)
+	qms $1 || {
+		echo "Squash merge failed. Not deleting $CURRENT_BRANCH"
+		return 1
+	}
+	git switch $1 || {
+		echo "Error switching back to $1. Not deleting $CURRENT_BRANCH"
+		return 1
+	}
+	gdb $CURRENT_BRANCH
+}
+
+alias qmmsd='qmsd $(git mb)'
 
 # Deleting
 function gdb {
