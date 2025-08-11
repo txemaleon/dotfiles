@@ -39,3 +39,6 @@ alias yt-audio-volume="yt-audio --postprocessor-args '-af volume=2'"
 
 # SpeedTest:
 alias speedtest="fast -u --single-line"
+
+# Raycast
+alias raycast='open -a Raycast'
