@@ -81,3 +81,4 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 source $HOME/.profile
+eval "$(mise activate zsh)"
