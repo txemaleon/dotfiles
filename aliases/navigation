@@ -11,6 +11,8 @@ else # macOS `ls`
 	directoriesflag=""
 fi
 
+alias j="z"
+
 # List all files colorized in long format
 alias ls="clear; ls ${colorflag} ${directoriesflag}"
 alias l="ls"
