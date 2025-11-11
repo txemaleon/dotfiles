@@ -42,6 +42,7 @@ tsconfig.tsbuildinfo
 .idea
 .vscode
 .vagrant
+.mcp.json
 mcp.json
 tmp
 z_*
