@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # Dev Shortcuts
-alias c="cursor"
+alias c="cursor-agent"
 alias .='cursor .'
 alias c.="cursor ."
 
@@ -25,7 +25,11 @@ alias bd="bun dev"
 
 # LLMs
 alias cc='claude --dangerously-skip-permissions'
+alias ccc='cc -c'
+alias ccr='cc -r'
 alias gmn='gemini -y'
+alias gy='gemini -y'
+alias oc='opencode'
 
 # Now Shortcuts
 alias deploy="vercel --prod"
