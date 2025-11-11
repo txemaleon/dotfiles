@@ -74,11 +74,10 @@ setopt HIST_NO_FUNCTIONS    # No guarda funciones en el historial
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gh macos autojump npm fzf fzf-tab colorize brew node zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(gh macos zoxide npm fzf fzf-tab colorize brew node zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
 source $HOME/.profile
-eval "$(mise activate zsh)"
