@@ -8,7 +8,7 @@ function __updateCommands {
 }
 
 function __updateApps {
-	brew cu -qay --cleanup --no-brew-update --no-quarantine
+	brew cu -qay --cleanup --no-brew-update
 	mas upgrade
 	sudo softwareupdate -i -a
 }
@@ -33,10 +33,9 @@ function __updateDock {
 		-a /System/Cryptexes/App/System/Applications/Safari.app \
 		-a /Applications/Arc.app \
 		-a /Applications/Cursor.app \
-		-a /Applications/Visual\ Studio\ Code.app \
 		-a /Applications/Ghostty.app \
-		-a /Applications/Whatsapp.app \
 		-a /Applications/Slack.app \
+		-a /Applications/Whatsapp.app \
 		-a ~/Desktop \
 		-a ~/Downloads
 	killall Dock
