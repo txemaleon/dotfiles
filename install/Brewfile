@@ -16,6 +16,8 @@ brew "coreutils"
 brew "docker", link: false
 brew "fx"
 brew "fzf"
+brew "git-delta"
+brew "starship"
 brew "gh"
 brew "git"
 brew "gitui"

@@ -9,6 +9,7 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
 
 export EDITOR="nvim"
+export STARSHIP_CONFIG="$HOME/.config/dotfiles/config/starship.toml"
 
 # Add user@host to Tab Name
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
