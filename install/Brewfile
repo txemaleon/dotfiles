@@ -10,7 +10,6 @@ tap "yt-dlp/taps"
 tap "zackelia/formulae"
 brew "asimov", restart_service: :changed
 brew "atomicparsley"
-brew "autojump"
 brew "bat"
 brew "cmake"
 brew "coreutils"

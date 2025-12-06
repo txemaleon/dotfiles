@@ -65,9 +65,20 @@ HIST_STAMPS="%d/%m/%y"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Configuraciones específicas de ZSH
-setopt HIST_IGNORE_ALL_DUPS # Ignora duplicados en el historial
-setopt HIST_NO_FUNCTIONS    # No guarda funciones en el historial
+# History configuration
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_ALL_DUPS  # Remove older duplicates
+setopt HIST_IGNORE_SPACE     # Ignore commands starting with space
+setopt HIST_NO_FUNCTIONS     # Don't save functions
+setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks
+setopt SHARE_HISTORY         # Share history between sessions
+
+# Filter commands from history (uses HISTORY_IGNORE from exports)
+zshaddhistory() {
+  emulate -L zsh
+  [[ $1 != ${~HISTORY_IGNORE} ]]
+}
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $HOME/.oh-my-zsh/plugins/*
