@@ -50,7 +50,13 @@ zinit snippet OMZP::gh
 # Tool integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
 
 # User configuration
 source $HOME/.profile
+
+# Prompt (similar to edvardm theme)
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' %F{magenta}(%b)%f'
+setopt PROMPT_SUBST
+PROMPT='%F{green}%~%f${vcs_info_msg_0_} %F{yellow}❯%f '
