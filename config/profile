@@ -1,7 +1,15 @@
 #!/usr/bin/env zsh
 
-DOTFILES=$HOME/.config/dotfiles
+export DOTFILES="${DOTFILES:-$HOME/.config/dotfiles}"
+
+# Source all config files from dotfiles directories
 for dir in exports aliases functions local; do
-    dir=$DOTFILES/$dir
-    [ -d "$dir" ] && for f in $dir/*; do source "$f"; done
+    target="$DOTFILES/$dir"
+    if [[ -d "$target" ]]; then
+        for f in "$target"/*(.N); do
+            [[ -f "$f" ]] && source "$f"
+        done
+    fi
 done
+
+unset dir target f

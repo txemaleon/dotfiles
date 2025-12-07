@@ -1,6 +1,14 @@
 #!/usr/bin/env zsh
 
-export EDITOR="vim"
+# XDG Base Directory
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
+# Cache Homebrew prefix (avoid slow brew --prefix calls)
+export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
+
+export EDITOR="nvim"
 
 # Add user@host to Tab Name
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
@@ -9,7 +17,7 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
 export MANPAGER="less -X"
 
 # Make some commands not show up in history
-export HISTORY_IGNORE="(__*|*kraken*|*rainbow*|brew|cat|cd|chmod|clear|echo|j|l*|pwd|rm|status|update)"
+export HISTORY_IGNORE="(cd|cd *|ls|ls *|l|l *|ll|ll *|la|la *|brew|brew *|j|j *|z|z *|pwd|clear|exit|__|__*|*kraken*|*rainbow*)"
 
 # Display time in History
 export HISTTIMEFORMAT='%F %T '
@@ -19,6 +27,9 @@ export CLICOLOR=1
 
 # Coreutils
 PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
+MANPATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman:${MANPATH:-}"
 
 # Localpath
 PATH="$HOME/.local/bin:$PATH"
+
+export PATH MANPATH

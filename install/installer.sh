@@ -50,10 +50,16 @@ fi
 echo "Installing Brewfile packages..."
 brew bundle --file="$INSTALL_DIR/Brewfile"
 
-# Link mackup
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/.config/.mackup ~/.mackup
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/.config/.mackup.cfg ~/.mackup.cfg
-mackup restore
+# Link mackup (only if iCloud is configured)
+ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+if [ -d "$ICLOUD_PATH/.config" ]; then
+	echo "Setting up Mackup from iCloud..."
+	ln -sf "$ICLOUD_PATH/.config/.mackup" ~/.mackup
+	ln -sf "$ICLOUD_PATH/.config/.mackup.cfg" ~/.mackup.cfg
+	mackup restore --force
+else
+	echo "⚠️  iCloud not configured, skipping Mackup restore"
+fi
 
 # Install node tools
 echo "Installing global npm packages from $INSTALL_DIR/Npmfile..."
@@ -84,41 +90,21 @@ else
 	echo "Warning: macos.sh not found at $INSTALL_DIR/macos.sh"
 fi
 
-# Install Oh-my-zsh if not already installed
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	echo "Installing Oh My Zsh..."
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+# Install zinit plugin manager (plugins auto-install on first shell load)
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+	echo "Installing zinit plugin manager..."
+	mkdir -p "$(dirname $ZINIT_HOME)"
+	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 else
-	echo "Oh My Zsh already installed."
+	echo "zinit already installed."
 fi
 
-# Install Oh-my-zsh plugins if not already installed
-PLUGINS_DIR="$ZSH_CUSTOM/plugins"
-mkdir -p "$PLUGINS_DIR"
-
-FZF_TAB_DIR="$PLUGINS_DIR/fzf-tab"
-if [ ! -d "$FZF_TAB_DIR" ]; then
-	echo "Installing fzf-tab plugin..."
-	git clone https://github.com/Aloxaf/fzf-tab.git "$FZF_TAB_DIR"
-else
-	echo "fzf-tab plugin already installed."
-fi
-
-AUTOSUGGESTIONS_DIR="$PLUGINS_DIR/zsh-autosuggestions"
-if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
-	echo "Installing zsh-autosuggestions plugin..."
-	git clone https://github.com/zsh-users/zsh-autosuggestions.git "$AUTOSUGGESTIONS_DIR"
-else
-	echo "zsh-autosuggestions plugin already installed."
-fi
-
-SYNTAX_HIGHLIGHTING_DIR="$PLUGINS_DIR/zsh-syntax-highlighting"
-if [ ! -d "$SYNTAX_HIGHLIGHTING_DIR" ]; then
-	echo "Installing zsh-syntax-highlighting plugin..."
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_DIR"
-else
-	echo "zsh-syntax-highlighting plugin already installed."
+# Remove oh-my-zsh if it exists (migrating to zinit + starship)
+if [ -d "$HOME/.oh-my-zsh" ]; then
+	echo "Removing old oh-my-zsh installation..."
+	rm -rf "$HOME/.oh-my-zsh"
 fi
 
 echo "Installation complete."
+echo "Note: Plugins will auto-install on first shell startup via zinit."

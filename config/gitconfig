@@ -1,3 +1,6 @@
+[include]
+	path = ~/.gitconfig.local
+
 [user]
 	name = Txema León
 	email = soy@txemaleon.com
@@ -6,7 +9,15 @@
 
 [core]
 	excludesfile = ~/.gitignore
-	pager = less -r
+	pager = delta
+
+[delta]
+	navigate = true
+	side-by-side = true
+	line-numbers = true
+
+[interactive]
+	diffFilter = delta --color-only
 
 [init]
 	defaultBranch = main
