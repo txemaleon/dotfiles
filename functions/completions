@@ -1,4 +1,9 @@
 #!/usr/bin/env zsh
 
 # Add tab completion for SSH hostnames based on $HOME/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" rsync scp sftp ssh
+if [ -e "$HOME/.ssh/config" ]; then
+  _ssh_hosts() {
+    compadd $(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)
+  }
+  compdef _ssh_hosts ssh scp sftp rsync
+fi

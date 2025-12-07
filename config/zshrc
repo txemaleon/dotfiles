@@ -33,19 +33,11 @@ if [[ ! -d $ZINIT_HOME ]]; then
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Plugins (turbo mode for fast startup)
+# Plugins
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light Aloxaf/fzf-tab
-
-# Snippets (oh-my-zsh plugins without oh-my-zsh)
-zinit snippet OMZP::git
-zinit snippet OMZP::macos
-zinit snippet OMZP::brew
-zinit snippet OMZP::npm
-zinit snippet OMZP::node
-zinit snippet OMZP::gh
 
 # Tool integrations
 eval "$(fzf --zsh)"
