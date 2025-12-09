@@ -19,5 +19,19 @@ alias mkdirp="mkdir -p"
 
 alias path='echo -e ${PATH//:/\\n}'
 
-alias rmr='rm -rf '
+# Safe recursive remove - sends to trash, blocks dangerous paths
+function rmr() {
+	local dangerous_paths=("$HOME" "$HOME/" "~" "~/" "/" "/Users" "/Users/")
+	for arg in "$@"; do
+		local resolved=$(realpath -q "$arg" 2>/dev/null || echo "$arg")
+		for danger in "${dangerous_paths[@]}"; do
+			local danger_resolved=$(realpath -q "$danger" 2>/dev/null || echo "$danger")
+			if [[ "$resolved" == "$danger_resolved" || "$arg" == "$danger" ]]; then
+				echo "rmr: refusing to remove '$arg' (dangerous path)"
+				return 1
+			fi
+		done
+	done
+	trash "$@"
+}
 alias t='trash'

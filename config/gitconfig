@@ -1,5 +1,6 @@
 [include]
 	path = ~/.gitconfig.local
+	path = ~/.config/dotfiles/config/delta.gitconfig
 
 [user]
 	name = Txema León
@@ -10,11 +11,6 @@
 [core]
 	excludesfile = ~/.gitignore
 	pager = delta
-
-[delta]
-	navigate = true
-	side-by-side = true
-	line-numbers = true
 
 [interactive]
 	diffFilter = delta --color-only

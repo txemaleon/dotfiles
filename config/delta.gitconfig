@@ -1,0 +1,12 @@
+[delta]
+	navigate = true
+	side-by-side = true
+	line-numbers = true
+	syntax-theme = gruvbox-dark
+	file-added-label = [+]
+	file-copied-label = [==]
+	file-modified-label = [*]
+	file-removed-label = [-]
+	file-renamed-label = [->]
+	line-numbers-left-format = "{nm:>1}│"
+	line-numbers-right-format = "{np:>1}│"
