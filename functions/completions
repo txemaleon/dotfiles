@@ -7,3 +7,13 @@ if [ -e "$HOME/.ssh/config" ]; then
   }
   compdef _ssh_hosts ssh scp sftp rsync
 fi
+
+# Tab completion for nr (package.json scripts)
+_nr_scripts() {
+  local scripts
+  if [[ -f package.json ]]; then
+    scripts=(${(f)"$(command jq -r '.scripts // {} | keys[]' package.json 2>/dev/null)"})
+    compadd -a scripts
+  fi
+}
+compdef _nr_scripts nr r
