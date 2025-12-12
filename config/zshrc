@@ -49,6 +49,8 @@ zinit light Aloxaf/fzf-tab
 # Tool integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
+eval "$(mise activate zsh)"
+eval "$(bun completions)"
 
 # User configuration
 source $HOME/.profile
