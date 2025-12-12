@@ -27,9 +27,8 @@ alias bd="bun dev"
 alias cc='claude --dangerously-skip-permissions'
 alias ccc='cc -c'
 alias ccr='cc -r'
-alias gmn='gemini -y'
-alias gy='gemini -y'
 alias oc='opencode'
+alias occ='opencode -c'
 
 # Now Shortcuts
 alias deploy="vercel --prod"
