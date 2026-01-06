@@ -49,3 +49,4 @@ z_*
 .*_
 __pycache__
 test_local.*
+.serena
