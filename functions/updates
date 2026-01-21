@@ -14,7 +14,7 @@ function __updateApps {
 }
 
 function __updateNPM {
-	npm -g update
+	bun update -g
 }
 
 function __updateRuby {
