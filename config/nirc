@@ -1,0 +1,4 @@
+# ni configuration
+# Use bun as default and for global installs
+defaultAgent=bun
+globalAgent=bun
