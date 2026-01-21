@@ -33,7 +33,7 @@ brew "mackup"
 brew "mas"
 brew "mise"
 brew "neovim"
-brew "node@20", link: true
+
 brew "opencode"
 brew "openldap"
 brew "oven-sh/bun/bun"

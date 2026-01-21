@@ -16,9 +16,9 @@ PARENT_DIR=$(dirname "$SCRIPT_DIR")      # Absolute path to the dotfiles root di
 INSTALL_DIR="$SCRIPT_DIR"                # Use absolute path for install dir too
 
 # Ensure essential files/dirs exist relative to the script's expected location
-if [ ! -d "$PARENT_DIR/config" ] || [ ! -f "$INSTALL_DIR/Brewfile" ] || [ ! -f "$INSTALL_DIR/Npmfile" ] || [ ! -f "$INSTALL_DIR/macos.sh" ] || [ ! -f "$INSTALL_DIR/gitconfig.sh" ]; then
+if [ ! -d "$PARENT_DIR/config" ] || [ ! -f "$INSTALL_DIR/Brewfile" ] || [ ! -f "$INSTALL_DIR/Bunfile" ] || [ ! -f "$INSTALL_DIR/macos.sh" ] || [ ! -f "$INSTALL_DIR/gitconfig.sh" ]; then
 	echo "Error: Required files or directories not found."
-	echo "Ensure Brewfile, Npmfile, macos.sh, gitconfig.sh are in $INSTALL_DIR"
+	echo "Ensure Brewfile, Bunfile, macos.sh, gitconfig.sh are in $INSTALL_DIR"
 	echo "Ensure the config directory exists at $PARENT_DIR/config"
 	# Although paths are absolute now, running from root is still good practice for consistency
 	echo "Please consider running this script from the dotfiles root directory: $PARENT_DIR"
@@ -62,16 +62,16 @@ else
 fi
 
 # Install node tools
-echo "Installing global npm packages from $INSTALL_DIR/Npmfile..."
-if [ -f "$INSTALL_DIR/Npmfile" ]; then
-	NPM_PACKAGES=$(sed 's/#.*//' "$INSTALL_DIR/Npmfile")
+echo "Installing global bun packages from $INSTALL_DIR/Bunfile..."
+if [ -f "$INSTALL_DIR/Bunfile" ]; then
+	NPM_PACKAGES=$(sed 's/#.*//' "$INSTALL_DIR/Bunfile")
 	if [ -n "$NPM_PACKAGES" ]; then
-		echo "$NPM_PACKAGES" | xargs npm install -g
+		echo "$NPM_PACKAGES" | xargs bun add -g
 	else
-		echo "No packages found in Npmfile."
+		echo "No packages found in Bunfile."
 	fi
 else
-	echo "Warning: Npmfile not found at $INSTALL_DIR/Npmfile"
+	echo "Warning: Bunfile not found at $INSTALL_DIR/Bunfile"
 fi
 
 # Install ssh key & git config

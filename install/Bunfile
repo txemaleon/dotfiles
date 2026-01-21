@@ -1,14 +1,7 @@
 @antfu/ni
-@google/gemini-cli
-aicommits
-fast-cli
-fixpack
 google-indexing-script
-mversion
-nodemon
 pnpm
-prettier
+qmd
 typescript
 typescript-language-server
 vercel
-yarn

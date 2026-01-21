@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$(dirname "${0:A}")
 BREWFILE="$SCRIPT_DIR/Brewfile"
-NPMFILE="$SCRIPT_DIR/Npmfile"
+BUNFILE="$SCRIPT_DIR/Bunfile"
 
 print_status() {
 	echo "🔄 $1"
@@ -76,32 +76,32 @@ dumpBrew() {
 	print_success "Brewfile updated with $(grep -c '^brew\|^cask\|^mas' "$BREWFILE") packages (options preserved)"
 }
 
-dumpNPM() {
-	print_status "Generating NPM global packages list..."
+dumpBun() {
+	print_status "Generating bun global packages list..."
 
-	if ! check_command "npm"; then
-		print_error "npm not found, skipping NPM packages dump"
+	if ! check_command "bun"; then
+		print_error "bun not found, skipping bun packages dump"
 		return 0
 	fi
 
-	# Get npm global root directory
-	local npm_root
-	npm_root=$(npm root -g 2>/dev/null)
-	if [ -z "$npm_root" ]; then
-		print_error "Could not determine npm global root"
+	# Get bun global root directory
+	local bun_root
+	bun_root=$(bun pm bin -g 2>/dev/null)
+	if [ -z "$bun_root" ]; then
+		print_error "Could not determine bun global root"
 		return 0
 	fi
 
-	# Get only package names, filtering out paths and npm itself
-	npm list -g --depth=0 --parseable --silent 2>/dev/null |
-		grep "^$npm_root/" |
-		sed "s|$npm_root/||g" |
-		grep -v "^npm$" |
+	# Get only package names from bun global packages
+	bun pm ls -g 2>/dev/null |
+		grep -E "^ " |
+		sed 's/^[[:space:]]*//;s/@.*$//' |
+		grep -v "^bun$" |
 		grep -v "^$" |
-		sort >"$NPMFILE"
+		sort >"$BUNFILE"
 
-	local package_count=$(wc -l <"$NPMFILE" | tr -d ' ')
-	print_success "NPM packages list updated with $package_count packages"
+	local package_count=$(wc -l <"$BUNFILE" | tr -d ' ')
+	print_success "Bun packages list updated with $package_count packages"
 	return 0
 }
 
@@ -133,7 +133,7 @@ main() {
 		((success_count++))
 	fi
 
-	if dumpNPM; then
+	if dumpBun; then
 		((success_count++))
 	fi
 
