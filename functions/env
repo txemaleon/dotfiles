@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Environment utilities
+
+# Load .env file with exports for subprocess inheritance
+function loadenv {
+	local envfile="${1:-.env}"
+	[[ -f "$envfile" ]] || { echo "File not found: $envfile"; return 1; }
+	set -a
+	source "$envfile"
+	set +a
+}
