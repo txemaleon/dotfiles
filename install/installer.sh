@@ -50,15 +50,20 @@ fi
 echo "Installing Brewfile packages..."
 brew bundle --file="$INSTALL_DIR/Brewfile"
 
-# Link mackup (only if iCloud is configured)
+# Restore configs from iCloud (only if iCloud is configured)
 ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-if [ -d "$ICLOUD_PATH/.config" ]; then
-	echo "Setting up Mackup from iCloud..."
-	ln -sf "$ICLOUD_PATH/.config/.mackup" ~/.mackup
-	ln -sf "$ICLOUD_PATH/.config/.mackup.cfg" ~/.mackup.cfg
+ICLOUD_CONFIG="$ICLOUD_PATH/config"
+if [ -d "$ICLOUD_CONFIG" ]; then
+	echo "Restoring configs from iCloud..."
+
+	# Mackup config (these are symlinks to find the mackup settings)
+	ln -sf "$ICLOUD_CONFIG/.mackup" ~/.mackup
+	ln -sf "$ICLOUD_CONFIG/.mackup.cfg" ~/.mackup.cfg
+
+	# Restore copies from iCloud (not symlinks - avoids sync issues)
 	mackup restore --force
 else
-	echo "⚠️  iCloud not configured, skipping Mackup restore"
+	echo "⚠️  iCloud not configured, skipping config restore"
 fi
 
 # Install node tools
