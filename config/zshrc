@@ -11,12 +11,16 @@ setopt HIST_NO_FUNCTIONS     # Don't save functions
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks
 setopt SHARE_HISTORY         # Share history between sessions
 
+# Line editing
+bindkey -e  # Emacs mode (Ctrl+A/E/U/W work in terminal)
+
 # Up/Down search history based on current input
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search    # Up arrow
 bindkey "^[[B" down-line-or-beginning-search  # Down arrow
+bindkey "^[^?" backward-kill-word             # Alt+Backspace: delete word
 setopt AUTO_CD               # cd by typing directory name
 setopt INTERACTIVE_COMMENTS  # Allow comments in interactive shell
 
