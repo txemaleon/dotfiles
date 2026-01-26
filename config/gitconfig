@@ -127,3 +127,7 @@
 
 [mergetool]
 	keepBackup = false
+[lfs "customtransfer.xet"]
+	path = git-xet
+	args = transfer
+	concurrent = true
