@@ -24,6 +24,12 @@ function repo_has_remote {
 	return 0
 }
 
+function is_protected_branch {
+	local branch=${1:-$(git current-branch)}
+	[[ "$branch" == "main" || "$branch" == "master" ]] && return 0
+	return 1
+}
+
 # Merging
 function qm {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
@@ -61,6 +67,9 @@ function qmd {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
 
 	local CURRENT_BRANCH=$(git current-branch)
+
+	[[ "$CURRENT_BRANCH" == "$1" ]] && echo "Error: Already on target branch '$1'" && return 1
+	is_protected_branch "$CURRENT_BRANCH" && echo "Error: Cannot delete protected branch '$CURRENT_BRANCH'" && return 1
 
 	qm $1 || {
 		echo "Merge failed. Not deleting $CURRENT_BRANCH"
@@ -115,6 +124,10 @@ function qmsd {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
 
 	local CURRENT_BRANCH=$(git current-branch)
+
+	[[ "$CURRENT_BRANCH" == "$1" ]] && echo "Error: Already on target branch '$1'" && return 1
+	is_protected_branch "$CURRENT_BRANCH" && echo "Error: Cannot delete protected branch '$CURRENT_BRANCH'" && return 1
+
 	qms $1 || {
 		echo "Squash merge failed. Not deleting $CURRENT_BRANCH"
 		return 1
@@ -130,13 +143,16 @@ alias qmmsd='qmsd $(git mb)'
 
 # Deleting
 function gdb {
-	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return
+	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
+	is_protected_branch "$1" && echo "Error: Cannot delete protected branch '$1'" && return 1
 
 	git branch -D $1 && git push origin --delete $1 2>/dev/null
 }
 
 function gqdb {
 	local CURRENT_BRANCH=$(git current-branch)
+
+	is_protected_branch "$CURRENT_BRANCH" && echo "Error: Cannot delete protected branch '$CURRENT_BRANCH'" && return 1
 
 	git switch $(git mb) && gdb $CURRENT_BRANCH
 }
