@@ -766,6 +766,71 @@ defaults write org.m0k.transmission BlocklistAutoUpdate -bool true
 defaults write org.m0k.transmission RandomPort -bool true
 
 ###############################################################################
+# File Associations (duti)                                                    #
+###############################################################################
+
+# Create Neovim wrapper app for file associations
+NVIM_APP="/Applications/Neovim Terminal.app"
+if [[ ! -d "$NVIM_APP" ]]; then
+	mkdir -p "$NVIM_APP/Contents/MacOS"
+	cat > "$NVIM_APP/Contents/Info.plist" << 'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>neovim-open</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.custom.neovim-terminal</string>
+	<key>CFBundleName</key>
+	<string>Neovim Terminal</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>json</string>
+				<string>csv</string>
+				<string>txt</string>
+				<string>md</string>
+				<string>yaml</string>
+				<string>yml</string>
+				<string>toml</string>
+				<string>conf</string>
+				<string>cfg</string>
+				<string>ini</string>
+				<string>log</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
+</dict>
+</plist>
+PLIST
+	cat > "$NVIM_APP/Contents/MacOS/neovim-open" << 'SCRIPT'
+#!/bin/bash
+# Open files in neovim via Terminal
+if [[ -n "$1" ]]; then
+	osascript -e "tell app \"Terminal\" to do script \"cd '$(dirname "$1")' && nvim '$@'; exit\""
+else
+	open -a Terminal
+fi
+SCRIPT
+	chmod +x "$NVIM_APP/Contents/MacOS/neovim-open"
+	echo "Created Neovim Terminal.app"
+fi
+
+# Set file associations with duti (requires duti: brew install duti)
+if command -v duti &>/dev/null; then
+	duti -s com.custom.neovim-terminal .json all 2>/dev/null
+	duti -s com.custom.neovim-terminal .csv all 2>/dev/null
+	echo "Set JSON/CSV to open with Neovim Terminal"
+fi
+
+###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
 
