@@ -63,7 +63,7 @@ function qm {
 
 alias qmm='qm $(git mb)'
 
-function qmd {
+function gqmd {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
 
 	local CURRENT_BRANCH=$(git current-branch)
@@ -82,7 +82,7 @@ function qmd {
 	gdb $CURRENT_BRANCH
 }
 
-alias qmmd='qmd $(git mb)'
+alias gqmmd='gqmd $(git mb)'
 
 function qms {
 	[[ -z $1 ]] && echo "Error: You must supply a branch name" && return 1
