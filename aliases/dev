@@ -27,7 +27,8 @@ alias bd="bun dev"
 alias cc='claude --dangerously-skip-permissions'
 alias ccc='cc -c'
 alias ccr='cc -r'
-alias aicommit='cc "/commit"'
+alias aicommit='cc -p "/commit"'
+alias wdidy='cc -p "/whatdididoyesterday"'
 alias oc='opencode'
 alias occ='opencode -c'
 
