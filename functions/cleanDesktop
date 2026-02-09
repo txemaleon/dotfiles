@@ -1,17 +1,16 @@
 #!/usr/bin/env zsh
 
 cleandesk() {
-	# Definir el formato del nombre de la carpeta
+	# Date-stamped folder name
 	local folder_name=$(date +"%Y%m%d")
 
-	# Definir la ruta de la carpeta en Documentos de iCloud y Desktop
-	# Asegúrate de que la ruta corresponda a tu localización de iCloud
+	# Target folder in iCloud Documents
 	local target_folder="$HOME/Documents/@@Ordenar/$folder_name/"
 
-	# Crear la carpeta en Documentos de iCloud
-	mkdir -p $target_folder
+	# Create the target folder
+	mkdir -p "$target_folder"
 
-	# mover el contenido sólo creando subcarpetas cuando haya algo que mover
+	# Move contents, creating subfolders only when there is something to move
 	if [ -n "$(ls -1 "$HOME/Desktop" 2>/dev/null)" ]; then
 		mkdir -p "$target_folder/Desktop"
 		mv "$HOME/Desktop"/* "$target_folder/Desktop"
