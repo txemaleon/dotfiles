@@ -1,0 +1,16 @@
+function ntfy() {
+    local channel="${1:?Usage: ntfy <channel> <message>}"
+    local message="${2:?Usage: ntfy <channel> <message>}"
+    shift 2
+
+    if [[ -z "$NTFY_URL" || -z "$NTFY_TOKEN" ]]; then
+        echo "Error: NTFY_URL and NTFY_TOKEN must be set"
+        return 1
+    fi
+
+    curl -s \
+        -H "Authorization: Bearer $NTFY_TOKEN" \
+        -H "Title: $channel" \
+        -d "$message" \
+        "$NTFY_URL/$channel" > /dev/null && echo "Sent to $channel" || echo "Failed to send"
+}
