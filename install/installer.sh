@@ -105,11 +105,6 @@ else
 	echo "zinit already installed."
 fi
 
-# Remove oh-my-zsh if it exists (migrating to zinit + starship)
-if [ -d "$HOME/.oh-my-zsh" ]; then
-	echo "Removing old oh-my-zsh installation..."
-	rm -rf "$HOME/.oh-my-zsh"
-fi
 
 echo "Installation complete."
 echo "Note: Plugins will auto-install on first shell startup via zinit."

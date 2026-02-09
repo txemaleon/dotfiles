@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-alias update='clear; __updateCommands; __updateNPM; __updateApps; __updateDock; __updatesCleanup;'
+alias update='clear; __updateCommands; __updateNPM; __updateApps; __updateDock; __updatesCleanup; __updateBenchmark;'
 
 function __updateCommands {
 	brew update
@@ -15,12 +15,6 @@ function __updateApps {
 
 function __updateNPM {
 	bun update -g
-}
-
-function __updateRuby {
-	sudo gem update --system
-	sudo gem update
-	sudo gem cleanup
 }
 
 function __updatesCleanup {
@@ -38,4 +32,9 @@ function __updateDock {
 		-a ~/Desktop \
 		-a ~/Downloads
 	killall Dock
+}
+
+function __updateBenchmark {
+	echo "Shell startup benchmark:"
+	timezsh
 }
