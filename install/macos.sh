@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-# Uses bash (not zsh) because macOS defaults commands are POSIX-compatible
-# and many examples from https://mths.be/macos assume bash syntax.
+#!/usr/bin/env zsh
 
 # Mostly ripped from ~/.macos — https://mths.be/macos
 
