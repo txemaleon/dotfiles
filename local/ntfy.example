@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# Ntfy authentication token for push notifications.
+# Copy this file to 'ntfy' and set your token:
+#   cp ntfy.example ntfy
+#
+# Generate a token at your ntfy server or use:
+#   ntfy token add --expires=never
+export NTFY_TOKEN="your-token-here"

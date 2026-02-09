@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# Machine-specific aliases go here.
+# Copy this file to 'aliases' and customize:
+#   cp aliases.example aliases
+#
+# Examples:
+# alias proj="cd ~/Projects/my-project"
+# alias vpn="sudo openvpn --config ~/vpn/work.ovpn"
