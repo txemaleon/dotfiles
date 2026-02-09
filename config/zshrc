@@ -58,7 +58,7 @@ __load_cached() {
   local name="$1" cmd="$2" args="$3"
   local cache="$__cache_dir/$name.zsh"
   if command -v "$cmd" &>/dev/null; then
-    [[ ! -f "$cache" || "$cache" -ot "$(command -v "$cmd")" ]] && "$cmd" $args > "$cache"
+    [[ ! -s "$cache" || "$cache" -ot "$(command -v "$cmd")" ]] && "$cmd" $args > "$cache"
     source "$cache"
   fi
 }
