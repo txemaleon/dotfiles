@@ -32,7 +32,6 @@ function __updateDock {
 		-a /System/Applications/Mail.app \
 		-a /System/Cryptexes/App/System/Applications/Safari.app \
 		-a /Applications/Arc.app \
-		-a /Applications/OpenCode.app \
 		-a /Applications/Ghostty.app \
 		-a /Applications/Whatsapp.app \
 		-a /Applications/Slack.app \
