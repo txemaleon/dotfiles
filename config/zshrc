@@ -50,11 +50,30 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light Aloxaf/fzf-tab
 
-# Tool integrations (only if installed)
-command -v fzf &>/dev/null && eval "$(fzf --zsh)"
-command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
-command -v mise &>/dev/null && eval "$(mise activate zsh)"
-command -v bun &>/dev/null && eval "$(bun completions)"
+# Tool integrations (cached for faster startup, regenerate with: regen-shell-cache)
+__cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+mkdir -p "$__cache_dir"
+
+__load_cached() {
+  local name="$1" cmd="$2" args="$3"
+  local cache="$__cache_dir/$name.zsh"
+  if command -v "$cmd" &>/dev/null; then
+    [[ ! -f "$cache" || "$cache" -ot "$(command -v "$cmd")" ]] && "$cmd" $args > "$cache"
+    source "$cache"
+  fi
+}
+
+__load_cached fzf fzf "--zsh"
+__load_cached zoxide zoxide "init zsh"
+__load_cached mise mise "activate zsh"
+__load_cached bun bun "completions"
+
+regen-shell-cache() {
+  rm -rf "$__cache_dir"
+  echo "Shell cache cleared. Restart your shell to regenerate."
+}
+
+unset __cache_dir
 
 # User configuration
 source $HOME/.profile
