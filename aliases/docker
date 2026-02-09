@@ -3,4 +3,4 @@
 alias dcp="docker compose"
 alias dcu="docker compose up -d"
 alias dcd="docker compose stop"
-alias dcs="docker compose stop"
+alias dcs="docker compose ps"
