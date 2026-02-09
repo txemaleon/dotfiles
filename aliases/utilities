@@ -17,7 +17,7 @@ alias cleanEmpty="find . -type d -empty -delete"
 # Utilities
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 alias pw="pwgen -csn 6 3 | xargs -n 3 | sed \"s/ /-/g\" | tr -d '\n' | pbcopy"
-alias fixpermissions="find . -type d -exec chmod 0755 {} \;; find . -type f -exec chmod 0644 {} \;"
+alias fixpermissions="find . -type d -exec chmod 0755 '{}' \; && find . -type f -exec chmod 0644 '{}' \;"
 
 # Sound
 alias mute="osascript -e 'set volume output muted true'"
