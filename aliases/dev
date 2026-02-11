@@ -26,7 +26,7 @@ alias bx="bunx"
 alias bd="bun dev"
 
 # LLMs
-alias cc='claude --dangerously-skip-permissions'
+alias cc='happy --yolo'
 alias ccc='cc -c'
 alias ccr='cc -r'
 alias aicommit='cc -p "/commit"'
