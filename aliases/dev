@@ -7,7 +7,7 @@ alias c.="cursor ."
 
 alias bump="nu && cam 'chore: Bump versions' && push"
 
-alias pa="cd ~/Developer/Proyectos/personal-agent"
+alias pa="cd ~/Developer/Proyectos/personal-agent && ccc"
 
 alias brew=" brew"
 
