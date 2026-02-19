@@ -1,12 +1,5 @@
 #!/usr/bin/env zsh
 
-# Bun setup
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-
 # NI
 export NI_CONFIG_FILE="$DOTFILES/config/nirc"
 export COREPACK_ENABLE_AUTO_PIN=0

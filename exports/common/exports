@@ -5,16 +5,13 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
-# Cache Homebrew prefix (avoid slow brew --prefix calls)
-export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
-
 export EDITOR="nvim"
 export VISUAL="nvim"
 
 # Add user@host to Tab Name
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s)\007"'
 
-# Don’t clear the screen after quitting a manual page
+# Don't clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
 # Tab width: 3 spaces everywhere
@@ -30,11 +27,7 @@ export HISTTIMEFORMAT='%F %T '
 # Cli COLOR
 export CLICOLOR=1
 
-# Coreutils
-PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
-MANPATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman:${MANPATH:-}"
-
 # Localpath
 PATH="$HOME/.local/bin:$PATH"
 
-export PATH MANPATH
+export PATH

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+# Cache Homebrew prefix (avoid slow brew --prefix calls)
+export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
+
+# Coreutils (GNU versions from Homebrew)
+PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
+MANPATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman:${MANPATH:-}"
+
+export PATH MANPATH
