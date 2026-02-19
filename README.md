@@ -1,37 +1,57 @@
-# macOS dotfiles
+# dotfiles
 
-Personal macOS configuration: shell, git, tmux, neovim, and 270+ aliases.
+Personal shell configuration for macOS and Linux: shell, git, tmux, neovim, and 270+ aliases.
+Managed with [GNU Stow](https://www.gnu.org/software/stow/) for symlink management.
 
 ## Structure
 
 ```
 dotfiles/
-├── aliases/        # Command aliases (dev, docker, git, navigation, os, utilities, vim)
-├── config/         # Dotfile configs (zshrc, gitconfig, tmux.conf, editorconfig, etc.)
-├── exports/        # Environment variables (PATH, XDG, node, homebrew, claude, ntfy)
-├── functions/      # Shell functions (git workflows, updates, notifications, etc.)
-├── install/        # Installation and migration scripts
-│   ├── installer.sh
-│   ├── uninstall.sh
-│   ├── macos.sh
-│   ├── gitconfig.sh
-│   ├── cleanup.sh
-│   ├── prepare-migration.sh
-│   ├── Brewfile
-│   └── Bunfile
-└── local/          # Machine-specific overrides (git-ignored, see *.example files)
+├── aliases/
+│   ├── common/     # Portable aliases (dev, docker, git, navigation, vim, utilities)
+│   ├── macos/      # macOS-specific (emptytrash, flush, afk, Raycast)
+│   └── linux/      # Linux-specific (xdg-open, pactl, systemd-resolve)
+├── config/         # Reference configs (delta, fixpackrc, nirc — not symlinked)
+├── exports/
+│   ├── common/     # Portable exports (XDG, EDITOR, PATH)
+│   ├── macos/      # Homebrew, coreutils, macOS PNPM path
+│   └── linux/      # Linuxbrew, Linux PNPM path
+├── functions/
+│   ├── common/     # Portable functions (git workflows, completions, navigation)
+│   ├── macos/      # macOS-specific (updates, cleanDesktop, journals)
+│   └── linux/      # Linux-specific (updates via apt/dnf/pacman)
+├── install/
+│   ├── common/     # Shared installer (stow, zinit, bun, gitconfig)
+│   ├── macos/      # Homebrew, Brewfile, iCloud, mackup, macos.sh
+│   └── linux/      # apt/dnf/pacman package installation
+├── local/          # Machine-specific overrides (git-ignored, see *.example)
+├── packages/
+│   ├── common/     # Stow package: .zshrc .gitconfig .tmux.conf etc.
+│   ├── macos/      # macOS-only dotfiles (future)
+│   └── linux/      # Linux-only dotfiles (future)
+└── install.sh      # Bootstrap script
 ```
+
+### How it works
+
+`.profile` detects the platform and sources files in order:
+1. `exports/common/*` → `exports/{macos,linux}/*`
+2. `aliases/common/*` → `aliases/{macos,linux}/*`
+3. `functions/common/*` → `functions/{macos,linux}/*`
+4. `local/*` (machine-specific overrides, last)
+
+Dotfiles in `packages/common/` are symlinked to `$HOME` via GNU Stow.
 
 ## Quick Install
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/txemaleon/dotfiles/master/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/txemaleon/dotfiles/master/install.sh | zsh
 ```
 
 Use a specific branch:
 
 ```bash
-DOTFILES_BRANCH="your-branch" curl -sSL https://raw.githubusercontent.com/txemaleon/dotfiles/master/install.sh | bash
+DOTFILES_BRANCH="feat/stow-migration" curl -sSL https://raw.githubusercontent.com/txemaleon/dotfiles/master/install.sh | zsh
 ```
 
 ## Manual Installation
@@ -39,9 +59,22 @@ DOTFILES_BRANCH="your-branch" curl -sSL https://raw.githubusercontent.com/txemal
 ```bash
 mkdir -p ~/.config && cd ~/.config
 git clone git@github.com:txemaleon/dotfiles.git
-cd dotfiles/install
-./installer.sh
+source dotfiles/install/common/installer.sh
 ```
+
+## Managing dotfiles with Stow
+
+A `stow` alias is preconfigured to target `$HOME` from the packages dir:
+
+```bash
+# Re-stow all common dotfiles
+stow --restow common
+
+# Add a new config file to your dotfiles
+dotadd ~/.config/lazygit/config.yml
+```
+
+`dotadd` moves the file into `packages/common/` (mirroring the home directory path) and creates a symlink back.
 
 ## Post-Installation
 
@@ -63,8 +96,7 @@ cp ntfy.example ntfy
 ## Uninstall
 
 ```bash
-cd ~/.config/dotfiles/install
-./uninstall.sh
+~/.config/dotfiles/install/uninstall.sh
 ```
 
 ## Prepare Migration
