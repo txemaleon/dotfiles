@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+
+# Local IP (Linux)
+alias localip="hostname -I | awk '{print \$1}'"
+
+# DNS flush (systemd-resolved)
+alias flush="sudo systemd-resolve --flush-caches 2>/dev/null || sudo resolvectl flush-caches 2>/dev/null"
+
+# AFK — lock screen
+alias afk="loginctl lock-session 2>/dev/null || xdg-screensaver lock 2>/dev/null"
+
+# Password to clipboard (X11 or Wayland)
+alias pw='pwgen -csn 6 3 | xargs -n 3 | sed "s/ /-/g" | tr -d "\n" | (xclip -selection clipboard 2>/dev/null || wl-copy 2>/dev/null)'
+
+# Sound (PulseAudio/PipeWire)
+alias mute="pactl set-sink-mute @DEFAULT_SINK@ toggle"
+alias hear="pactl set-sink-volume @DEFAULT_SINK@ 100%"
+
+# Open files/URLs with default app
+alias open="xdg-open"

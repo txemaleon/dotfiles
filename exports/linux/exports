@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+# Linuxbrew (if installed)
+if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
+	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+	eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
+fi

@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+# Empty trash (freedesktop standard)
+function emptytrash() {
+	rm -rfv "$HOME/.local/share/Trash/files"/* 2>/dev/null
+	rm -rfv "$HOME/.local/share/Trash/info"/* 2>/dev/null
+}

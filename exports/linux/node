@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+# pnpm (XDG standard path on Linux)
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
