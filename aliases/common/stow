@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# Stow wrapper: always targets $HOME from packages dir
+alias stow='stow -d $DOTFILES/packages -t $HOME'
+
+# Adopt an existing config file into dotfiles
+dotadd() {
+	local file="$1"
+	local rel="${file#$HOME/}"
+	local dest="$DOTFILES/packages/common/$rel"
+	mkdir -p "$(dirname "$dest")"
+	mv "$file" "$dest"
+	command stow -d "$DOTFILES/packages" -t "$HOME" --restow common
+	echo "Adopted $file into common package"
+}

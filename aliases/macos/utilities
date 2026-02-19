@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+
+# Local IP (macOS)
+alias localip="ipconfig getifaddr en1"
+
+# Flush Directory Service cache
+alias flush="dscacheutil -flushcache"
+
+# AFK — lock screen
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+# Password to clipboard
+alias pw="pwgen -csn 6 3 | xargs -n 3 | sed \"s/ /-/g\" | tr -d '\n' | pbcopy"
+
+# Sound
+alias mute="osascript -e 'set volume output muted true'"
+alias hear="osascript -e 'set volume output volume 100'"
+
+# Raycast
+alias raycast='open -a Raycast'

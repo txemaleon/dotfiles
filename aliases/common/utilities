@@ -1,12 +1,9 @@
 #!/usr/bin/env zsh
+
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias getip="dig +short "
-
-# Flush Directory Service cache
-alias flush="dscacheutil -flushcache"
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -delete"
@@ -15,16 +12,9 @@ alias cleanup="find . -type f -name '*.DS_Store' -delete"
 alias cleanEmpty="find . -type d -empty -delete"
 
 # Utilities
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-alias pw="pwgen -csn 6 3 | xargs -n 3 | sed \"s/ /-/g\" | tr -d '\n' | pbcopy"
 alias fixpermissions="find . -type d -exec chmod 0755 '{}' \; && find . -type f -exec chmod 0644 '{}' \;"
 
-# Sound
-alias mute="osascript -e 'set volume output muted true'"
-alias hear="osascript -e 'set volume output volume 100'"
-
 # Always enable colored `grep` output
-# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -32,13 +22,9 @@ alias egrep='egrep --color=auto'
 # Reload dotfiles
 alias resource="source $HOME/.profile"
 
-# alias cat="bat"
 alias youtube-dl="yt-dlp"
 alias yt-audio="yt-dlp --ignore-config --extract-audio --audio-format mp3 --audio-quality 0 --embed-thumbnail --convert-thumbnails jpg "
 alias yt-audio-volume="yt-audio --postprocessor-args '-af volume=2'"
 
 # SpeedTest:
 alias speedtest="fast -u --single-line"
-
-# Raycast
-alias raycast='open -a Raycast'
