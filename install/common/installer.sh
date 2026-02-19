@@ -6,6 +6,13 @@ SCRIPT_DIR=$(dirname "$SCRIPT_ABS_PATH")
 PARENT_DIR=$(dirname "$(dirname "$SCRIPT_DIR")")
 INSTALL_DIR="$PARENT_DIR/install"
 
+# Detect platform
+case "$(uname -s)" in
+	Darwin) DOTFILES_PLATFORM="macos" ;;
+	Linux)  DOTFILES_PLATFORM="linux" ;;
+	*)      echo "Unsupported platform: $(uname -s)"; exit 1 ;;
+esac
+
 # Ask for the administrator password upfront
 sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
@@ -15,18 +22,25 @@ while true; do
 	kill -0 "$$" || exit
 done 2>/dev/null &
 
-# Install dotfiles via stow (placeholder — will be implemented in next commit)
-DOTFILES_CONFIG_DIR="$PARENT_DIR/config"
-for FILE in "$PARENT_DIR"/packages/common/.*; do
-	f=$(basename "$FILE")
-	[[ "$f" == "." || "$f" == ".." ]] && continue
-	TARGET_FILE="$HOME/$f"
-	if [ -L "$TARGET_FILE" ] || [ -f "$TARGET_FILE" ]; then
-		rm -rf "$TARGET_FILE"
+# Ensure stow is installed
+if ! command -v stow &>/dev/null; then
+	echo "Installing stow..."
+	if [[ "$DOTFILES_PLATFORM" == "macos" ]]; then
+		brew install stow
+	else
+		sudo apt install -y stow 2>/dev/null || sudo dnf install -y stow 2>/dev/null || sudo pacman -S --noconfirm stow 2>/dev/null
 	fi
-	echo "Linking $FILE => $TARGET_FILE"
-	ln -s "$FILE" "$TARGET_FILE"
-done
+fi
+
+# Install dotfiles via stow
+STOW_DIR="$PARENT_DIR/packages"
+echo "Stowing common dotfiles..."
+command stow -d "$STOW_DIR" -t "$HOME" --restow common
+
+if [[ -d "$STOW_DIR/$DOTFILES_PLATFORM" ]]; then
+	echo "Stowing $DOTFILES_PLATFORM dotfiles..."
+	command stow -d "$STOW_DIR" -t "$HOME" --restow "$DOTFILES_PLATFORM"
+fi
 
 # Install zinit plugin manager (plugins auto-install on first shell load)
 ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
@@ -57,5 +71,12 @@ if [ -f "$SCRIPT_DIR/gitconfig.sh" ]; then
 	sh "$SCRIPT_DIR/gitconfig.sh"
 fi
 
-echo "Common installation complete."
+# Run platform-specific installer
+PLATFORM_INSTALLER="$INSTALL_DIR/$DOTFILES_PLATFORM/installer.sh"
+if [ -f "$PLATFORM_INSTALLER" ]; then
+	echo "Running $DOTFILES_PLATFORM installer..."
+	source "$PLATFORM_INSTALLER"
+fi
+
+echo "Installation complete."
 echo "Note: Plugins will auto-install on first shell startup via zinit."

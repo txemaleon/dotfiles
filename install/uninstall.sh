@@ -5,23 +5,18 @@ set -e
 echo "Uninstalling dotfiles..."
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.config/dotfiles}"
-CONFIG_DIR="$DOTFILES_DIR/config"
+PARENT_DIR="$DOTFILES_DIR"
 
-if [ ! -d "$CONFIG_DIR" ]; then
-	echo "Error: Config directory not found at $CONFIG_DIR"
-	exit 1
+# Remove stow symlinks
+STOW_DIR="$PARENT_DIR/packages"
+if [ -d "$STOW_DIR" ]; then
+	echo "Removing stow symlinks..."
+	command stow -d "$STOW_DIR" -t "$HOME" -D common 2>/dev/null
+	command stow -d "$STOW_DIR" -t "$HOME" -D macos 2>/dev/null
+	command stow -d "$STOW_DIR" -t "$HOME" -D linux 2>/dev/null
+else
+	echo "Warning: Packages directory not found at $STOW_DIR"
 fi
-
-# Remove symlinks created by installer
-echo "Removing symlinked config files..."
-for file in "$CONFIG_DIR"/*; do
-	f=$(basename "$file")
-	target="$HOME/.$f"
-	if [ -L "$target" ]; then
-		echo "  Removing $target"
-		rm "$target"
-	fi
-done
 
 # Remove zinit
 ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit"
