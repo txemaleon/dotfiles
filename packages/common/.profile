@@ -2,14 +2,31 @@
 
 export DOTFILES="${DOTFILES:-$HOME/.config/dotfiles}"
 
-# Source all config files from dotfiles directories
-for dir in exports aliases functions local; do
-    target="$DOTFILES/$dir"
-    if [[ -d "$target" ]]; then
-        for f in "$target"/*(.N); do
-            [[ -f "$f" ]] && source "$f"
-        done
-    fi
+# Detect platform
+case "$(uname -s)" in
+    Darwin) DOTFILES_PLATFORM="macos" ;;
+    Linux)  DOTFILES_PLATFORM="linux" ;;
+    *)      DOTFILES_PLATFORM="" ;;
+esac
+export DOTFILES_PLATFORM
+
+# Source common, then platform-specific, for each config dir
+for dir in exports aliases functions; do
+    for layer in common "$DOTFILES_PLATFORM"; do
+        target="$DOTFILES/$dir/$layer"
+        if [[ -d "$target" ]]; then
+            for f in "$target"/*(.N); do
+                [[ -f "$f" ]] && source "$f"
+            done
+        fi
+    done
 done
 
-unset dir target f
+# Local overrides (not platform-split)
+if [[ -d "$DOTFILES/local" ]]; then
+    for f in "$DOTFILES/local"/*(.N); do
+        [[ -f "$f" ]] && source "$f"
+    done
+fi
+
+unset dir target f layer
