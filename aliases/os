@@ -20,9 +20,16 @@ alias mkdirp="mkdir -p"
 alias path='echo -e ${PATH//:/\\n}'
 
 # Safe recursive remove - sends to trash, blocks dangerous paths
-function rmr() {
+function _rmr() {
+	# Expand globs safely: unmatched patterns become empty instead of erroring
+	setopt local_options null_glob
+	local files=($@)
+	if [[ ${#files} -eq 0 ]]; then
+		echo "rmr: no files matched"
+		return 1
+	fi
 	local dangerous_paths=("$HOME" "$HOME/" "~" "~/" "/" "/Users" "/Users/")
-	for arg in "$@"; do
+	for arg in "${files[@]}"; do
 		local resolved=$(realpath -q "$arg" 2>/dev/null || echo "$arg")
 		for danger in "${dangerous_paths[@]}"; do
 			local danger_resolved=$(realpath -q "$danger" 2>/dev/null || echo "$danger")
@@ -32,8 +39,9 @@ function rmr() {
 			fi
 		done
 	done
-	trash "$@"
+	trash "${files[@]}"
 }
+alias rmr='noglob _rmr'
 alias t='trash'
 
 # bat with colors, no pagination/line numbers (agent-friendly)
