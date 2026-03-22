@@ -38,3 +38,5 @@ MANPATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman:${MANPATH:-}"
 PATH="$HOME/.local/bin:$PATH"
 
 export PATH MANPATH
+
+export DISABLE_TELEMETRY=1

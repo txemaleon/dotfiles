@@ -183,7 +183,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Databases
-*.sql
+# *.sql
 *.sqlite
 *.sqlite3
 *.db
@@ -229,6 +229,10 @@ temp/
 # Custom
 # =============================================================================
 
+.claude/screenshots
+.claude/worktrees
+.claude/working
+opensrc
 .mcp.json
 mcp.json
 z_*
