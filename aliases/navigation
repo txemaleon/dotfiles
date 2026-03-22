@@ -6,20 +6,22 @@
 if ls --group-directories-first >/dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
 	directoriesflag="--group-directories-first"
+	lsbin="$(command -v ls)"
 else # macOS `ls`
 	colorflag="-G"
 	directoriesflag=""
+	lsbin="ls"
 fi
 
 alias j="z"
 
 # List all files colorized in long format
-alias ls="clear; ls ${colorflag} ${directoriesflag}"
+alias ls="clear; ${lsbin} ${colorflag} ${directoriesflag}"
 alias l="ls"
 alias lsa="ls -A"
 alias ll="ls -hl"
 alias lla="ll -A"
-alias lsd="ls -lF ${colorflag} ${directoriesflag} | grep --color=never '^d'"
+alias lsd="${lsbin} -lF ${colorflag} ${directoriesflag} | grep --color=never '^d'"
 alias pwdl="ls; echo; pwd"
 
 # Easier navigation: .., ..., ~ and -
