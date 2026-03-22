@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+
+# cmux workspace layout
+function cmux-layout {
+  local workspaces=(
+    "Dreamshot|/Users/txemaleon/Developer/Work/Dreamshot"
+    "Daily Podcast|/Users/txemaleon/Developer/Proyectos/daily-podcast"
+    "Notion Calendars|/Users/txemaleon/Developer/Proyectos/notioncalendars"
+    "Notion to Maps|/Users/txemaleon/Developer/Proyectos/notiontomaps"
+    "PPPodcasts|/Users/txemaleon/Developer/Proyectos/pppodcasts.com"
+    "Recibir Licitaciones|/Users/txemaleon/Developer/Proyectos/recibirlicitaciones.com"
+    "Asincrono|/Users/txemaleon/Developer/Proyectos/asincrono.com"
+    "Notion Newsletter|/Users/txemaleon/Developer/Proyectos/notion-newsletter"
+  )
+
+  local existing
+  existing=$(command cmux list-workspaces 2>/dev/null || true)
+
+  local entry name cwd ref
+  for (( i=${#workspaces[@]}; i>=1; i-- )); do
+    entry="${workspaces[$i]}"
+    name="${entry%%|*}"
+    cwd="${entry##*|}"
+
+    [[ ! -d "$cwd" ]] && echo "SKIP: $name — $cwd not found" && continue
+    echo "$existing" | grep -qF "$name" && echo "EXISTS: $name" && continue
+
+    ref=$(command cmux new-workspace --cwd "$cwd" 2>/dev/null | grep -oE 'workspace:[0-9]+')
+
+    if [[ -n "$ref" ]]; then
+      command cmux workspace-action --workspace "$ref" --action rename --title "$name" >/dev/null 2>&1
+      echo "CREATED: $name → $ref"
+    else
+      echo "ERROR: $name"
+    fi
+  done
+
+  echo "Done."
+}
