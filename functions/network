@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Network utilities
+
+# Kill processes occupying given ports
+# Usage: killport 3000 3001 8080
+function killport {
+	[[ $# -eq 0 ]] && echo "Usage: killport <port> [port...]" && return 1
+
+	for port in "$@"; do
+		local pids=$(lsof -ti :"$port" 2>/dev/null)
+		if [[ -z "$pids" ]]; then
+			echo "No process found on port $port"
+		else
+			echo "$pids" | xargs kill -9
+			echo "Killed process(es) on port $port (PID: ${pids//$'\n'/, })"
+		fi
+	done
+}
