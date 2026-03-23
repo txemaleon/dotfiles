@@ -3,14 +3,14 @@
 # cmux workspace layout
 function cmux-layout {
   local workspaces=(
-    "Dreamshot|/Users/txemaleon/Developer/Work/Dreamshot"
-    "Notion Calendars|/Users/txemaleon/Developer/Proyectos/notioncalendars"
-    "Notion to Maps|/Users/txemaleon/Developer/Proyectos/notiontomaps"
-    "Recibir Licitaciones|/Users/txemaleon/Developer/Proyectos/recibirlicitaciones.com"
-    "PPPodcasts|/Users/txemaleon/Developer/Proyectos/pppodcasts.com"
-    "Daily Podcast|/Users/txemaleon/Developer/Proyectos/daily-podcast"
-    "Asincrono|/Users/txemaleon/Developer/Proyectos/asincrono.com"
-    "Notion Newsletter|/Users/txemaleon/Developer/Proyectos/notion-newsletter"
+    "Dreamshot|$HOME/Developer/Work/Dreamshot"
+    "Notion Calendars|$HOME/Developer/Proyectos/notioncalendars"
+    "Notion to Maps|$HOME/Developer/Proyectos/notiontomaps"
+    "Recibir Licitaciones|$HOME/Developer/Proyectos/recibirlicitaciones.com"
+    "PPPodcasts|$HOME/Developer/Proyectos/pppodcasts.com"
+    "Daily Podcast|$HOME/Developer/Proyectos/daily-podcast"
+    "Asincrono|$HOME/Developer/Proyectos/asincrono.com"
+    "Notion Newsletter|$HOME/Developer/Proyectos/notion-newsletter"
   )
 
   local existing
