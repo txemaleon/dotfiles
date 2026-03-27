@@ -2,8 +2,9 @@
 
 # cmux workspace layout
 function cmux-layout {
+  local cmd=("$@")
   local workspaces=(
-    "Dreamshot|$HOME/Developer/Work/Dreamshot"
+    "Dreamshot|$HOME/Developer/Work/Dreamshot/dreamshot-app"
     "Notion Calendars|$HOME/Developer/Proyectos/notioncalendars"
     "Notion to Maps|$HOME/Developer/Proyectos/notiontomaps"
     "Recibir Licitaciones|$HOME/Developer/Proyectos/recibirlicitaciones.com"
@@ -30,6 +31,9 @@ function cmux-layout {
     if [[ -n "$ref" ]]; then
       command cmux workspace-action --workspace "$ref" --action rename --title "$name" >/dev/null 2>&1
       echo "CREATED: $name → $ref"
+      if (( ${#cmd[@]} > 0 )); then
+        (cd "$cwd" && "${cmd[@]}")
+      fi
     else
       echo "ERROR: $name"
     fi
