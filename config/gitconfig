@@ -89,6 +89,7 @@
 	fix = commit --amend --no-edit
 	l = log --date=local
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	lm = !lumen diff
 	mb = !git branch -l master main | sed 's/^* //'
 	ma = merge --abort
 	mc = merge --continue
