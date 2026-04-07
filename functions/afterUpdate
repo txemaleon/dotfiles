@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
 function __afterUpdate {
-	open -a Raycast
+	claude upgrade;
+	opencode update;
+	open -a Raycast;
 }
