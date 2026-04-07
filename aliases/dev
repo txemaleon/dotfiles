@@ -1,9 +1,7 @@
 #!/usr/bin/env zsh
 
 # Dev Shortcuts
-alias c="cursor-agent"
-alias .='cursor .'
-alias c.="cursor ."
+alias .='$EDITOR .'
 
 alias bump="nu && cam 'chore: Bump versions' && push"
 
