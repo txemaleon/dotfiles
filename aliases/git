@@ -21,7 +21,7 @@ alias status="git st 2>/dev/null"
 alias cdgr='cd $(git root)'
 alias sync="cdgr && gitup ."
 alias syncall="gitup"
-alias lg="lazygit"
+alias lm="lumen diff"
 
 # Projects
 alias grm='git rebase $(git mb)'
