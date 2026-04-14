@@ -46,6 +46,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # Plugins
 zinit light zsh-users/zsh-autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#928374'
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light Aloxaf/fzf-tab
