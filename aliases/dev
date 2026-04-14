@@ -34,3 +34,5 @@ alias occ='opencode -c'
 
 # Now Shortcuts
 alias deploy="vercel --prod"
+
+alias commit="claude -p '/commit'"
