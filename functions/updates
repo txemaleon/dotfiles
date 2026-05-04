@@ -18,7 +18,8 @@ function __updateNPM {
 }
 
 function __updatesCleanup {
-	brew cleanup -s
+	brew autoremove
+	brew cleanup --prune=all -s
 }
 
 function __updateDock {
