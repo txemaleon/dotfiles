@@ -1,5 +1,14 @@
 #!/usr/bin/env zsh
 
+set -euo pipefail
+trap 'echo "❌ installer.sh failed at line $LINENO (exit $?)" >&2' ERR
+
+if [[ "$OSTYPE" != darwin* ]]; then
+	echo "⚠️  This installer targets macOS. Detected: $OSTYPE" >&2
+	echo "   Linux/other support is not implemented. Aborting." >&2
+	exit 1
+fi
+
 # Ask for the administrator password upfront
 sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
