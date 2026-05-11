@@ -42,7 +42,9 @@ function _rmr() {
 	trash "${files[@]}"
 }
 alias rmr='noglob _rmr'
+compdef _rmr=rm
 alias t='trash'
+compdef t=rm
 
 # bat with colors, no pagination/line numbers (agent-friendly)
 alias cat='bat --paging=never --style=plain --tabs=3'
