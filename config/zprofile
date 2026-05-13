@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+
+# .zprofile — loaded once per LOGIN shell (e.g., each new terminal window).
+# PATH and environment exports live here so subshells/tabs inherit them
+# without re-prepending. Aliases/functions/prompt belong in .zshrc.
+
+# Homebrew (installs PATH, MANPATH, INFOPATH, HOMEBREW_* vars)
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# OrbStack
+[[ -f "$HOME/.orbstack/shell/init.zsh" ]] && source "$HOME/.orbstack/shell/init.zsh" 2>/dev/null
+
+export DOTFILES="${DOTFILES:-$HOME/.config/dotfiles}"
+
+# Load env vars and PATH exports from dotfiles
+for dir in exports local; do
+    target="$DOTFILES/$dir"
+    if [[ -d "$target" ]]; then
+        for f in "$target"/*(.N); do
+            [[ -f "$f" ]] && source "$f"
+        done
+    fi
+done
+
+unset dir target f

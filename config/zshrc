@@ -1,5 +1,4 @@
-# Path
-export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
+# PATH is set in .zprofile (login-only) so subshells inherit cleanly.
 
 # History configuration
 HISTSIZE=50000
@@ -76,8 +75,17 @@ regen-shell-cache() {
 
 unset __cache_dir
 
-# User configuration
-source $HOME/.profile
+# Aliases and functions (interactive-only — they need compinit loaded above).
+# Exports/env vars live in .zshenv and are loaded once per process.
+for dir in aliases functions; do
+    target="$DOTFILES/$dir"
+    if [[ -d "$target" ]]; then
+        for f in "$target"/*(.N); do
+            [[ -f "$f" ]] && source "$f"
+        done
+    fi
+done
+unset dir target f
 
 # Prompt (matches edvardm theme)
 autoload -Uz vcs_info
