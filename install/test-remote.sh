@@ -43,7 +43,7 @@ echo "Platform: \$(uname -s)"
 echo ""
 
 echo "Symlinks:"
-for f in .zshrc .gitconfig .gitignore .tmux.conf .editorconfig .inputrc .profile .npmrc; do
+for f in .zshrc .zprofile .gitconfig .gitignore .tmux.conf .editorconfig .inputrc .npmrc; do
     if [ -L "\$HOME/\$f" ]; then
         echo "  ✅ ~/\$f -> \$(readlink "\$HOME/\$f")"
     else
@@ -66,7 +66,7 @@ for f in aliases/linux/os aliases/linux/utilities exports/linux/exports exports/
 done
 
 echo ""
-echo "==> Done! Restart shell or run: source ~/.profile"
+echo "==> Done! Restart shell or run: source ~/.zprofile"
 REMOTE
 
 echo ""
