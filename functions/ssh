@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# Auto-generate aliases for every Host defined in ~/.ssh/config
+#
+# Reads ~/.ssh/config, extracts each `Host` entry (skipping wildcards like `*`
+# and negations), and creates a shell alias that runs `ssh <host>`.
+#
+# Example: `Host n2c` in ~/.ssh/config → `n2c` runs `ssh n2c`.
+#
+# Skips any host that would shadow an existing command/alias/function.
+
+ssh-aliases() {
+	emulate -L zsh
+	setopt extended_glob
+
+	local ssh_config="${1:-$HOME/.ssh/config}"
+	[[ -r "$ssh_config" ]] || return 0
+
+	local line host
+	# `Host` lines can list multiple names; loop through each.
+	while IFS= read -r line; do
+		# Strip leading whitespace and the `Host` keyword (case-insensitive).
+		line="${line#"${line%%[![:space:]]*}"}"
+		[[ "$line" == (#i)host[[:space:]]* ]] || continue
+		line="${line#[Hh]ost}"
+
+		for host in ${(z)line}; do
+			# Skip wildcards, negations, empty tokens, and FQDNs (dots).
+			# FQDNs are typically used for git providers, not interactive sessions.
+			[[ -z "$host" || "$host" == *[*?!.]* ]] && continue
+			# Skip if name collides with an existing command/alias/function.
+			(( $+commands[$host] )) && continue
+			(( $+aliases[$host] )) && continue
+			(( $+functions[$host] )) && continue
+
+			alias "$host"="ssh $host"
+		done
+	done < "$ssh_config"
+}
+
+ssh-aliases
