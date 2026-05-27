@@ -1,18 +1,15 @@
 #!/usr/bin/env zsh
 
-# Bun setup
+# JS toolchain env: bun runtime, pnpm, ni. Completions live in zshrc via __load_cached.
+
+# Bun (runtime + global packages — single source of truth at ~/.bun/bin)
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
-# pnpm end
 
-# NI
+# ni
 export NI_CONFIG_FILE="$DOTFILES/config/nirc"
 export COREPACK_ENABLE_AUTO_PIN=0
-
-# Bun global packages
-export PATH="$HOME/.cache/.bun/bin:$PATH"
-
-# OpenCode
-export PATH="$HOME/.opencode/bin:$PATH"
