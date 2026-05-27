@@ -8,6 +8,12 @@
 	username = txemaleon
 	signingkey = ~/.ssh/id_rsa.pub
 
+# Work identity override — MUST come after [user] so the included email wins.
+[includeIf "gitdir/i:~/Developer/Work/"]
+	path = ~/.gitconfig-work
+[includeIf "gitdir/i:~/code/work/"]
+	path = ~/.gitconfig-work
+
 [core]
 	excludesfile = ~/.gitignore
 	pager = delta
@@ -33,6 +39,9 @@
 
 [gpg]
 	format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
 
 [color]
 	ui = auto
