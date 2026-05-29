@@ -5,7 +5,14 @@
 # without re-prepending. Aliases/functions/prompt belong in .zshrc.
 
 # Homebrew (installs PATH, MANPATH, INFOPATH, HOMEBREW_* vars)
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Detect prefix per architecture: /opt/homebrew (Apple Silicon), /usr/local (Intel).
+for _brew in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+	if [[ -x "$_brew" ]]; then
+		eval "$("$_brew" shellenv)"
+		break
+	fi
+done
+unset _brew
 
 # OrbStack
 [[ -f "$HOME/.orbstack/shell/init.zsh" ]] && source "$HOME/.orbstack/shell/init.zsh" 2>/dev/null
