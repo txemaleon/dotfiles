@@ -2,9 +2,12 @@
 
 # JS toolchain env: bun runtime, pnpm, ni. Completions live in zshrc via __load_cached.
 
-# Bun (runtime + global packages — single source of truth at ~/.bun/bin)
+# Bun runtime
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Bun global packages (installed via `bun add -g`)
+export PATH="$HOME/.cache/.bun/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
