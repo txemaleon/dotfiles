@@ -1,7 +1,15 @@
 @antfu/ni
+@litencatt/notion-cli
+@shiori-sh/cli
+@steipete/bird
+@steipete/summarize
+agent-browser
+cowsay
 google-indexing-script
-pnpm
+happy-coder
 qmd
+resend-cli
 typescript
 typescript-language-server
 vercel
+wrangler

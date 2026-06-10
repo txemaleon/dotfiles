@@ -1,97 +1,118 @@
+tap "actuallytaylor/formulae"
 tap "buo/cask-upgrade"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "jnsahaj/lumen"
 tap "lotyp/formulae"
 tap "oven-sh/bun"
+tap "replicate/tap"
 tap "shopify/shopify"
 tap "smudge/smudge"
 tap "stripe/stripe-cli"
-tap "yt-dlp/taps"
 tap "zackelia/formulae"
-brew "asimov", restart_service: :changed
+brew "actuallytaylor/formulae/jelly"
 brew "atomicparsley"
 brew "aws-sam-cli"
+brew "awscli"
 brew "bat"
-brew "cloudflared", restart_service: :changed
+brew "cloudflare-cli4"
 brew "cmake"
 brew "coreutils"
-brew "ffmpeg"
+brew "docker", link: false
+brew "duti"
+brew "folly"
 brew "fx"
 brew "fzf"
 brew "gh"
 brew "git-delta"
+brew "git-xet"
 brew "gitui"
 brew "gitup"
+brew "harfbuzz"
+brew "hf"
 brew "httpie", link: false
 brew "imagemagick"
-brew "jq"
 brew "jnsahaj/lumen/lumen"
+brew "jq"
 brew "lazydocker"
-brew "libusb"
+brew "llmfit"
 brew "lotyp/formulae/dockutil"
 brew "mackup"
 brew "mas"
+brew "mbedtls"
 brew "mise"
+brew "mole"
+brew "mongodb-atlas-cli"
+brew "neonctl"
 brew "neovim"
-
 brew "openldap"
 brew "oven-sh/bun/bun"
+brew "pipx"
+brew "poppler"
+brew "postgresql@16", restart_service: :changed, link: true
+brew "protobuf"
 brew "pwgen"
+brew "python@3.10"
 brew "reattach-to-user-namespace"
+brew "reddix"
 brew "rename"
+brew "replicate/tap/replicate"
 brew "ripgrep"
+brew "rtk"
 brew "ruby"
+brew "rust"
+brew "scrcpy"
+brew "sentry-cli"
 brew "shopify/shopify/shopify-cli"
 brew "smudge/smudge/nightlight"
 brew "ssh-copy-id"
 brew "stripe/stripe-cli/stripe"
+brew "switchaudio-osx"
 brew "tldr"
 brew "tmux"
 brew "tree"
+brew "tree-sitter-cli"
 brew "uni2ascii"
 brew "uv"
-brew "watchman"
 brew "wget"
 brew "wifi-password"
 brew "yq"
 brew "yt-dlp"
-brew "zackelia/formulae/bclm"
 brew "zoxide"
 cask "adobe-acrobat-reader"
 cask "aerial"
+cask "android-platform-tools"
 cask "arc"
 cask "audacity"
 cask "autofirma"
-cask "caffeine"
+cask "balenaetcher"
 cask "camo-studio"
+cask "cmux"
+cask "cyberduck"
 cask "dbngin"
-cask "discord"
 cask "font-geist-mono"
 cask "font-ia-writer-duo"
 cask "font-ia-writer-mono"
 cask "font-ia-writer-quattro"
 cask "font-jetbrains-mono"
+cask "gcloud-cli"
 cask "ghostty"
+cask "google-drive"
 cask "handbrake-app"
 cask "httpie-desktop"
 cask "imageoptim"
 cask "jdownloader"
 cask "jellyfin-media-player"
-cask "kapitainsky-rclone-browser"
 cask "karabiner-elements"
 cask "keyboardcleantool"
-cask "kid3"
-cask "kiro"
-cask "logitech-options"
-cask "macs-fan-control"
-cask "macwhisper"
+cask "linearmouse"
 cask "netnewswire"
 cask "ngrok"
 cask "notion"
 cask "obs"
 cask "obs-websocket"
 cask "obsidian"
+cask "opencode-desktop"
 cask "openemu"
 cask "openmtp"
 cask "oracle-jdk"
@@ -102,11 +123,9 @@ cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlmarkdown"
 cask "qlstephen"
-cask "qlvideo"
-cask "raspberry-pi-imager"
+cask "quicklook-video"
 cask "raycast"
 cask "slack"
-cask "syncthing-app"
 cask "tableplus"
 cask "the-unarchiver"
 cask "transmission"
@@ -114,28 +133,27 @@ cask "via"
 cask "vlc"
 mas "Actions", id: 1586435171
 mas "AdGuard for Safari", id: 1440147259
-mas "Artifacts", id: 0
 mas "Consent-O-Matic", id: 1606897889
 mas "Data Jar", id: 1453273600
 mas "Developer", id: 640199958
 mas "Flighty", id: 1358823008
 mas "Hush", id: 1544743900
 mas "Hyperduck", id: 6444667067
-mas "LocalSend", id: 1661733229
+mas "iMovie", id: 408981434
 mas "Minimal Twitter", id: 1668204600
+mas "Notion Web Clipper", id: 1559269364
 mas "Parcel", id: 375589283
 mas "Quick Draft", id: 1496067471
 mas "Raycast Companion", id: 6738274497
 mas "Refined GitHub", id: 1519867270
 mas "Sink It", id: 6449873635
 mas "Supercopy", id: 6477720316
-mas "Synctrain", id: 6553985316
 mas "Tailscale", id: 1475387142
-mas "Tapestry", id: 6448078074
 mas "Telegram", id: 747648890
 mas "TestFlight", id: 899247664
 mas "Things", id: 904280696
+mas "uBlock Origin Lite", id: 6745342698
 mas "Userscripts", id: 1463298887
 mas "Velja", id: 1607635845
 mas "WhatsApp", id: 310633997
-mas "WireGuard", id: 1451685025
+mas "Xcode", id: 497799835
