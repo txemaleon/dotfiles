@@ -84,21 +84,33 @@ dumpBun() {
 		return 0
 	fi
 
-	# Get bun global root directory
-	local bun_root
-	bun_root=$(bun pm bin -g 2>/dev/null)
-	if [ -z "$bun_root" ]; then
-		print_error "Could not determine bun global root"
-		return 0
+	# Locate the global package.json (bun's global dir varies with
+	# BUN_INSTALL_GLOBAL_DIR / XDG cache; probe known locations)
+	local global_pkg=""
+	local candidate
+	for candidate in \
+		"${BUN_INSTALL_GLOBAL_DIR:-}" \
+		"$HOME/.cache/.bun/install/global" \
+		"${BUN_INSTALL:-$HOME/.bun}/install/global"; do
+		if [ -n "$candidate" ] && [ -f "$candidate/package.json" ]; then
+			global_pkg="$candidate/package.json"
+			break
+		fi
+	done
+
+	if [ -z "$global_pkg" ]; then
+		print_error "Could not locate bun global package.json"
+		return 1
 	fi
 
-	# Get only package names from bun global packages
-	bun pm ls -g 2>/dev/null |
-		grep -E "^ " |
-		sed 's/^[[:space:]]*//;s/@.*$//' |
-		grep -v "^bun$" |
-		grep -v "^$" |
-		sort >"$BUNFILE"
+	# Dependency names straight from package.json — survives scoped
+	# packages (@antfu/ni) that text-parsing `bun pm ls -g` would mangle
+	bun -e "console.log(Object.keys(require('$global_pkg').dependencies || {}).sort().join('\n'))" >"$BUNFILE" 2>/dev/null
+
+	if [ ! -s "$BUNFILE" ]; then
+		print_error "Bun packages dump produced an empty file"
+		return 1
+	fi
 
 	local package_count=$(wc -l <"$BUNFILE" | tr -d ' ')
 	print_success "Bun packages list updated with $package_count packages"
