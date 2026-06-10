@@ -18,8 +18,7 @@ function cmux-layout {
   existing=$(command cmux list-workspaces 2>/dev/null || true)
 
   local entry name cwd ref
-  for (( i=${#workspaces[@]}; i>=1; i-- )); do
-    entry="${workspaces[$i]}"
+  for entry in "${workspaces[@]}"; do
     name="${entry%%|*}"
     cwd="${entry##*|}"
 
