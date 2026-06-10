@@ -24,7 +24,8 @@ alias bx="bunx"
 alias bd="bun dev"
 
 # LLMs
-alias cc='happy --yolo --system-prompt "."'
+# alias cc='happy --yolo --system-prompt "."'
+alias cc='claude'
 alias ccc='cc -c'
 alias ccr='cc -r'
 alias aicommit='cc -p "/commit"'
