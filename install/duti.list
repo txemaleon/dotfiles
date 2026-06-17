@@ -1,0 +1,12 @@
+# extension bundle_id — text files open in Neovim Terminal
+json com.custom.neovim-terminal
+csv com.custom.neovim-terminal
+txt com.custom.neovim-terminal
+md com.custom.neovim-terminal
+yaml com.custom.neovim-terminal
+yml com.custom.neovim-terminal
+toml com.custom.neovim-terminal
+conf com.custom.neovim-terminal
+cfg com.custom.neovim-terminal
+ini com.custom.neovim-terminal
+log com.custom.neovim-terminal

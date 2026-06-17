@@ -1,0 +1,10 @@
+# One dock entry per line: app path or ~/folder (used by macos.sh and update)
+/System/Applications/Mail.app
+/System/Cryptexes/App/System/Applications/Safari.app
+/Applications/Arc.app
+/Applications/Ghostty.app
+/Applications/Cursor.app
+/Applications/Whatsapp.app
+/Applications/Slack.app
+~/Desktop
+~/Downloads

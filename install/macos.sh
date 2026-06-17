@@ -2,6 +2,9 @@
 
 # Mostly ripped from ~/.macos — https://mths.be/macos
 
+__macos_dir="${${(%):-%N}:A:h}"
+[[ -f "${__macos_dir}/macos.defaults" ]] && source "${__macos_dir}/macos.defaults"
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -37,6 +40,12 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
 
 # Disable the over-the-top focus ring animation
 defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
+
+# Disable window animations (matches System Settings → Accessibility → Display)
+defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+
+# Font smoothing (Retina: 0–2; non-Retina LCDs often use 1)
+defaults write NSGlobalDomain AppleFontSmoothing -int ${MACOS_FONT_SMOOTHING:-2}
 
 # Disable smooth scrolling
 # (Uncomment if you’re on an older Mac that messes up the animation)
@@ -145,8 +154,11 @@ defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 # defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
 # defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
 
-# Disable “natural” (Lion-style) scrolling
-# defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+# Natural scrolling and trackpad/mouse speed
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool ${MACOS_TRACKPAD_NATURAL_SCROLL:-true}
+defaults write NSGlobalDomain com.apple.trackpad.scrolling -float ${MACOS_TRACKPAD_SCROLLING:-0.5882}
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float ${MACOS_TRACKPAD_SCALING:-0.875}
+defaults write NSGlobalDomain com.apple.scrollwheel.scaling -float ${MACOS_SCROLLWHEEL_SCALING:-0.75}
 
 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
@@ -165,35 +177,31 @@ defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # Keyboard repeat rate (System Settings → Keyboard)
-defaults write NSGlobalDomain KeyRepeat -int 90
-defaults write NSGlobalDomain InitialKeyRepeat -int 25
+defaults write NSGlobalDomain KeyRepeat -int ${MACOS_KEY_REPEAT:-90}
+defaults write NSGlobalDomain InitialKeyRepeat -int ${MACOS_INITIAL_KEY_REPEAT:-25}
 
-# Restore Karabiner-Elements config
-__macos_dir="${${(%):-%N}:A:h}"
-__karabiner_src="${__macos_dir}/karabiner/karabiner.json"
-__karabiner_dir="${HOME}/.config/karabiner"
-if [[ -f "${__karabiner_src}" ]]; then
-	mkdir -p "${__karabiner_dir}"
-	ln -sf "${__karabiner_src}" "${__karabiner_dir}/karabiner.json"
-	if pgrep -xq karabiner_console_user_server; then
-		launchctl kickstart -k "gui/$(id -u)/org.pqrs.karabiner.karabiner_console_user_server" 2>/dev/null || true
-	fi
-fi
-unset __macos_dir __karabiner_src __karabiner_dir
+# App configs (Karabiner, Ghostty, LinearMouse, Velja, …) → mackup restore in installer.sh
+
+# Keyboard layouts for Karabiner language switching (Spanish ISO + U.S.)
+defaults write com.apple.HIToolbox AppleEnabledInputSources -array \
+	'<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>87</integer><key>KeyboardLayout Name</key><string>Spanish - ISO</string></dict>' \
+	'<dict><key>Bundle ID</key><string>com.apple.CharacterPaletteIM</string><key>InputSourceKind</key><string>Non Keyboard Input Method</string></dict>' \
+	'<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>0</integer><key>KeyboardLayout Name</key><string>U.S.</string></dict>' \
+	'<dict><key>Bundle ID</key><string>com.apple.inputmethod.EmojiFunctionRowItem</string><key>InputSourceKind</key><string>Non Keyboard Input Method</string></dict>'
 
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
 # `Inches`, `en_GB` with `en_US`, and `true` with `false`.
 defaults write NSGlobalDomain AppleLanguages -array "es" "en"
 defaults write NSGlobalDomain AppleLocale -string "es_ES@currency=EUR"
-# defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
-# defaults write NSGlobalDomain AppleMetricUnits -bool true
+defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # Hide language menu in the top right corner of the boot screen
 sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool false
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
-# sudo systemsetup -settimezone "Europe/Brussels" > /dev/null
+sudo systemsetup -settimezone "${MACOS_TIMEZONE:-Europe/Madrid}" >/dev/null
 
 # Stop iTunes from responding to the keyboard media keys
 #launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
@@ -202,9 +210,11 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bo
 # Screen                                                                      #
 ###############################################################################
 
-# Require password immediately after sleep or screen saver begins
-# defaults write com.apple.screensaver askForPassword -int 1
-# defaults write com.apple.screensaver askForPasswordDelay -int 0
+# Require password after sleep or screen saver (skipped when MACOS_SCREEN_LOCK unset)
+if [[ -n "${MACOS_SCREEN_LOCK:-}" ]]; then
+	defaults write com.apple.screensaver askForPassword -int 1
+	defaults write com.apple.screensaver askForPasswordDelay -int "${MACOS_SCREEN_LOCK_DELAY:-0}"
+fi
 
 # Save screenshots to the desktop
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
@@ -344,11 +354,11 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
-# Set the icon size of Dock items to 53 pixels
-defaults write com.apple.dock tilesize -int 53
+# Set the icon size of Dock items
+defaults write com.apple.dock tilesize -int ${MACOS_DOCK_TILESIZE:-53}
 
-# Change minimize/maximize window effect
-# defaults write com.apple.dock mineffect -string "scale"
+# Minimize/maximize window effect
+defaults write com.apple.dock mineffect -string "${MACOS_DOCK_MIN_EFFECT:-suck}"
 
 # Minimize windows into their application’s icon
 defaults write com.apple.dock minimize-to-application -bool true
@@ -368,10 +378,10 @@ defaults write com.apple.dock persistent-apps -array
 #defaults write com.apple.dock static-only -bool true
 
 # Don’t animate opening applications from the Dock
-# defaults write com.apple.dock launchanim -bool false
+defaults write com.apple.dock launchanim -bool ${MACOS_DOCK_LAUNCH_ANIM:-false}
 
 # Speed up Mission Control animations
-defaults write com.apple.dock expose-animation-duration -float 0.1
+defaults write com.apple.dock expose-animation-duration -float ${MACOS_DOCK_EXPOSE_ANIMATION:-0}
 
 # Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
@@ -838,10 +848,55 @@ fi
 
 # Set file associations with duti (requires duti: brew install duti)
 if command -v duti &>/dev/null; then
-	duti -s com.custom.neovim-terminal .json all 2>/dev/null
-	duti -s com.custom.neovim-terminal .csv all 2>/dev/null
-	echo "Set JSON/CSV to open with Neovim Terminal"
+	local __duti_list="${__macos_dir}/duti.list"
+	if [[ -f "${__duti_list}" ]]; then
+		while read -r __ext __bundle; do
+			[[ -z "${__ext}" || "${__ext}" =~ ^# ]] && continue
+			duti -s "${__bundle}" ".${__ext}" all 2>/dev/null || true
+		done <"${__duti_list}"
+		echo "Set text file associations from duti.list"
+	else
+		duti -s com.custom.neovim-terminal .json all 2>/dev/null
+		duti -s com.custom.neovim-terminal .csv all 2>/dev/null
+		echo "Set JSON/CSV to open with Neovim Terminal"
+	fi
+	unset __duti_list __ext __bundle
 fi
+
+###############################################################################
+# Power, Dock layout, and login items                                         #
+###############################################################################
+
+# Battery charge limit (requires bclm: brew install bclm)
+if command -v bclm &>/dev/null; then
+	bclm "${MACOS_BCLM_LIMIT:-80}" 2>/dev/null || true
+fi
+
+# Dock app layout (requires dockutil; see install/dock-apps.list)
+source "${__macos_dir}/dock.zsh"
+configure_dock "${__macos_dir}/dock-apps.list"
+
+# Login items (see install/login-items.list)
+__login_items_list="${__macos_dir}/login-items.list"
+if [[ -f "${__login_items_list}" ]]; then
+	while IFS= read -r __login_item; do
+		[[ -z "${__login_item}" || "${__login_item}" =~ ^# ]] && continue
+		__login_path="${__login_item}"
+		[[ "${__login_path}" != /* ]] && __login_path="/Applications/${__login_path}.app"
+		[[ -d "${__login_path}" ]] || continue
+		osascript <<EOF 2>/dev/null || true
+tell application "System Events"
+	set appPath to "${__login_path}"
+	set found to false
+	repeat with li in login items
+		if path of li is appPath then set found to true
+	end repeat
+	if not found then make login item at end with properties {path:appPath, hidden:false}
+end tell
+EOF
+	done <"${__login_items_list}"
+fi
+unset __login_items_list __login_item __login_path
 
 ###############################################################################
 # Kill affected applications                                                  #
@@ -864,4 +919,5 @@ for app in "Activity Monitor" \
 	"iCal"; do
 	killall "${app}" &>/dev/null
 done
+unset __macos_dir
 echo "Done. Note that some of these changes require a logout/restart to take effect."
