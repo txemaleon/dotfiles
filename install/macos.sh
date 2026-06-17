@@ -162,11 +162,24 @@ defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # Disable press-and-hold for keys in favor of key repeat
-# defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-# Set a blazingly fast keyboard repeat rate
-# defaults write NSGlobalDomain KeyRepeat -int 1
-# defaults write NSGlobalDomain InitialKeyRepeat -int 10
+# Keyboard repeat rate (System Settings → Keyboard)
+defaults write NSGlobalDomain KeyRepeat -int 90
+defaults write NSGlobalDomain InitialKeyRepeat -int 25
+
+# Restore Karabiner-Elements config
+__macos_dir="${${(%):-%N}:A:h}"
+__karabiner_src="${__macos_dir}/karabiner/karabiner.json"
+__karabiner_dir="${HOME}/.config/karabiner"
+if [[ -f "${__karabiner_src}" ]]; then
+	mkdir -p "${__karabiner_dir}"
+	ln -sf "${__karabiner_src}" "${__karabiner_dir}/karabiner.json"
+	if pgrep -xq karabiner_console_user_server; then
+		launchctl kickstart -k "gui/$(id -u)/org.pqrs.karabiner.karabiner_console_user_server" 2>/dev/null || true
+	fi
+fi
+unset __macos_dir __karabiner_src __karabiner_dir
 
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with

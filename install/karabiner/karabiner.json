@@ -1,0 +1,227 @@
+{
+	"global": {
+		"ask_for_confirmation_before_quitting": false,
+		"check_for_updates_on_startup": false,
+		"show_in_menu_bar": false
+	},
+	"profiles": [
+		{
+			"complex_modifications": {
+				"parameters": { "basic.to_if_held_down_threshold_milliseconds": 50 },
+				"rules": [
+					{
+						"description": "Language switching and other modifications",
+						"manipulators": [
+							{
+								"description": "F24 to activate dictation (double press fn/globe key)",
+								"from": {
+									"key_code": "f24",
+									"modifiers": { "optional": ["any"] }
+								},
+								"to": [
+									{
+										"key_code": "fn",
+										"modifiers": []
+									},
+									{
+										"key_code": "fn",
+										"modifiers": []
+									}
+								],
+								"type": "basic"
+							},
+							{
+								"description": "F10 always mute",
+								"from": {
+									"key_code": "f10",
+									"modifiers": { "optional": ["any"] }
+								},
+								"to": [
+									{
+										"consumer_key_code": "volume_decrement",
+										"modifiers": []
+									},
+									{
+										"consumer_key_code": "volume_increment",
+										"modifiers": []
+									},
+									{
+										"consumer_key_code": "mute",
+										"modifiers": []
+									}
+								],
+								"type": "basic"
+							},
+							{
+								"description": "Left CMD alone -> Spanish, held -> CMD",
+								"from": {
+									"key_code": "left_command",
+									"modifiers": { "optional": ["any"] }
+								},
+								"to": [{ "key_code": "left_command" }],
+								"to_if_alone": [{ "select_input_source": { "language": "es" } }],
+								"type": "basic"
+							},
+							{
+								"description": "Right CMD alone -> English, held -> right command",
+								"from": {
+									"key_code": "right_command",
+									"modifiers": { "optional": ["any"] }
+								},
+								"to": [{ "key_code": "right_command" }],
+								"to_if_alone": [{ "select_input_source": { "language": "en" } }],
+								"type": "basic"
+							},
+							{
+								"description": "Caps + letter to ctrl+shift+alt+letter, caps alone to escape",
+								"from": {
+									"key_code": "caps_lock",
+									"modifiers": { "optional": ["any"] }
+								},
+								"to": [
+									{
+										"key_code": "left_shift",
+										"lazy": true,
+										"modifiers": ["left_control", "left_option"]
+									}
+								],
+								"to_if_alone": [{ "key_code": "escape" }],
+								"type": "basic"
+							},
+							{
+								"description": "Tab alone = tab, tab held = control",
+								"from": {
+									"key_code": "tab",
+									"modifiers": { "optional": ["any"] }
+								},
+								"to": [{ "key_code": "left_control" }],
+								"to_if_alone": [{ "key_code": "tab" }],
+								"type": "basic"
+							},
+							{
+								"description": "Ctrl+J to Down",
+								"from": {
+									"key_code": "j",
+									"modifiers": {
+										"mandatory": ["control"]
+									}
+								},
+								"to": [{ "key_code": "down_arrow" }],
+								"type": "basic"
+							},
+							{
+								"description": "Ctrl+K to Up",
+								"from": {
+									"key_code": "k",
+									"modifiers": {
+										"mandatory": ["control"]
+									}
+								},
+								"to": [{ "key_code": "up_arrow" }],
+								"type": "basic"
+							},
+							{
+								"description": "Ctrl+A to beginning of line",
+								"from": {
+									"key_code": "a",
+									"modifiers": {
+										"mandatory": ["control"]
+									}
+								},
+								"to": [
+									{
+										"key_code": "left_arrow",
+										"modifiers": ["command"]
+									}
+								],
+								"type": "basic"
+							},
+							{
+								"description": "Ctrl+E to end of line",
+								"from": {
+									"key_code": "e",
+									"modifiers": {
+										"mandatory": ["control"]
+									}
+								},
+								"to": [
+									{
+										"key_code": "right_arrow",
+										"modifiers": ["command"]
+									}
+								],
+								"type": "basic"
+							},
+							{
+								"description": "Ctrl+U to delete to beginning of line",
+								"from": {
+									"key_code": "u",
+									"modifiers": {
+										"mandatory": ["control"]
+									}
+								},
+								"to": [
+									{
+										"key_code": "delete_or_backspace",
+										"modifiers": ["command"]
+									}
+								],
+								"type": "basic"
+							},
+							{
+								"description": "Ctrl+W to delete word backward",
+								"from": {
+									"key_code": "w",
+									"modifiers": {
+										"mandatory": ["control"]
+									}
+								},
+								"to": [
+									{
+										"key_code": "delete_or_backspace",
+										"modifiers": ["option"]
+									}
+								],
+								"type": "basic"
+							},
+							{
+								"description": "Shift+Backspace to Forward Delete",
+								"from": {
+									"key_code": "delete_or_backspace",
+									"modifiers": {
+										"mandatory": ["shift"],
+										"optional": ["any"]
+									}
+								},
+								"to": [{ "key_code": "delete_forward" }],
+								"type": "basic"
+							}
+						]
+					}
+				]
+			},
+			"devices": [
+				{
+					"identifiers": { "is_keyboard": true },
+					"simple_modifications": [
+						{
+							"from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+							"to": [{ "key_code": "left_control" }]
+						},
+						{
+							"from": { "key_code": "escape" },
+							"to": [{ "consumer_key_code": "keyboard_fn" }]
+						}
+					]
+				}
+			],
+			"name": "Default profile",
+			"selected": true,
+			"virtual_hid_keyboard": {
+				"caps_lock_delay_milliseconds": 0,
+				"country_code": 0,
+				"keyboard_type_v2": "ansi"
+			}
+		}
+	]
+}
