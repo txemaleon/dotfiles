@@ -180,7 +180,8 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 defaults write NSGlobalDomain KeyRepeat -int ${MACOS_KEY_REPEAT:-90}
 defaults write NSGlobalDomain InitialKeyRepeat -int ${MACOS_INITIAL_KEY_REPEAT:-25}
 
-# App configs (Karabiner, Ghostty, LinearMouse, Velja, …) → mackup restore in installer.sh
+# App configs (Ghostty, LinearMouse, …) → mackup restore in installer.sh
+# URL routing rules → config/finicky.js (symlinked to ~/.finicky.js)
 
 # Keyboard layouts for Karabiner language switching (Spanish ISO + U.S.)
 defaults write com.apple.HIToolbox AppleEnabledInputSources -array \
@@ -897,6 +898,16 @@ EOF
 	done <"${__login_items_list}"
 fi
 unset __login_items_list __login_item __login_path
+
+# Default browser → Finicky (routes via ~/.finicky.js)
+if [[ -d "/Applications/Finicky.app" ]]; then
+	/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f -R "/Applications/Finicky.app" 2>/dev/null || true
+	if command -v duti &>/dev/null; then
+		duti -s se.johnste.finicky http all 2>/dev/null || true
+		duti -s se.johnste.finicky https all 2>/dev/null || true
+		echo "Set Finicky as default browser (http/https)"
+	fi
+fi
 
 ###############################################################################
 # Kill affected applications                                                  #

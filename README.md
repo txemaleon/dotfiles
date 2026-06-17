@@ -88,10 +88,10 @@ Then run the quick install on the new machine.
 
 ## App configs (Mackup → iCloud)
 
-App settings sync via Mackup, not dotfiles: Claude, Cursor, Velja, Ghostty, etc.
+App settings sync via Mackup: Claude, Cursor, Ghostty, etc.
 
 Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup: `./prepare-migration.sh` or `mackup backup --force`
 
-**Velja:** rules live in the sandbox plist (`install/mackup/velja.cfg`). First backup on old Mac → `mackup restore` on new Mac. Login item restored via `install/login-items.list`. Launch Velja once after restore so the container picks up prefs.
+**Finicky** (browser/URL router): rules in `config/finicky.js` → symlinked to `~/.finicky.js`. Set as default browser via `macos.sh` (duti). Launch at login via `install/login-items.list`.
 
 System/terminal (Dock, Karabiner layouts, shell, defaults): `install/macos.sh` + dotfiles repo.

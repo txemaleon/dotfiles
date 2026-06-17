@@ -184,7 +184,7 @@ captureMacos() {
 	local duti_file="$install_dir/duti.list"
 	local copied=0
 
-	# App configs → iCloud via dumpMackup() (Velja sandbox plist, Ghostty, …)
+	# App configs → iCloud via dumpMackup() (Ghostty, Karabiner, …)
 
 	# Numeric / bool defaults → macos.defaults
 	local timezone key_repeat initial_repeat font_smoothing trackpad_natural

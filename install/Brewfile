@@ -96,6 +96,7 @@ cask "font-ia-writer-duo"
 cask "font-ia-writer-mono"
 cask "font-ia-writer-quattro"
 cask "font-jetbrains-mono"
+cask "finicky"
 cask "gcloud-cli"
 cask "ghostty"
 cask "google-drive"
@@ -155,6 +156,5 @@ mas "TestFlight", id: 899247664
 mas "Things", id: 904280696
 mas "uBlock Origin Lite", id: 6745342698
 mas "Userscripts", id: 1463298887
-mas "Velja", id: 1607635845
 mas "WhatsApp", id: 310633997
 mas "Xcode", id: 497799835
