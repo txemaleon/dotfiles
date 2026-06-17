@@ -5,7 +5,7 @@ alias .='$EDITOR .'
 
 alias bump="nu && cam 'chore: Bump versions' && push"
 
-alias pa="cd ~/Developer/Proyectos/personal-agent && ccc"
+alias pa="cd $PROJECTS_DIR/personal-agent && ccc"
 
 alias brew=" brew"
 
@@ -32,6 +32,10 @@ alias aicommit='cc -p "/commit"'
 alias wdidy='cc -p "/whatdididoyesterday"'
 alias oc='opencode'
 alias occ='opencode -c'
+alias oc-debugger='opencode --agent debugger'
+alias oc-financial='opencode --agent financial'
+alias oc-ai='opencode --agent ai-debug'
+alias oc-research='opencode --agent research'
 
 # Now Shortcuts
 alias deploy="vercel --prod"

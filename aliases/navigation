@@ -34,6 +34,7 @@ alias -- -="cd -"
 
 # Main folder Navigation
 alias d="cd $HOME/Desktop"
-alias p="cd $HOME/Developer/Proyectos"
-alias w="cd $HOME/Developer/Work"
+alias p="cd $PROJECTS_DIR"
+alias w="cd $WORK_DIR"
+alias ws="cd $WORKSPACES_DIR"
 alias dot="cd $DOTFILES"

@@ -4,14 +4,14 @@
 function cmux-layout {
   local cmd=("$@")
   local workspaces=(
-    "Dreamshot|$HOME/Developer/Work/Dreamshot/dreamshot-app"
-    "Notion Calendars|$HOME/Developer/Proyectos/notioncalendars"
-    "Notion to Maps|$HOME/Developer/Proyectos/notiontomaps"
-    "Recibir Licitaciones|$HOME/Developer/Proyectos/recibirlicitaciones.com"
-    "PPPodcasts|$HOME/Developer/Proyectos/pppodcasts.com"
-    "Daily Podcast|$HOME/Developer/Proyectos/daily-podcast"
-    "Asincrono|$HOME/Developer/Proyectos/asincrono.com"
-    "Notion Newsletter|$HOME/Developer/Proyectos/notion-newsletter"
+    "Dreamshot|$WORK_DIR/Dreamshot/dreamshot-app"
+    "Notion Calendars|$PROJECTS_DIR/notioncalendars"
+    "Notion to Maps|$PROJECTS_DIR/notiontomaps"
+    "Recibir Licitaciones|$PROJECTS_DIR/recibirlicitaciones.com"
+    "PPPodcasts|$PROJECTS_DIR/pppodcasts.com"
+    "Daily Podcast|$PROJECTS_DIR/daily-podcast"
+    "Asincrono|$PROJECTS_DIR/asincrono.com"
+    "Notion Newsletter|$PROJECTS_DIR/notion-newsletter"
   )
 
   local existing
