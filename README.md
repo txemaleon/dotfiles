@@ -19,7 +19,7 @@ dotfiles/
 │   ├── prepare-migration.sh
 │   ├── Brewfile
 │   └── Bunfile
-└── local/          # Machine-specific overrides (git-ignored, see *.example files)
+└── local/          # Machine-specific overrides (git-ignored; rare — prefer mackup for apps)
 ```
 
 ## Quick Install
@@ -52,13 +52,19 @@ ssh-keygen -t rsa -b 4096
 git config --global user.signingkey "~/.ssh/id_rsa.pub"
 ```
 
-2. Copy and customize local overrides:
+2. Optional machine-specific overrides and secrets:
 
 ```bash
-cd ~/.config/dotfiles/local
-cp aliases.example aliases
-cp ntfy.example ntfy
+# Paths (defaults in exports/paths) — create if your layout differs:
+# echo 'export PROJECTS_DIR="$HOME/code/projects"' >> ~/.config/dotfiles/local/paths
+
+# Secrets in macOS Keychain (syncs via iCloud Keychain):
+dotfiles-secret set ntfy-token 'tk_...'
+dotfiles-secret set resend-api-token 're_...'
+dotfiles-secret list
 ```
+
+Machine-only overrides: optional `local/paths`, `local/aliases` (git-ignored).
 
 ## Uninstall
 
@@ -79,3 +85,13 @@ git push
 ```
 
 Then run the quick install on the new machine.
+
+## App configs (Mackup → iCloud)
+
+App settings sync via Mackup, not dotfiles: Claude, Cursor, Velja, Ghostty, etc.
+
+Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup: `./prepare-migration.sh` or `mackup backup --force`
+
+**Velja:** rules live in the sandbox plist (`install/mackup/velja.cfg`). First backup on old Mac → `mackup restore` on new Mac. Login item restored via `install/login-items.list`. Launch Velja once after restore so the container picks up prefs.
+
+System/terminal (Dock, Karabiner layouts, shell, defaults): `install/macos.sh` + dotfiles repo.
