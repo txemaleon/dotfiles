@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+# SSH tunnel from Keychain (syncs via iCloud Keychain).
+# Spec format: local_port:remote_host:remote_port:ssh_host
+#   dotfiles-secret set tunnel-db-n2c '3306:localhost:3306:n2c'
+
+tunnel-db-n2c() {
+	local spec local_port remote_host remote_port ssh_host
+	spec=$(security find-generic-password -s dotfiles-secrets -a tunnel-db-n2c -w 2>/dev/null)
+	if [[ -z "$spec" ]]; then
+		print -u2 "Missing Keychain entry. Set with:"
+		print -u2 "  dotfiles-secret set tunnel-db-n2c '3306:localhost:3306:n2c'"
+		return 1
+	fi
+
+	IFS=: read -r local_port remote_host remote_port ssh_host <<<"$spec"
+	if [[ -z "$local_port" || -z "$remote_host" || -z "$remote_port" || -z "$ssh_host" ]]; then
+		print -u2 "Invalid tunnel-db-n2c spec (want local:host:remote:ssh_host)"
+		return 1
+	fi
+
+	exec ssh -N -L "${local_port}:${remote_host}:${remote_port}" "$ssh_host"
+}
