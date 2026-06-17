@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+# Directory layout — override in local/paths (gitignored) per machine.
+export DEV_DIR="${DEV_DIR:-$HOME/Developer}"
+export PROJECTS_DIR="${PROJECTS_DIR:-$DEV_DIR/Proyectos}"
+export WORK_DIR="${WORK_DIR:-$DEV_DIR/Work}"
+export WORKSPACES_DIR="${WORKSPACES_DIR:-$HOME/Workspaces}"
