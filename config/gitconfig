@@ -1,6 +1,6 @@
 [include]
 	path = ~/.gitconfig.local
-	path = ~/.config/dotfiles/config/delta.gitconfig
+	path = delta.gitconfig
 
 [user]
 	name = Txema León
