@@ -6,7 +6,7 @@
 	name = Txema León
 	email = soy@txemaleon.com
 	username = txemaleon
-	signingkey = ~/.ssh/id_rsa.pub
+	signingkey = ~/.ssh/id_ed25519.pub
 
 # Work identity override — MUST come after [user] so the included email wins.
 [includeIf "gitdir/i:~/code/work/"]
