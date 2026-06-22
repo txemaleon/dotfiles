@@ -41,7 +41,16 @@ cleanup_brew() {
 	while IFS= read -r pkg; do
 		# Check if package (or its short name) is in expected list
 		local short_name="${pkg##*/}"  # Handle tap/name format
-		if ! echo "$expected" | grep -qxF "$pkg" && ! echo "$expected" | grep -qxF "$short_name"; then
+		if echo "$expected" | grep -qxF "$pkg"; then
+			continue
+		fi
+		if [[ "$pkg" != */* ]] && echo "$expected" | grep -qxF "$short_name"; then
+			continue
+		fi
+		if [[ "$pkg" == */* ]] && echo "$expected" | grep -qxF "$short_name"; then
+			warn "Replacing tapped formula $pkg with Homebrew core $short_name"
+		fi
+		if ! echo "$expected" | grep -qxF "$pkg"; then
 			orphans+=("$pkg")
 		fi
 	done <<< "$installed"
@@ -62,6 +71,15 @@ cleanup_casks() {
 
 	local expected=$(parse_brewfile "cask")
 	local installed=$(brew list --cask 2>/dev/null | sort -u)
+	local sudo_cask_skip_list=(
+		adobe-acrobat-reader
+		autofirma
+		camo-studio
+		google-drive
+		karabiner-elements
+		obs
+		obs-websocket
+	)
 
 	local orphans=()
 	while IFS= read -r pkg; do
@@ -76,7 +94,13 @@ cleanup_casks() {
 	else
 		warn "Orphan casks: ${orphans[*]}"
 		for pkg in "${orphans[@]}"; do
-			run_cmd brew uninstall --cask "$pkg"
+			if $DRY_RUN; then
+				run_cmd brew uninstall --cask "$pkg"
+			elif [[ "${DOTFILES_ALLOW_SUDO_CASK_CLEANUP:-false}" != "true" && " ${sudo_cask_skip_list[*]} " == *" $pkg "* ]]; then
+				warn "Skipping cask $pkg; set DOTFILES_ALLOW_SUDO_CASK_CLEANUP=true to try its sudo-based uninstaller"
+			else
+				brew uninstall --cask "$pkg" || warn "Could not uninstall cask $pkg; it may require an interactive sudo password"
+			fi
 		done
 	fi
 }

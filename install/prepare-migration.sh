@@ -179,9 +179,11 @@ captureMacos() {
 
 	local install_dir="$SCRIPT_DIR"
 	local defaults_file="$install_dir/macos.defaults"
-	local dock_file="$install_dir/dock-apps.list"
-	local login_file="$install_dir/login-items.list"
-	local duti_file="$install_dir/duti.list"
+	local lists_dir="$install_dir/lists"
+	mkdir -p "$lists_dir"
+	local dock_file="$lists_dir/dock-apps.list"
+	local login_file="$lists_dir/login-items.list"
+	local duti_file="$lists_dir/duti.list"
 	local copied=0
 
 	# App configs → iCloud via dumpMackup() (Ghostty, Karabiner, …)

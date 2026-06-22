@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# JS toolchain env: bun runtime, pnpm, ni. Completions live in zshrc via __load_cached.
+# JS toolchain env: Bun runtime, pnpm, ni. Completions live in zshrc via __load_cached.
 
 # Bun runtime
 export BUN_INSTALL="$HOME/.bun"

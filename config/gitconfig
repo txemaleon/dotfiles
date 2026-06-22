@@ -9,8 +9,6 @@
 	signingkey = ~/.ssh/id_rsa.pub
 
 # Work identity override — MUST come after [user] so the included email wins.
-[includeIf "gitdir/i:~/Developer/Work/"]
-	path = ~/.gitconfig-work
 [includeIf "gitdir/i:~/code/work/"]
 	path = ~/.gitconfig-work
 

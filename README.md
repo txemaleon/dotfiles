@@ -92,6 +92,25 @@ App settings sync via Mackup: Claude, Cursor, Ghostty, etc.
 
 Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup: `./prepare-migration.sh` or `mackup backup --force`
 
-**Finicky** (browser/URL router): rules in `config/finicky.js` → symlinked to `~/.finicky.js`. Set as default browser via `macos.sh` (duti). Launch at login via `install/login-items.list`.
+**Finicky** (browser/URL router): rules in `config/finicky.js` → symlinked to `~/.finicky.js`. Set as default browser via `macos.sh` (duti). Launch at login via `install/lists/login-items.list`.
 
 System/terminal (Dock, Karabiner layouts, shell, defaults): `install/macos.sh` + dotfiles repo.
+
+## macOS major upgrades
+
+This setup intentionally avoids major macOS upgrades such as Tahoe. The `update`
+function installs non-macOS updates only, and `install/macos.sh` disables
+automatic macOS upgrade downloads/restarts.
+
+To hide major macOS upgrades from System Settings for the maximum Apple-supported
+deferral window, install the local profile:
+
+```bash
+./install/defer-major-macos-upgrades.sh
+```
+
+Approve it in System Settings → Privacy & Security → Profiles. Check status with:
+
+```bash
+./install/defer-major-macos-upgrades.sh --status
+```

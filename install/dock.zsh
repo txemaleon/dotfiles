@@ -3,7 +3,7 @@
 # Shared dock layout — sourced by macos.sh and functions/updates
 
 function configure_dock() {
-	local list="${1:-${DOTFILES:-$HOME/.config/dotfiles}/install/dock-apps.list}"
+	local list="${1:-${DOTFILES:-$HOME/.config/dotfiles}/install/lists/dock-apps.list}"
 
 	[[ -f "$list" ]] || return 0
 	command -v dockutil &>/dev/null || return 0

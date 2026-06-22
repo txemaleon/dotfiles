@@ -4,7 +4,6 @@
 function cmux-layout {
   local cmd=("$@")
   local workspaces=(
-    "Dreamshot|$WORK_DIR/Dreamshot/dreamshot-app"
     "Notion Calendars|$PROJECTS_DIR/notioncalendars"
     "Notion to Maps|$PROJECTS_DIR/notiontomaps"
     "Recibir Licitaciones|$PROJECTS_DIR/recibirlicitaciones.com"

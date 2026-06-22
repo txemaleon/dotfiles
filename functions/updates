@@ -2,6 +2,12 @@
 
 alias update='clear; __updateCommands; __updateNPM; __updateApps; __updateDock; __updatesCleanup; __updateBenchmark;'
 
+typeset -ga __DOTFILES_BLOCKED_MACOS_UPGRADES=(
+	"Tahoe"
+	"macOS Tahoe"
+	"Install macOS Tahoe"
+)
+
 function __updateCommands {
 	brew update
 	brew upgrade
@@ -10,7 +16,49 @@ function __updateCommands {
 function __updateApps {
 	brew cu -qay --cleanup --no-brew-update
 	mas upgrade
-	sudo softwareupdate -i -a
+	__updateMacOSSafely
+}
+
+function __updateMacOSSafely {
+	if [[ -d "/Applications/Install macOS Tahoe.app" ]]; then
+		echo "Refusing to continue: /Applications/Install macOS Tahoe.app exists."
+		echo "Remove that installer before running software updates."
+		return 1
+	fi
+
+	local updates
+	updates="$(softwareupdate --list 2>&1 || true)"
+
+	if echo "$updates" | grep -Eqi '(^|[[:space:]])(macOS[[:space:]]+)?Tahoe([[:space:]]|$)|Install macOS Tahoe'; then
+		echo "Refusing to install macOS Tahoe. This machine is pinned away from Tahoe."
+	fi
+
+	local labels=()
+	local label="" block="" line
+	while IFS= read -r line; do
+		if [[ "$line" == \*\ Label:* ]]; then
+			if [[ -n "$label" && "$block" != *"Tahoe"* && "$block" != *"Title: macOS"* && "$block" != *"Install macOS"* ]]; then
+				labels+=("$label")
+			fi
+			label="${line#* Label: }"
+			block="$line"
+		else
+			block+=$'\n'"$line"
+		fi
+	done <<< "$updates"
+
+	if [[ -n "$label" && "$block" != *"Tahoe"* && "$block" != *"Title: macOS"* && "$block" != *"Install macOS"* ]]; then
+		labels+=("$label")
+	fi
+
+	if [[ ${#labels[@]} -eq 0 ]]; then
+		echo "No non-macOS software updates to install."
+		return 0
+	fi
+
+	echo "Installing non-macOS software updates only:"
+	printf ' - %s\n' "${labels[@]}"
+	sudo softwareupdate --install "${labels[@]}"
 }
 
 function __updateNPM {
@@ -24,7 +72,7 @@ function __updatesCleanup {
 
 function __updateDock {
 	source "${DOTFILES}/install/dock.zsh"
-	configure_dock "${DOTFILES}/install/dock-apps.list"
+	configure_dock "${DOTFILES}/install/lists/dock-apps.list"
 }
 
 function __updateBenchmark {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Hide major macOS upgrades such as Tahoe from Software Update for the maximum deferral window supported by macOS.</string>
+			<key>PayloadDisplayName</key>
+			<string>Defer Major macOS Upgrades</string>
+			<key>PayloadIdentifier</key>
+			<string>com.txemaleon.dotfiles.restrictions.defer-major-macos-upgrades</string>
+			<key>PayloadType</key>
+			<string>com.apple.applicationaccess</string>
+			<key>PayloadUUID</key>
+			<string>210CD7B8-0044-496A-A475-6620ACB7CAB0</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>forceDelayedMajorSoftwareUpdates</key>
+			<true/>
+			<key>enforcedSoftwareUpdateMajorOSDeferredInstallDelay</key>
+			<integer>90</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Defers visibility of major macOS upgrades while allowing normal app, Safari, security, and same-major-version update flows.</string>
+	<key>PayloadDisplayName</key>
+	<string>Stay on Current macOS Major Version</string>
+	<key>PayloadIdentifier</key>
+	<string>com.txemaleon.dotfiles.defer-major-macos-upgrades</string>
+	<key>PayloadOrganization</key>
+	<string>txemaleon dotfiles</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>C19E7037-D817-4768-B396-5ABD4236DC73</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

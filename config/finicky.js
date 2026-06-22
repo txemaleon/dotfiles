@@ -1,5 +1,5 @@
 // Browser / URL router — symlinked to ~/.finicky.js by installer.sh
-// Migrated from Velja (2026-06). Set Finicky as default browser in System Settings.
+// Set Finicky as default browser in System Settings.
 
 const ARC = "company.thebrowser.Browser";
 const SAFARI = "com.apple.Safari";
@@ -27,7 +27,7 @@ export default {
 	},
 	rewrite: [{ match: () => true, url: stripTracking }],
 	handlers: [
-		// Native apps (Velja app handlers)
+		// Native app handlers
 		{
 			match: ["zoom.us/j/*", "*.zoom.us/j/*"],
 			browser: "us.zoom.xos",
@@ -49,7 +49,7 @@ export default {
 			browser: "com.apple.Music",
 		},
 
-		// Source-app rules (Velja)
+		// Source-app rules
 		{
 			match: fromApp("com.tinyspeck.slackmacgap"),
 			browser: ARC,
@@ -59,7 +59,7 @@ export default {
 			browser: ARC,
 		},
 
-		// Domain rules (Velja)
+		// Domain rules
 		{
 			match: ["youtube.com/*", "*.youtube.com/*"],
 			browser: ARC,

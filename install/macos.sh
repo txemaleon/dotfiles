@@ -5,6 +5,14 @@
 __macos_dir="${${(%):-%N}:A:h}"
 [[ -f "${__macos_dir}/macos.defaults" ]] && source "${__macos_dir}/macos.defaults"
 
+__macos_sudo() {
+	if [[ "${DOTFILES_MACOS_PRIVILEGED:-false}" == "true" ]]; then
+		sudo "$@"
+	else
+		echo "Skipping privileged macOS command: sudo $*"
+	fi
+}
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -23,7 +31,7 @@ osascript -e 'tell application "System Preferences" to quit'
 # sudo pmset -a standbydelay 86400
 
 # Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
+__macos_sudo nvram SystemAudioVolume=" "
 
 # Disable transparency in the menu bar and elsewhere on Yosemite
 # defaults write com.apple.universalaccess reduceTransparency -bool true
@@ -43,6 +51,27 @@ defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
 
 # Disable window animations (matches System Settings → Accessibility → Display)
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+
+# Desktop: keep classic click behavior. Clicking the wallpaper should not reveal
+# the desktop by pushing all windows aside.
+defaults write com.apple.WindowManager GloballyEnabled -bool false
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+defaults write com.apple.WindowManager HideDesktop -bool false
+defaults write com.apple.WindowManager StageManagerHideWidgets -bool false
+defaults write com.apple.WindowManager StandardHideWidgets -bool false
+defaults -currentHost write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false 2>/dev/null || true
+
+# Keep the menu bar translucent. The accessibility domain can reject writes on
+# some macOS versions, so treat it as best effort.
+defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool true
+defaults -currentHost write NSGlobalDomain AppleEnableMenuBarTransparency -bool true 2>/dev/null || true
+defaults write com.apple.universalaccess reduceTransparency -bool false || true
+
+# Classic multi-display behavior: one shared Space across displays. This keeps
+# the menu bar on the primary display instead of showing it on every display.
+# Requires logging out and back in to fully apply.
+defaults write com.apple.spaces spans-displays -bool true
+defaults -currentHost write com.apple.spaces spans-displays -bool true 2>/dev/null || true
 
 # Font smoothing (Retina: 0–2; non-Retina LCDs often use 1)
 defaults write NSGlobalDomain AppleFontSmoothing -int ${MACOS_FONT_SMOOTHING:-2}
@@ -96,7 +125,7 @@ defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
 # sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
 # Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on
+__macos_sudo systemsetup -setrestartfreeze on
 
 # Never go into computer sleep mode
 # sudo systemsetup -setcomputersleep Off > /dev/null
@@ -167,11 +196,16 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 # (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
+# Disable the Dictation shortcut prompt triggered by pressing Control twice.
+defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 0
+/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:164:enabled false" "$HOME/Library/Preferences/com.apple.symbolichotkeys.plist" 2>/dev/null || \
+	defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 164 "{ enabled = 0; value = { parameters = (262144, 4294705151); type = standard; }; }"
+
 # Use scroll gesture with the Ctrl (^) modifier key to zoom
-defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
-defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
+defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true || true
+defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144 || true
 # Follow the keyboard focus while zoomed in
-defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
+defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true || true
 
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -199,10 +233,10 @@ defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
 defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # Hide language menu in the top right corner of the boot screen
-sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool false
+__macos_sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool false
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
-sudo systemsetup -settimezone "${MACOS_TIMEZONE:-Europe/Madrid}" >/dev/null
+__macos_sudo systemsetup -settimezone "${MACOS_TIMEZONE:-Europe/Madrid}" >/dev/null
 
 # Stop iTunes from responding to the keyboard media keys
 #launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
@@ -639,7 +673,7 @@ defaults write com.apple.terminal StringEncodings -array 4
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # Disable local Time Machine backups
-hash tmutil &>/dev/null && sudo tmutil disablelocal
+hash tmutil &>/dev/null && __macos_sudo tmutil disablelocal
 
 ###############################################################################
 # Activity Monitor                                                            #
@@ -700,8 +734,10 @@ defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
 # Check for software updates daily, not just once per week
 # defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 
-# Download newly available updates in background
-defaults write com.apple.SoftwareUpdate AutomaticDownload -int 1
+# Do not download macOS upgrades in the background. Install non-OS updates
+# explicitly through functions/updates, which blocks Tahoe.
+defaults write com.apple.SoftwareUpdate AutomaticDownload -int 0
+defaults write com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool false
 
 # Install System data files & security updates
 defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
@@ -712,8 +748,8 @@ defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
 # Turn on app auto-update
 defaults write com.apple.commerce AutoUpdate -bool true
 
-# Allow the App Store to reboot machine on macOS updates
-# defaults write com.apple.commerce AutoUpdateRestartRequired -bool true
+# Never let the App Store reboot into macOS upgrades automatically.
+defaults write com.apple.commerce AutoUpdateRestartRequired -bool false
 
 ###############################################################################
 # Photos                                                                      #
@@ -849,7 +885,7 @@ fi
 
 # Set file associations with duti (requires duti: brew install duti)
 if command -v duti &>/dev/null; then
-	local __duti_list="${__macos_dir}/duti.list"
+	local __duti_list="${__macos_dir}/lists/duti.list"
 	if [[ -f "${__duti_list}" ]]; then
 		while read -r __ext __bundle; do
 			[[ -z "${__ext}" || "${__ext}" =~ ^# ]] && continue
@@ -873,12 +909,12 @@ if command -v bclm &>/dev/null; then
 	bclm "${MACOS_BCLM_LIMIT:-80}" 2>/dev/null || true
 fi
 
-# Dock app layout (requires dockutil; see install/dock-apps.list)
+# Dock app layout (requires dockutil; see install/lists/dock-apps.list)
 source "${__macos_dir}/dock.zsh"
-configure_dock "${__macos_dir}/dock-apps.list"
+configure_dock "${__macos_dir}/lists/dock-apps.list"
 
-# Login items (see install/login-items.list)
-__login_items_list="${__macos_dir}/login-items.list"
+# Login items (see install/lists/login-items.list)
+__login_items_list="${__macos_dir}/lists/login-items.list"
 if [[ -f "${__login_items_list}" ]]; then
 	while IFS= read -r __login_item; do
 		[[ -z "${__login_item}" || "${__login_item}" =~ ^# ]] && continue
@@ -927,8 +963,9 @@ for app in "Activity Monitor" \
 	"Safari" \
 	"SystemUIServer" \
 	"Transmission" \
+	"WindowManager" \
 	"iCal"; do
 	killall "${app}" &>/dev/null
 done
 unset __macos_dir
-echo "Done. Note that some of these changes require a logout/restart to take effect."
+echo "Done. Note that multi-display Spaces/menu bar changes require logging out and back in."
