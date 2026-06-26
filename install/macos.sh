@@ -13,6 +13,34 @@ __macos_sudo() {
 	fi
 }
 
+__macos_disable_symbolic_hotkey() {
+	local hotkey_id="$1"
+	local hotkey_value="$2"
+	local hotkeys_plist="${HOME}/Library/Preferences/com.apple.symbolichotkeys.plist"
+
+	/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:${hotkey_id}:enabled false" "${hotkeys_plist}" 2>/dev/null || \
+		defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "${hotkey_id}" "{ enabled = 0; value = ${hotkey_value}; }"
+}
+
+__macos_clear_service_shortcut() {
+	local bundle_id="$1"
+	local message="$2"
+	local services_plist="${HOME}/Library/Preferences/com.apple.ServicesMenu.Services.plist"
+	local index current_bundle current_message
+
+	[[ -f "${services_plist}" ]] || return 0
+
+	for index in {0..300}; do
+		current_bundle=$(/usr/libexec/PlistBuddy -c "Print :NSServices:CFVendedServices:${index}:NSBundleIdentifier" "${services_plist}" 2>/dev/null) || continue
+		current_message=$(/usr/libexec/PlistBuddy -c "Print :NSServices:CFVendedServices:${index}:NSMessage" "${services_plist}" 2>/dev/null) || continue
+
+		if [[ "${current_bundle}" == "${bundle_id}" && "${current_message}" == "${message}" ]]; then
+			/usr/libexec/PlistBuddy -c "Delete :NSServices:CFVendedServices:${index}:NSKeyEquivalent" "${services_plist}" 2>/dev/null || true
+			/usr/libexec/PlistBuddy -c "Add :NSServices:CFVendedServices:${index}:NSKeyEquivalent dict" "${services_plist}" 2>/dev/null || true
+		fi
+	done
+}
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -91,8 +119,29 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
-# Save to disk (not to iCloud) by default
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+# Enable iCloud Drive sync for Desktop and Documents.
+__icloud_drive_path="${HOME}/Library/Mobile Documents/com~apple~CloudDocs"
+if [[ -d "${__icloud_drive_path}" ]]; then
+	defaults write com.apple.finder FXICloudDriveDesktop -bool true
+	defaults write com.apple.finder FXICloudDriveDocuments -bool true
+	defaults write com.apple.finder FXICloudDriveDeclinedUpgrade -bool false
+	defaults write com.apple.finder SidebarShowingiCloudDesktop -bool true
+
+	# Recent macOS versions may reject this transition unless the user confirms
+	# it through System Settings. Surface that instead of silently continuing.
+	killall cfprefsd 2>/dev/null || true
+	if [[ "$(defaults read com.apple.finder FXICloudDriveDesktop 2>/dev/null)" != "1" || \
+		"$(defaults read com.apple.finder FXICloudDriveDocuments 2>/dev/null)" != "1" ]]; then
+		echo "iCloud Desktop/Documents was not accepted by macOS. Enable it in System Settings → Apple Account → iCloud → iCloud Drive → Desktop & Documents Folders."
+		open "x-apple.systempreferences:com.apple.preferences.AppleIDPrefPane?iCloud" 2>/dev/null || true
+	fi
+else
+	echo "Skipping iCloud Desktop/Documents sync: iCloud Drive folder not found"
+fi
+unset __icloud_drive_path
+
+# Save new documents to iCloud by default.
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool true
 
 # Automatically quit printer app once the print jobs complete
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
@@ -196,10 +245,22 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 # (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-# Disable the Dictation shortcut prompt triggered by pressing Control twice.
+# Disable Dictation by default, including the shortcut prompt triggered by
+# pressing Control twice on some macOS versions.
 defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 0
-/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:164:enabled false" "$HOME/Library/Preferences/com.apple.symbolichotkeys.plist" 2>/dev/null || \
-	defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 164 "{ enabled = 0; value = { parameters = (262144, 4294705151); type = standard; }; }"
+defaults write com.apple.assistant.support "Assistant Enabled" -bool false
+__macos_disable_symbolic_hotkey 164 "{ parameters = (262144, 4294705151); type = modifier; }"
+
+# Free Cmd-Space by disabling the default Spotlight shortcuts.
+__macos_disable_symbolic_hotkey 64 "{ parameters = (65535, 49, 1048576); type = standard; }"
+__macos_disable_symbolic_hotkey 65 "{ parameters = (65535, 49, 1572864); type = standard; }"
+
+# Free Ctrl-Option-Shift-C / Ctrl-Shift-C from the default Chinese text
+# conversion Services, which macOS exposes as conflicting system shortcuts.
+__macos_clear_service_shortcut "com.apple.ChineseTextConverterService" "convertTextToSimplifiedChinese"
+__macos_clear_service_shortcut "com.apple.ChineseTextConverterService" "convertTextToTraditionalChinese"
+killall cfprefsd 2>/dev/null || true
+killall pbs 2>/dev/null || true
 
 # Use scroll gesture with the Ctrl (^) modifier key to zoom
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true || true
@@ -913,27 +974,32 @@ fi
 source "${__macos_dir}/dock.zsh"
 configure_dock "${__macos_dir}/lists/dock-apps.list"
 
-# Login items (see install/lists/login-items.list)
+# Login items (see install/lists/login-items.list; append :hidden to launch without a window)
 __login_items_list="${__macos_dir}/lists/login-items.list"
 if [[ -f "${__login_items_list}" ]]; then
 	while IFS= read -r __login_item; do
 		[[ -z "${__login_item}" || "${__login_item}" =~ ^# ]] && continue
+		__login_hidden="false"
 		__login_path="${__login_item}"
+		if [[ "${__login_path}" == *:hidden ]]; then
+			__login_hidden="true"
+			__login_path="${__login_path%:hidden}"
+		fi
 		[[ "${__login_path}" != /* ]] && __login_path="/Applications/${__login_path}.app"
 		[[ -d "${__login_path}" ]] || continue
 		osascript <<EOF 2>/dev/null || true
 tell application "System Events"
 	set appPath to "${__login_path}"
-	set found to false
+	set launchHidden to ${__login_hidden}
 	repeat with li in login items
-		if path of li is appPath then set found to true
+		if path of li is appPath then delete li
 	end repeat
-	if not found then make login item at end with properties {path:appPath, hidden:false}
+	make login item at end with properties {path:appPath, hidden:launchHidden}
 end tell
 EOF
 	done <"${__login_items_list}"
 fi
-unset __login_items_list __login_item __login_path
+unset __login_items_list __login_item __login_path __login_hidden
 
 # Default browser → Finicky (routes via ~/.finicky.js)
 if [[ -d "/Applications/Finicky.app" ]]; then

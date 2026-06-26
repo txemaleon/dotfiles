@@ -19,6 +19,7 @@ dotfiles/
 │   ├── prepare-migration.sh
 │   ├── Brewfile
 │   └── Bunfile
+├── scripts/        # Personal executable scripts and automation entry points
 └── local/          # Machine-specific overrides (git-ignored; rare — prefer mackup for apps)
 ```
 
@@ -92,9 +93,11 @@ App settings sync via Mackup: Claude, Cursor, Ghostty, etc.
 
 Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup: `./prepare-migration.sh` or `mackup backup --force`
 
-**Finicky** (browser/URL router): rules in `config/finicky.js` → symlinked to `~/.finicky.js`. Set as default browser via `macos.sh` (duti). Launch at login via `install/lists/login-items.list`.
+**Finicky** (browser/URL router): rules in `config/finicky.js` → symlinked to `~/.finicky.js`. Set as default browser via `macos.sh` (duti). It is not launched at login; macOS starts it on demand when a URL is opened.
 
 System/terminal (Dock, Karabiner layouts, shell, defaults): `install/macos.sh` + dotfiles repo.
+
+Executable scripts live in `scripts/`. Scripts with Raycast metadata headers are also symlinked to `~/.raycast/scripts` by `install/installer.sh`.
 
 ## macOS major upgrades
 

@@ -15,6 +15,7 @@ SCRIPT_DIR=$(dirname "$SCRIPT_ABS_PATH") # Absolute path to the install director
 PARENT_DIR=$(dirname "$SCRIPT_DIR")      # Absolute path to the dotfiles root directory
 INSTALL_DIR="$SCRIPT_DIR"                # Use absolute path for install dir too
 DOTFILES_CONFIG_DIR="$PARENT_DIR/config" # Absolute path to config dir
+DOTFILES_SCRIPTS_DIR="$PARENT_DIR/scripts"
 ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 ICLOUD_CONFIG="$ICLOUD_PATH/config"
 ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
@@ -102,6 +103,23 @@ install_dotfiles() {
 		echo "Linking $FILE => $TARGET_FILE"
 		ln -s "$FILE" "$TARGET_FILE"
 	done
+}
+
+install_raycast_scripts() {
+	[[ -d "$DOTFILES_SCRIPTS_DIR" ]] || return 0
+
+	mkdir -p "$HOME/.raycast/scripts"
+	for script in "$DOTFILES_SCRIPTS_DIR"/*(.N); do
+		grep -q "^# @raycast.schemaVersion " "$script" || continue
+		local target="$HOME/.raycast/scripts/${script:t}"
+		if [[ -e "$target" && ! -L "$target" ]]; then
+			rm -f "$target"
+		fi
+		echo "Linking $script => $target"
+		ln -sf "$script" "$target"
+		chmod +x "$script"
+	done
+	unset script
 }
 
 install_homebrew() {
@@ -201,6 +219,7 @@ show_upgrade_deferral_status() {
 
 validate_layout
 install_dotfiles
+install_raycast_scripts
 install_homebrew
 cleanup_packages
 install_brew_packages
