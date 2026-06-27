@@ -6,6 +6,7 @@ echo "Uninstalling dotfiles..."
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.config/dotfiles}"
 CONFIG_DIR="$DOTFILES_DIR/config"
+DOTFILES_SCRIPTS_DIR="$DOTFILES_DIR/scripts"
 
 if [ ! -d "$CONFIG_DIR" ]; then
 	echo "Error: Config directory not found at $CONFIG_DIR"
@@ -22,6 +23,18 @@ for file in "$CONFIG_DIR"/*; do
 		rm "$target"
 	fi
 done
+
+if [ -d "$DOTFILES_SCRIPTS_DIR" ]; then
+	echo "Removing symlinked Raycast scripts..."
+	for script in "$DOTFILES_SCRIPTS_DIR"/*(.N); do
+		grep -q "^# @raycast.schemaVersion " "$script" || continue
+		target="$HOME/.raycast/scripts/${script:t}"
+		if [ -L "$target" ]; then
+			echo "  Removing $target"
+			rm "$target"
+		fi
+	done
+fi
 
 # Remove zinit
 ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit"

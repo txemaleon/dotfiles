@@ -4,16 +4,37 @@
 const ARC = "company.thebrowser.Browser";
 const SAFARI = "com.apple.Safari";
 
-const fromApp = (...bundleIds) => ({ opener }) =>
+const fromApp = (...bundleIds) => (_url, { opener } = {}) =>
 	opener && bundleIds.includes(opener.bundleId);
 
-const stripTracking = ({ url }) => {
+const stripTracking = (url) => {
 	for (const key of [...url.searchParams.keys()]) {
 		if (key.startsWith("utm_") || key === "fbclid" || key === "gclid") {
 			url.searchParams.delete(key);
 		}
 	}
 	return url;
+};
+
+const GOOGLE_AND_YOUTUBE_HOSTS = [
+	"googleadservices.com",
+	"googleapis.com",
+	"googleusercontent.com",
+	"gstatic.com",
+	"youtu.be",
+	"youtube.com",
+	"youtube-nocookie.com",
+	"ytimg.com",
+];
+
+const matchesDomain = (host, domain) => host === domain || host.endsWith(`.${domain}`);
+
+const isGoogleOrYoutube = (url) => {
+	const host = url.hostname.toLowerCase();
+	return (
+		/(^|\.)google\.[a-z.]+$/.test(host) ||
+		GOOGLE_AND_YOUTUBE_HOSTS.some((domain) => matchesDomain(host, domain))
+	);
 };
 
 /** @type {import('/Applications/Finicky.app/Contents/Resources/finicky.d.ts').FinickyConfig} */
@@ -61,7 +82,15 @@ export default {
 
 		// Domain rules
 		{
-			match: ["youtube.com/*", "*.youtube.com/*"],
+			match: isGoogleOrYoutube,
+			browser: ARC,
+		},
+		{
+			match: ["bing.com/*", "*.bing.com/*"],
+			browser: ARC,
+		},
+		{
+			match: ["txemaleon.net/*", "*.txemaleon.net/*"],
 			browser: ARC,
 		},
 		{
@@ -71,10 +100,6 @@ export default {
 		{
 			match: ["apple.com/*", "*.apple.com/*"],
 			browser: SAFARI,
-		},
-		{
-			match: ["meet.google.com/*"],
-			browser: ARC,
 		},
 		{
 			match: ["twitter.com/*", "*.twitter.com/*", "x.com/*", "*.x.com/*"],
