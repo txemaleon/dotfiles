@@ -23,6 +23,13 @@ alias b="bun"
 alias bx="bunx"
 alias bd="bun dev"
 
+# Python Shortcuts
+alias py="uv run python"
+alias pyx="uvx"
+alias pyl="uv run ruff check"
+alias pyfmt="uv run ruff format"
+alias pytypes="pyright"
+
 # LLMs
 # alias cc='happy --yolo --system-prompt "."'
 alias cc='claude'

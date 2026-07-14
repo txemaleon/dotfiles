@@ -66,6 +66,8 @@ __load_cached() {
 __load_cached fzf fzf "--zsh"
 __load_cached zoxide zoxide "init zsh"
 __load_cached mise mise "activate zsh"
+__load_cached uv uv "generate-shell-completion zsh"
+__load_cached direnv direnv "hook zsh"
 __load_cached bun bun "completions"
 
 regen-shell-cache() {

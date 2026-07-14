@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# Keep ad-hoc Python tools installed by `uv tool install` on PATH.
+PATH="$HOME/.local/bin:$PATH"
+
+# Prefer explicit, per-project virtual environments over global pip installs.
+export PIP_REQUIRE_VIRTUALENV=true
+
+export PATH
