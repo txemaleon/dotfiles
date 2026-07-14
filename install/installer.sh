@@ -49,6 +49,37 @@ install_launchagents() {
 	unset agent
 }
 
+install_launchdaemons() {
+	local daemons_dir="$INSTALL_DIR/launchdaemons"
+	[[ -d "$daemons_dir" ]] || return 0
+
+	if [[ -x "$INSTALL_DIR/support/raycast-priority" ]]; then
+		sudo mkdir -p /usr/local/bin
+		sudo cp "$INSTALL_DIR/support/raycast-priority" /usr/local/bin/raycast-priority
+		sudo chown root:wheel /usr/local/bin/raycast-priority
+		sudo chmod 755 /usr/local/bin/raycast-priority
+	fi
+	if [[ -x "$INSTALL_DIR/support/codex-priority" ]]; then
+		sudo mkdir -p /usr/local/bin
+		sudo cp "$INSTALL_DIR/support/codex-priority" /usr/local/bin/codex-priority
+		sudo chown root:wheel /usr/local/bin/codex-priority
+		sudo chmod 755 /usr/local/bin/codex-priority
+	fi
+
+	for daemon in "$daemons_dir"/*.plist(.N); do
+		local target="/Library/LaunchDaemons/${daemon:t}"
+		echo "Installing LaunchDaemon ${daemon:t}"
+		sudo cp "$daemon" "$target"
+		sudo chown root:wheel "$target"
+		sudo chmod 644 "$target"
+		sudo launchctl bootout system "$target" >/dev/null 2>&1 || true
+		sudo launchctl bootstrap system "$target" >/dev/null 2>&1 || true
+		sudo launchctl enable "system/${daemon:t:r}" >/dev/null 2>&1 || true
+		sudo launchctl kickstart -k "system/${daemon:t:r}" >/dev/null 2>&1 || true
+	done
+	unset daemon
+}
+
 check_karabiner_setup() {
 	local cli="/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli"
 	[[ -x "$cli" ]] || return 0
@@ -226,6 +257,7 @@ install_brew_packages
 restore_mackup
 check_karabiner_setup
 install_launchagents
+install_launchdaemons
 install_node_tools
 configure_git
 configure_macos
