@@ -4,6 +4,7 @@ brew "bun"
 brew "node"
 
 # Small shell/dev baseline used by these dotfiles.
+brew "dockutil"
 brew "fzf"
 brew "gh"
 brew "git"
@@ -25,7 +26,7 @@ brew "zoxide"
 
 # Desktop apps kept intentionally minimal.
 cask "arc"
-cask "codex-app"
+cask "chatgpt"
 cask "cursor"
 cask "finicky"
 cask "ghostty"
@@ -55,4 +56,5 @@ mas "Things", id: 904280696
 mas "uBlock Origin Lite", id: 6745342698
 mas "Userscripts", id: 1463298887
 
-# `codex-app` installs Codex.app. Homebrew exposes `codex` separately as the CLI.
+# `chatgpt` installs the desktop app that hosts Codex. Homebrew exposes `codex`
+# separately as the CLI.
