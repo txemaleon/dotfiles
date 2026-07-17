@@ -3,6 +3,9 @@
 SCRIPT_DIR=$(dirname "${0:A}")
 BREWFILE="$SCRIPT_DIR/Brewfile"
 BUNFILE="$SCRIPT_DIR/Bunfile"
+ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+ICLOUD_SYNC_PATHS=("$ICLOUD_PATH/.config" "$ICLOUD_PATH/config")
+ICLOUD_SYNC_WAIT_SECONDS="${DOTFILES_ICLOUD_WAIT_SECONDS:-1800}"
 
 print_status() {
 	echo "🔄 $1"
@@ -21,6 +24,118 @@ check_command() {
 		print_error "$1 is not installed or not in PATH"
 		return 1
 	fi
+}
+
+run_icloud_probe() {
+	local timeout_seconds="$1"
+	shift
+	local output_file
+	local probe_pid
+	local probe_deadline
+	local exit_code=0
+
+	output_file="$(mktemp -t dotfiles-icloud-probe)" || return 1
+	"$@" >"$output_file" 2>/dev/null &
+	probe_pid=$!
+	probe_deadline=$((SECONDS + timeout_seconds))
+
+	while kill -0 "$probe_pid" 2>/dev/null; do
+		if ((SECONDS >= probe_deadline)); then
+			kill "$probe_pid" 2>/dev/null || true
+			wait "$probe_pid" 2>/dev/null || true
+			rm -f "$output_file"
+			return 124
+		fi
+		sleep 0.1
+	done
+
+	wait "$probe_pid" || exit_code=$?
+	REPLY="$(<"$output_file")"
+	rm -f "$output_file"
+	return "$exit_code"
+}
+
+icloud_path_is_uploaded() {
+	local icloud_item="$1"
+	local probe_seconds="$2"
+	local state
+
+	[[ -d "$icloud_item" ]] || return 1
+	run_icloud_probe "$probe_seconds" fileproviderctl evaluate "$icloud_item" || return 1
+	state="$REPLY"
+	grep -q 'isUploaded = 1;' <<<"$state" &&
+		grep -q 'isUploading = 0;' <<<"$state" &&
+		grep -q 'hasUnresolvedConflicts = 0;' <<<"$state"
+}
+
+icloud_trees_have_no_pending_uploads() {
+	local probe_seconds="$1"
+	local sync_state
+	local icloud_item
+	local relative_path
+
+	run_icloud_probe "$probe_seconds" brctl status || return 1
+	sync_state="$REPLY"
+	for icloud_item in "${ICLOUD_SYNC_PATHS[@]}"; do
+		relative_path="${icloud_item#$ICLOUD_PATH}"
+		if grep -Fq "Under ${relative_path}" <<<"$sync_state"; then
+			return 1
+		fi
+	done
+	return 0
+}
+
+wait_for_icloud_upload() {
+	case "$ICLOUD_SYNC_WAIT_SECONDS" in
+		'' | *[!0-9]*)
+			print_error "DOTFILES_ICLOUD_WAIT_SECONDS must be a non-negative integer (received: $ICLOUD_SYNC_WAIT_SECONDS)"
+			return 1
+			;;
+	esac
+
+	if ! check_command "fileproviderctl"; then
+		print_error "Cannot verify that the iCloud backup finished uploading"
+		return 1
+	fi
+	if ! check_command "brctl"; then
+		print_error "Cannot verify recursively that the iCloud backup finished uploading"
+		return 1
+	fi
+
+	local deadline=$((SECONDS + ICLOUD_SYNC_WAIT_SECONDS))
+	local icloud_item
+	local paths_uploaded
+	local remaining
+	local sleep_seconds
+	local probe_seconds
+
+	print_status "Waiting for iCloud to finish uploading (${ICLOUD_SYNC_WAIT_SECONDS}s timeout)..."
+	while true; do
+		paths_uploaded=true
+		for icloud_item in "${ICLOUD_SYNC_PATHS[@]}"; do
+			remaining=$((deadline - SECONDS))
+			probe_seconds=$((remaining > 0 ? (remaining < 5 ? remaining : 5) : 1))
+			icloud_path_is_uploaded "$icloud_item" "$probe_seconds" || paths_uploaded=false
+		done
+
+		# Directory item flags alone are insufficient: brctl reports pending
+		# descendants with their path (for example, "Under /config/...").
+		remaining=$((deadline - SECONDS))
+		probe_seconds=$((remaining > 0 ? (remaining < 30 ? remaining : 30) : 1))
+		if $paths_uploaded && icloud_trees_have_no_pending_uploads "$probe_seconds"; then
+			print_success "iCloud configuration upload completed"
+			return 0
+		fi
+
+		remaining=$((deadline - SECONDS))
+		((remaining > 0)) || break
+		sleep_seconds=$((remaining < 5 ? remaining : 5))
+		sleep "$sleep_seconds"
+	done
+
+	print_error "iCloud did not finish uploading within ${ICLOUD_SYNC_WAIT_SECONDS}s"
+	print_error "Leave the Mac online and rerun prepare-migration.sh before migrating"
+	return 1
 }
 
 dumpBrew() {
@@ -121,8 +236,8 @@ dumpMackup() {
 	print_status "Syncing app configs to iCloud (mackup)..."
 
 	if ! check_command "mackup"; then
-		print_error "mackup not found, skipping backup"
-		return 0
+		print_error "mackup not found; app configuration backup cannot be created"
+		return 1
 	fi
 
 	# Ensure dotfiles mackup definitions are active before backup
@@ -137,12 +252,12 @@ dumpMackup() {
 		unset _mackup_cfg
 	fi
 
-	if mackup backup --force &>/dev/null; then
-		print_success "Mackup backup completed"
+	if mackup backup --force && wait_for_icloud_upload; then
+		print_success "Mackup backup completed and uploaded"
 		return 0
 	else
 		print_error "Mackup backup failed"
-		return 0
+		return 1
 	fi
 }
 

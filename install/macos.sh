@@ -22,6 +22,54 @@ __macos_disable_symbolic_hotkey() {
 		defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "${hotkey_id}" "{ enabled = 0; value = ${hotkey_value}; }"
 }
 
+__macos_set_symbolic_hotkey() {
+	local hotkey_id="$1"
+	local key_equivalent="$2"
+	local virtual_key_code="$3"
+	local modifiers="$4"
+
+	defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "${hotkey_id}" \
+		"{ enabled = 1; value = { parameters = (${key_equivalent}, ${virtual_key_code}, ${modifiers}); type = standard; }; }"
+
+	# `defaults` persists the shortcut but does not notify WindowServer. Apply
+	# the same value through CoreGraphics so it takes effect without a logout.
+	if command -v swift >/dev/null 2>&1; then
+		DOTFILES_HOTKEY_ID="${hotkey_id}" \
+		DOTFILES_HOTKEY_EQUIVALENT="${key_equivalent}" \
+		DOTFILES_HOTKEY_KEY_CODE="${virtual_key_code}" \
+		DOTFILES_HOTKEY_MODIFIERS="${modifiers}" \
+			swift -e '
+import Darwin
+import Foundation
+
+typealias SetHotKey = @convention(c) (Int32, UInt16, UInt16, UInt32) -> Int32
+typealias EnableHotKey = @convention(c) (Int32, Bool) -> Int32
+
+let environment = ProcessInfo.processInfo.environment
+guard
+    let hotKeyID = Int32(environment["DOTFILES_HOTKEY_ID"] ?? ""),
+    let keyEquivalent = UInt16(environment["DOTFILES_HOTKEY_EQUIVALENT"] ?? ""),
+    let keyCode = UInt16(environment["DOTFILES_HOTKEY_KEY_CODE"] ?? ""),
+    let modifiers = UInt32(environment["DOTFILES_HOTKEY_MODIFIERS"] ?? ""),
+    let coreGraphics = dlopen("/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics", RTLD_LAZY),
+    let setPointer = dlsym(coreGraphics, "CGSSetSymbolicHotKeyValue"),
+    let enablePointer = dlsym(coreGraphics, "CGSSetSymbolicHotKeyEnabled")
+else {
+    exit(1)
+}
+
+let setHotKey = unsafeBitCast(setPointer, to: SetHotKey.self)
+let enableHotKey = unsafeBitCast(enablePointer, to: EnableHotKey.self)
+guard
+    setHotKey(hotKeyID, keyEquivalent, keyCode, modifiers) == 0,
+    enableHotKey(hotKeyID, true) == 0
+else {
+    exit(1)
+}
+' || echo "Shortcut ${hotkey_id} was saved but will require a logout to activate."
+	fi
+}
+
 __macos_clear_service_shortcut() {
 	local bundle_id="$1"
 	local message="$2"
@@ -244,6 +292,10 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 # Enable full keyboard access for all controls
 # (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Cycle through windows of the current application with Option-Tab.
+# Holding Shift cycles in the opposite direction.
+__macos_set_symbolic_hotkey 27 65535 48 524288
 
 # Disable Dictation by default, including the shortcut prompt triggered by
 # pressing Control twice on some macOS versions.
@@ -1031,7 +1083,7 @@ for app in "Activity Monitor" \
 	"Transmission" \
 	"WindowManager" \
 	"iCal"; do
-	killall "${app}" &>/dev/null
+	killall "${app}" &>/dev/null || true
 done
 unset __macos_dir
 echo "Done. Note that multi-display Spaces/menu bar changes require logging out and back in."

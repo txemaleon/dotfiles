@@ -18,6 +18,8 @@ DOTFILES_CONFIG_DIR="$PARENT_DIR/config" # Absolute path to config dir
 DOTFILES_SCRIPTS_DIR="$PARENT_DIR/scripts"
 ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 ICLOUD_CONFIG="$ICLOUD_PATH/config"
+ICLOUD_KEEP_DOWNLOADED_PATHS=("$ICLOUD_PATH/.config" "$ICLOUD_CONFIG")
+ICLOUD_WAIT_SECONDS="${DOTFILES_ICLOUD_WAIT_SECONDS:-1800}"
 ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
 
 link_mackup_config() {
@@ -31,6 +33,120 @@ link_mackup_config() {
 		done
 		unset _mackup_cfg
 	fi
+}
+
+run_icloud_probe() {
+	local timeout_seconds="$1"
+	shift
+	local output_file
+	local probe_pid
+	local probe_deadline
+	local exit_code=0
+
+	output_file="$(mktemp -t dotfiles-icloud-probe)" || return 1
+	"$@" >"$output_file" 2>/dev/null &
+	probe_pid=$!
+	probe_deadline=$((SECONDS + timeout_seconds))
+
+	while kill -0 "$probe_pid" 2>/dev/null; do
+		if ((SECONDS >= probe_deadline)); then
+			kill "$probe_pid" 2>/dev/null || true
+			wait "$probe_pid" 2>/dev/null || true
+			rm -f "$output_file"
+			return 124
+		fi
+		sleep 0.1
+	done
+
+	wait "$probe_pid" || exit_code=$?
+	REPLY="$(<"$output_file")"
+	rm -f "$output_file"
+	return "$exit_code"
+}
+
+icloud_path_is_ready() {
+	local icloud_item="$1"
+	local probe_seconds="$2"
+	local state
+
+	[[ -d "$icloud_item" ]] || return 1
+	command -v fileproviderctl >/dev/null 2>&1 || return 1
+
+	run_icloud_probe "$probe_seconds" fileproviderctl evaluate "$icloud_item" || return 1
+	state="$REPLY"
+	grep -q 'isKeepDownloaded = 1;' <<<"$state" &&
+		grep -q 'isRecursivelyDownloaded = 1;' <<<"$state" &&
+		grep -q 'isMostRecentVersionDownloaded = 1;' <<<"$state"
+}
+
+wait_for_icloud() {
+	case "$ICLOUD_WAIT_SECONDS" in
+		'' | *[!0-9]*)
+			echo "❌ DOTFILES_ICLOUD_WAIT_SECONDS must be a non-negative integer (received: $ICLOUD_WAIT_SECONDS)." >&2
+			return 1
+			;;
+	esac
+
+	if ! command -v fileproviderctl >/dev/null 2>&1; then
+		echo "❌ fileproviderctl is required to verify that iCloud files are fully downloaded." >&2
+		return 1
+	fi
+	if ! command -v xattr >/dev/null 2>&1; then
+		echo "❌ xattr is required to keep the iCloud configuration folders downloaded." >&2
+		return 1
+	fi
+
+	local deadline=$((SECONDS + ICLOUD_WAIT_SECONDS))
+	local icloud_item
+	local remaining
+	local sleep_seconds
+	local probe_seconds
+
+	echo "Waiting for iCloud Drive configuration (${ICLOUD_WAIT_SECONDS}s timeout)..."
+	while true; do
+		local paths_exist=true
+		for icloud_item in "${ICLOUD_KEEP_DOWNLOADED_PATHS[@]}"; do
+			[[ -d "$icloud_item" ]] || paths_exist=false
+		done
+		$paths_exist && break
+
+		remaining=$((deadline - SECONDS))
+		((remaining > 0)) || break
+		sleep_seconds=$((remaining < 5 ? remaining : 5))
+		sleep "$sleep_seconds"
+	done
+
+	for icloud_item in "${ICLOUD_KEEP_DOWNLOADED_PATHS[@]}"; do
+		if [[ ! -d "$icloud_item" ]]; then
+			echo "❌ iCloud path is not available: $icloud_item" >&2
+			echo "   Sign in to your Apple Account, enable iCloud Drive, then rerun the installer." >&2
+			return 1
+		fi
+		xattr -w 'com.apple.fileprovider.pinned#PX' 1 "$icloud_item"
+	done
+
+	echo "Keeping required iCloud folders downloaded and waiting for hydration..."
+	while true; do
+		local paths_ready=true
+		for icloud_item in "${ICLOUD_KEEP_DOWNLOADED_PATHS[@]}"; do
+			remaining=$((deadline - SECONDS))
+			probe_seconds=$((remaining > 0 ? (remaining < 5 ? remaining : 5) : 1))
+			icloud_path_is_ready "$icloud_item" "$probe_seconds" || paths_ready=false
+		done
+		$paths_ready && {
+			echo "iCloud configuration is downloaded and ready."
+			return 0
+		}
+
+		remaining=$((deadline - SECONDS))
+		((remaining > 0)) || break
+		sleep_seconds=$((remaining < 5 ? remaining : 5))
+		sleep "$sleep_seconds"
+	done
+
+	echo "❌ iCloud configuration did not finish downloading within ${ICLOUD_WAIT_SECONDS}s." >&2
+	echo "   Leave the Mac online and rerun the installer; already completed steps are safe to repeat." >&2
+	return 1
 }
 
 install_launchagents() {
@@ -178,18 +294,15 @@ install_brew_packages() {
 
 restore_mackup() {
 	link_mackup_config
-	if [ -d "$ICLOUD_CONFIG" ]; then
-		if command -v mackup &>/dev/null; then
-			echo "Restoring app configs from iCloud (mackup)..."
+	if command -v mackup &>/dev/null; then
+		wait_for_icloud
+		echo "Restoring app configs from iCloud (mackup)..."
 
-			# Restore copies from iCloud (not symlinks — avoids sync issues)
-			mackup restore --force
-			link_mackup_config
-		else
-			echo "mackup not installed, skipping app config restore"
-		fi
+		# Restore independent local copies. App changes never mutate iCloud live.
+		mackup restore --force
+		link_mackup_config
 	else
-		echo "⚠️  iCloud not configured, skipping mackup restore"
+		echo "mackup not installed, skipping app config restore"
 	fi
 }
 
@@ -217,15 +330,15 @@ configure_git() {
 }
 
 configure_macos() {
-	if [[ "${DOTFILES_APPLY_MACOS:-false}" == "true" && -f "$INSTALL_DIR/macos.sh" ]]; then
+	if [[ "${DOTFILES_APPLY_MACOS:-true}" == "true" && -f "$INSTALL_DIR/macos.sh" ]]; then
 		echo "Applying macOS settings..."
 		if [[ "${DOTFILES_MACOS_PRIVILEGED:-false}" == "true" ]]; then
 			start_sudo_keepalive
 		fi
 		source "$INSTALL_DIR/macos.sh"
 		stop_sudo_keepalive
-	elif [[ "${DOTFILES_APPLY_MACOS:-false}" != "true" ]]; then
-		echo "Skipping macOS settings. Set DOTFILES_APPLY_MACOS=true to apply them."
+	elif [[ "${DOTFILES_APPLY_MACOS:-true}" != "true" ]]; then
+		echo "Skipping macOS settings because DOTFILES_APPLY_MACOS=false."
 	else
 		echo "Warning: macos.sh not found at $INSTALL_DIR/macos.sh"
 	fi

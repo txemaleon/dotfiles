@@ -25,9 +25,18 @@ dotfiles/
 
 ## Quick Install
 
+Sign in to your Apple Account and enable iCloud Drive before running the
+installer. It waits up to 30 minutes for the configuration folders, marks
+`.config` and `config` as Keep Downloaded, and does not restore Mackup until
+File Provider reports that their latest contents are available locally.
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/txemaleon/dotfiles/master/install.sh | bash
 ```
+
+macOS settings are applied by default. Set `DOTFILES_APPLY_MACOS=false` only
+when intentionally installing packages and dotfiles without changing system
+preferences.
 
 Use a specific branch:
 
@@ -87,11 +96,15 @@ git push
 
 Then run the quick install on the new machine.
 
-## App configs (Mackup → iCloud)
+## App config snapshots (Mackup → iCloud)
 
-App settings sync via Mackup: Claude, Cursor, Ghostty, etc.
+Mackup stores explicit backup/restore snapshots for Claude, Cursor, Ghostty,
+LinearMouse, Neovim, and other configured apps. Restore creates independent
+local copies, not links to iCloud, so later iCloud changes cannot mutate live
+application configuration.
 
-Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup: `./prepare-migration.sh` or `mackup backup --force`
+Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup:
+`./prepare-migration.sh` (waits for iCloud upload) or `mackup backup --force`
 
 **Finicky** (browser/URL router): rules in `config/finicky.js` → symlinked to `~/.finicky.js`. Set as default browser via `macos.sh` (duti). It is not launched at login; macOS starts it on demand when a URL is opened.
 
