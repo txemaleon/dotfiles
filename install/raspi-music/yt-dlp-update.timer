@@ -1,0 +1,10 @@
+[Unit]
+Description=Update yt-dlp daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=6h
+
+[Install]
+WantedBy=timers.target

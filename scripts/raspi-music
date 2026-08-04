@@ -1,0 +1,155 @@
+#!/bin/bash
+
+set -euo pipefail
+
+export PATH="${RASPI_MUSIC_PATH:-/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin}"
+
+remote_host="${RASPI_MUSIC_HOST:-raspi}"
+ssh_bin="$(command -v ssh || true)"
+
+usage() {
+	cat >&2 <<'EOF'
+Usage: raspi-music play URL
+       raspi-music stop
+       raspi-music status
+       raspi-music logs
+EOF
+}
+
+run_remote() {
+	local remote_command="$1"
+
+	"$ssh_bin" \
+		-o BatchMode=yes \
+		-o ConnectTimeout=5 \
+		"$remote_host" \
+		"$remote_command"
+}
+
+play() {
+	local url="$1"
+	local remote_command
+
+	if [[ "$url" == *$'\n'* || "$url" == *$'\r'* ]]; then
+		echo "URL must be a single line." >&2
+		exit 64
+	fi
+
+	case "$url" in
+		http://* | https://*) ;;
+		*)
+			echo "URL must start with http:// or https://." >&2
+			exit 64
+			;;
+	esac
+
+	remote_command=$(cat <<'EOF'
+set -eu
+IFS= read -r url
+PATH=/usr/local/bin:/usr/bin:/bin
+command -v mpv >/dev/null 2>&1 || {
+	echo "mpv is not installed on the Raspberry." >&2
+	exit 69
+}
+command -v yt-dlp >/dev/null 2>&1 || {
+	echo "yt-dlp is not installed on the Raspberry." >&2
+	exit 69
+}
+pkill -x mpv 2>/dev/null || true
+attempt=0
+while pgrep -x mpv >/dev/null && [ "$attempt" -lt 20 ]; do
+	sleep 0.1
+	attempt=$((attempt + 1))
+done
+pkill -KILL -x mpv 2>/dev/null || true
+nohup mpv "$url" >/tmp/mpv.log 2>&1 </dev/null &
+echo "Started Raspberry playback."
+EOF
+)
+
+	printf '%s\n' "$url" | run_remote "$remote_command"
+}
+
+show_logs() {
+	run_remote 'tail -n 100 /tmp/mpv.log'
+}
+
+show_status() {
+	local remote_command
+
+	remote_command=$(cat <<'EOF'
+if pgrep -x mpv >/dev/null; then
+	echo "playing"
+	pgrep -a -x mpv
+else
+	echo "stopped"
+fi
+EOF
+)
+
+	run_remote "$remote_command"
+}
+
+stop_playback() {
+	local remote_command
+
+	remote_command=$(cat <<'EOF'
+set -eu
+pkill -x mpv 2>/dev/null || true
+attempt=0
+while pgrep -x mpv >/dev/null && [ "$attempt" -lt 20 ]; do
+	sleep 0.1
+	attempt=$((attempt + 1))
+done
+pkill -KILL -x mpv 2>/dev/null || true
+echo "Stopped Raspberry playback."
+EOF
+)
+
+	run_remote "$remote_command"
+}
+
+[[ -n "$ssh_bin" ]] || {
+	echo "ssh is not available." >&2
+	exit 69
+}
+
+(( $# >= 1 )) || {
+	usage
+	exit 64
+}
+
+case "$1" in
+	play)
+		(( $# == 2 )) || {
+			usage
+			exit 64
+		}
+		play "$2"
+		;;
+	stop)
+		(( $# == 1 )) || {
+			usage
+			exit 64
+		}
+		stop_playback
+		;;
+	status)
+		(( $# == 1 )) || {
+			usage
+			exit 64
+		}
+		show_status
+		;;
+	logs)
+		(( $# == 1 )) || {
+			usage
+			exit 64
+		}
+		show_logs
+		;;
+	*)
+		usage
+		exit 64
+		;;
+esac
