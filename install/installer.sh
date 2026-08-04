@@ -155,6 +155,7 @@ install_launchagents() {
 
 	mkdir -p "$HOME/Library/LaunchAgents"
 	for agent in "$agents_dir"/*.plist(.N); do
+		[[ "${agent:t}" == "com.txema.docker-storage-cleanup.plist" ]] && continue
 		local target="$HOME/Library/LaunchAgents/${agent:t}"
 		ln -sf "$agent" "$target"
 		launchctl bootout "gui/$(id -u)" "$target" >/dev/null 2>&1 || true
@@ -163,6 +164,16 @@ install_launchagents() {
 		launchctl kickstart -k "gui/$(id -u)/${agent:t:r}" >/dev/null 2>&1 || true
 	done
 	unset agent
+}
+
+install_docker_storage_cleanup() {
+	local component_installer="$INSTALL_DIR/docker-storage-cleanup.sh"
+
+	[[ -x "$component_installer" ]] || {
+		echo "❌ Docker storage cleanup installer is missing or not executable: $component_installer" >&2
+		return 1
+	}
+	"$INSTALL_DIR/docker-storage-cleanup.sh" install
 }
 
 install_launchdaemons() {
@@ -361,21 +372,28 @@ show_upgrade_deferral_status() {
 	fi
 }
 
-validate_layout
-install_dotfiles
-install_raycast_scripts
-install_homebrew
-cleanup_packages
-install_brew_packages
-restore_mackup
-check_karabiner_setup
-install_launchagents
-install_launchdaemons
-install_node_tools
-configure_git
-configure_macos
-install_zinit
-show_upgrade_deferral_status
+run_installer() {
+	validate_layout
+	install_dotfiles
+	install_raycast_scripts
+	install_homebrew
+	cleanup_packages
+	install_brew_packages
+	restore_mackup
+	check_karabiner_setup
+	install_docker_storage_cleanup
+	install_launchagents
+	install_launchdaemons
+	install_node_tools
+	configure_git
+	configure_macos
+	install_zinit
+	show_upgrade_deferral_status
 
-echo "Installation complete."
-echo "Note: Plugins will auto-install on first shell startup via zinit."
+	echo "Installation complete."
+	echo "Note: Plugins will auto-install on first shell startup via zinit."
+}
+
+if [[ "${DOTFILES_INSTALLER_SOURCE_ONLY:-false}" != "true" ]]; then
+	run_installer "$@"
+fi

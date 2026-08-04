@@ -13,6 +13,11 @@ if [ ! -d "$CONFIG_DIR" ]; then
 	exit 1
 fi
 
+if [[ -x "$DOTFILES_DIR/install/docker-storage-cleanup.sh" ]]; then
+	echo "Removing scheduled Docker storage cleanup..."
+	"$DOTFILES_DIR/install/docker-storage-cleanup.sh" uninstall
+fi
+
 # Remove symlinks created by installer
 echo "Removing symlinked config files..."
 for file in "$CONFIG_DIR"/*; do

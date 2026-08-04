@@ -1,0 +1,126 @@
+#!/usr/bin/env zsh
+
+set -euo pipefail
+
+export PATH="${DOCKER_STORAGE_CLEANUP_PATH:-/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin}"
+
+label="docker-storage-cleanup"
+script_name="${0:t}"
+lock_file="${TMPDIR:-/tmp}/com.txema.docker-storage-cleanup.lock"
+expected_endpoint="unix://${HOME}/.orbstack/run/docker.sock"
+dry_run=false
+builders=(
+	kamal-local-docker-container
+	kamal-local-registry-docker-container
+)
+
+log() {
+	print -- "$(date '+%Y-%m-%d %H:%M:%S') [$label] $*"
+}
+
+usage() {
+	print -- "Usage: $script_name [--force|--dry-run]"
+}
+
+case "${1:-}" in
+	--force) ;;
+	--dry-run) dry_run=true ;;
+	*)
+		usage >&2
+		exit 64
+		;;
+esac
+(( $# <= 1 )) || {
+	usage >&2
+	exit 64
+}
+
+run_mutation() {
+	if $dry_run; then
+		log "Would run: $*"
+	else
+		"$@"
+	fi
+}
+
+command -v docker >/dev/null 2>&1 || {
+	log "Docker CLI is unavailable; skipping."
+	exit 0
+}
+command -v jq >/dev/null 2>&1 || {
+	log "jq is unavailable; skipping because the Buildx target cannot be verified."
+	exit 0
+}
+
+if [[ -n "${DOCKER_HOST:-}" || -n "${BUILDX_BUILDER:-}" ]]; then
+	log "A Docker endpoint or Buildx builder override is active; skipping."
+	exit 0
+fi
+
+context="$(docker context show 2>/dev/null || true)"
+if [[ "$context" != "orbstack" ]]; then
+	log "Docker context is '${context:-unavailable}', not 'orbstack'; skipping."
+	exit 0
+fi
+
+context_endpoint="$(docker context inspect "$context" --format '{{.Endpoints.docker.Host}}' 2>/dev/null || true)"
+if [[ "$context_endpoint" != "$expected_endpoint" ]]; then
+	log "The 'orbstack' context does not point to the local OrbStack socket; skipping."
+	exit 0
+fi
+
+if ! docker info >/dev/null 2>&1; then
+	log "OrbStack Docker is not running; skipping without starting it."
+	exit 0
+fi
+
+integer lock_fd
+exec {lock_fd}>"$lock_file"
+if ! lockf -s -t 0 "$lock_fd"; then
+	log "Another cleanup is already running; skipping."
+	exit 0
+fi
+
+builder_inventory="$(docker buildx ls --format '{{json .}}' 2>/dev/null || true)"
+builder_is_safe() {
+	local builder_name="$1"
+	local expected_driver="$2"
+
+	print -r -- "$builder_inventory" | jq -s -e \
+		--arg name "$builder_name" \
+		--arg driver "$expected_driver" '
+			[.[] | select(.Name == $name)] as $builders |
+			($builders | length) > 0 and
+			all($builders[];
+				.Driver == $driver and
+				(.Nodes | length) > 0 and
+				all(.Nodes[]; .Endpoint == "orbstack")
+			)
+		' >/dev/null 2>&1
+}
+
+if ! builder_is_safe orbstack docker; then
+	log "The 'orbstack' builder does not target the verified OrbStack context; skipping."
+	exit 0
+fi
+
+log "Disk usage before cleanup:"
+docker system df
+
+for builder in "${builders[@]}"; do
+	if builder_is_safe "$builder" docker-container; then
+		run_mutation docker buildx stop "$builder"
+	fi
+done
+
+run_mutation docker buildx prune --builder orbstack --all --force
+run_mutation docker image prune --all --force
+run_mutation docker volume prune --force
+
+log "Disk usage after cleanup:"
+docker system df
+if $dry_run; then
+	log "Dry run completed; no Docker data was changed."
+else
+	log "Cleanup completed. Named volumes and stopped containers were preserved."
+fi

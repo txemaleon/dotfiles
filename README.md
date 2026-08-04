@@ -8,6 +8,7 @@ Personal macOS configuration: shell, git, tmux, neovim, and 270+ aliases.
 dotfiles/
 ├── aliases/        # Command aliases (dev, docker, git, navigation, os, utilities, vim)
 ├── config/         # Dotfile configs (zshrc, gitconfig, tmux.conf, editorconfig, etc.)
+├── docs/           # Operational documentation for managed workstation services
 ├── exports/        # Environment variables (PATH, XDG, node, homebrew, claude, ntfy)
 ├── functions/      # Shell functions (git workflows, updates, notifications, etc.)
 ├── install/        # Installation and migration scripts
@@ -111,6 +112,35 @@ Definitions: `install/mackup.cfg` + `install/mackup/*.cfg` · backup:
 System/terminal (Dock, Karabiner layouts, shell, defaults): `install/macos.sh` + dotfiles repo.
 
 Executable scripts live in `scripts/`. Scripts with Raycast metadata headers are also symlinked to `~/.raycast/scripts` by `install/installer.sh`.
+
+## Docker storage cleanup (OrbStack)
+
+`scripts/docker-storage-cleanup` safely cleans unused Docker data when the active
+context is OrbStack. It removes BuildKit cache, unused images, and anonymous
+orphan volumes. Named volumes and stopped containers are preserved.
+
+The LaunchAgent `com.txema.docker-storage-cleanup` runs once when it is loaded
+and then every 72 hours. It skips the run if OrbStack is stopped, so maintenance
+never starts the VM by itself. The standard workstation bootstrap installs,
+loads, and verifies it automatically.
+
+```bash
+# Preview the operations without changing Docker data
+docker-storage-cleanup --dry-run
+
+# Run the cleanup immediately
+docker-storage-cleanup --force
+
+# Inspect the scheduled task
+./install/docker-storage-cleanup.sh status
+```
+
+Logs are written to `~/Library/Logs/com.txema.docker-storage-cleanup.log` and
+`~/Library/Logs/com.txema.docker-storage-cleanup.err.log`.
+
+See [Docker storage cleanup](docs/docker-storage-cleanup.md) for the exact
+deletion policy, safety checks, workstation installation, BuildKit GC settings,
+troubleshooting, and uninstall procedure.
 
 ## macOS major upgrades
 
