@@ -1,6 +1,6 @@
 [include]
 	path = ~/.gitconfig.local
-	path = delta.gitconfig
+	path = ~/.config/dotfiles/config/delta.gitconfig
 
 [user]
 	name = Txema León
@@ -129,9 +129,10 @@
 	required = true
 
 [filter "lfs"]
-	clean = git lfs clean %f
-	smudge = git lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 	required = true
+	process = git-lfs filter-process
 
 [mergetool]
 	keepBackup = false
