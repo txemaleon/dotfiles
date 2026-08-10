@@ -18,4 +18,7 @@ for _ in {1..20}; do
 done
 pkill -9 -x mpv 2>/dev/null
 
-nohup "$mpv_bin" --no-video --ytdl-format='bestaudio/best' "https://www.youtube.com/watch?v=D4MdHQOILdw" > /tmp/mpv.log 2>&1 &
+# NOTE: original repo URL (D4MdHQOILdw) went dead — YouTube removed that stream.
+# Anjunadeep has no 24/7 live house radio, so this points at their official
+# "Anjunadeep Essentials" continuous DJ mix on infinite loop. Set 2026-08-10.
+nohup "$mpv_bin" --no-video --loop=inf --ytdl-format='bestaudio/best' "https://www.youtube.com/watch?v=RhRUVQTOshE" > /tmp/mpv.log 2>&1 &
