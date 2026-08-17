@@ -14,4 +14,6 @@ raspi_music_bin="${RASPI_MUSIC_BIN:-$HOME/.local/bin/raspi-music}"
 	exit 69
 }
 
-exec "$raspi_music_bin" play "https://www.youtube.com/watch?v=D4MdHQOILdw"
+# Spinnin' Records — official 24/7 live radio, energetic house/EDM. Replaces
+# D4MdHQOILdw, which YouTube removed; same station as play-house.sh on macOS.
+exec "$raspi_music_bin" play "https://www.youtube.com/watch?v=xf9Ejt4OmWQ"

@@ -24,7 +24,7 @@ RASPI_MUSIC_BIN="$fake_cli" \
 	RASPI_MUSIC_WRAPPER_ARGS_LOG="$arguments_log" \
 	"$repo_root/scripts/play-house-raspi.sh"
 
-expected=$'play\nhttps://www.youtube.com/watch?v=D4MdHQOILdw'
+expected=$'play\nhttps://www.youtube.com/watch?v=xf9Ejt4OmWQ'
 [[ "$(<"$arguments_log")" == "$expected" ]] || fail "House wrapper delegated unexpected arguments"
 
 print "PASS: the House Raycast command delegates its URL to raspi-music"
