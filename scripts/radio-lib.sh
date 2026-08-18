@@ -13,6 +13,8 @@
 #
 # Both run under a `bash -c` whose argv carries the RADIO_RESTART_LOOP marker,
 # so starting any station can stop the previous one with `pkill -f`.
+# A parallel test on 2026-08-18 measured 11 restarts in 10 minutes with
+# yt-dlp's default client and none with Android, so playback pins Android.
 
 radio_play() {
 	local url="$1"
@@ -62,6 +64,7 @@ radio_play() {
 		# Auto-restart loop.
 		while true; do
 			"$1" --no-video --ytdl-format=bestaudio/best \
+				--ytdl-raw-options="extractor-args=youtube:player_client=android" \
 				--cache=yes --demuxer-max-bytes=64MiB "$2" >"$log" 2>&1
 			sleep 1
 		done
