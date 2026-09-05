@@ -5,7 +5,7 @@ alias .='$EDITOR .'
 
 alias bump="nu && cam 'chore: Bump versions' && push"
 
-alias pa="cd $PROJECTS_DIR/personal-agent && ccc"
+alias pa="cd $HOME/agents/personal-agent && ccc"
 
 alias brew=" brew"
 

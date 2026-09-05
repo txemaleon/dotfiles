@@ -2,6 +2,6 @@
 
 # Directory layout — override in local/paths (gitignored) per machine.
 export DEV_DIR="$HOME/code"
-export PROJECTS_DIR="$DEV_DIR/personal"
-export WORK_DIR="$DEV_DIR/work"
+export PROJECTS_DIR="$DEV_DIR"
+export WORK_DIR="$HOME/archive/code/work"
 export WORKSPACES_DIR="$HOME/workspaces"
