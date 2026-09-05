@@ -1,4 +1,5 @@
 tap "jnsahaj/lumen"
+tap "smudge/smudge"
 
 brew "bun"
 brew "node"
@@ -13,6 +14,7 @@ brew "git-delta"
 brew "gitup"
 brew "jq"
 brew "jnsahaj/lumen/lumen"
+brew "smudge/smudge/nightlight"
 brew "mackup"
 brew "mas"
 brew "mise"
