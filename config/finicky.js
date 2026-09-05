@@ -100,7 +100,7 @@ export default {
 				"zoomapp.cloud/*",
 				"*.zoomapp.cloud/*",
 			],
-			browser: null,
+			browser: SAFARI,
 		},
 		{
 			match: isGoogleMaps,
