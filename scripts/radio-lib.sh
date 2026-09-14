@@ -1,6 +1,7 @@
 #!/bin/bash
 # Shared player for the Music Raycast scripts (play-*.sh).
-# Each station script sources this file and calls:  radio_play <youtube-url>
+# Each station script sources this file and calls:
+#     radio_play <url> [extra mpv args...]
 #
 # Why a wrapper at all: YouTube live HLS returns 403 once its CDN token rotates
 # after a few minutes (known mpv/ffmpeg bug, mpv#16594 / #16563). A lone mpv
@@ -9,15 +10,27 @@
 #   1. Auto-restart loop  — if mpv EXITS, wait 2s and relaunch; yt-dlp then
 #                           re-resolves a fresh manifest/CDN host.
 #   2. Stuck-clock watchdog — if mpv stays ALIVE but its playback clock stops
-#                           advancing (~30s), kill it so the loop re-resolves.
+#                           advancing (~6s), kill it so the loop re-resolves.
 #
 # Both run under a `bash -c` whose argv carries the RADIO_RESTART_LOOP marker,
 # so starting any station can stop the previous one with `pkill -f`.
+#
 # A parallel test on 2026-08-18 measured 11 restarts in 10 minutes with
 # yt-dlp's default client and none with Android, so playback pins Android.
+#
+# Two knobs, for stations that are a playlist rather than one endless live
+# stream (see play-proton.sh):
+#   RADIO_STUCK_POLLS  how many 2s polls without progress before the watchdog
+#                      kills mpv. Default 3 (~6s). Raise it when a track change
+#                      needs a yt-dlp resolve, which looks exactly like a stall.
+#   extra mpv args     appended after the shared flags, so a station can add
+#                      e.g. --shuffle or override --ytdl-raw-options.
 
 radio_play() {
 	local url="$1"
+	shift
+	local extra_args=("$@")
+	local stuck_polls="${RADIO_STUCK_POLLS:-3}"
 	local mpv_bin="${MPV_BIN:-$(command -v mpv)}"
 	if [ -z "$mpv_bin" ]; then
 		echo "mpv not found" >&2
@@ -38,14 +51,17 @@ radio_play() {
 
 	nohup bash -c '
 		# RADIO_RESTART_LOOP
+		mpv_bin="$1"; url="$2"; stuck_limit="$3"; shift 3
+		extra_args=("$@")
 		log=/tmp/mpv.log
 
 		# Watchdog: mpv prints a playback position as "A: h:mm:ss" in its status
 		# line. On a healthy live stream it advances every second; when YouTube
 		# rotates its CDN token the position freezes (403 skip-buffering loop)
-		# and mpv does NOT exit on its own. So we poll every 2s and, after ~6s
-		# with no progress, kill mpv -> the loop below re-resolves a fresh host.
-		# Fast on purpose: this gap IS the audible cut, so we minimise it.
+		# and mpv does NOT exit on its own. So we poll every 2s and, after
+		# stuck_limit polls with no progress, kill mpv -> the loop below
+		# re-resolves a fresh host. Fast on purpose for live stations: this gap
+		# IS the audible cut, so we minimise it.
 		(
 			last=""; stuck=0
 			while true; do
@@ -53,7 +69,7 @@ radio_play() {
 				cur=$(grep -oE "A: [0-9:]+" "$log" 2>/dev/null | tail -1)
 				if [ -n "$cur" ] && [ "$cur" = "$last" ]; then
 					stuck=$((stuck + 1))
-					[ "$stuck" -ge 3 ] && { pkill -x mpv 2>/dev/null; stuck=0; }
+					[ "$stuck" -ge "$stuck_limit" ] && { pkill -x mpv 2>/dev/null; stuck=0; }
 				else
 					stuck=0
 				fi
@@ -63,10 +79,11 @@ radio_play() {
 
 		# Auto-restart loop.
 		while true; do
-			"$1" --no-video --ytdl-format=bestaudio/best \
+			"$mpv_bin" --no-video --ytdl-format=bestaudio/best \
 				--ytdl-raw-options="extractor-args=youtube:player_client=android" \
-				--cache=yes --demuxer-max-bytes=64MiB "$2" >"$log" 2>&1
+				--cache=yes --demuxer-max-bytes=64MiB \
+				"${extra_args[@]}" "$url" >"$log" 2>&1
 			sleep 1
 		done
-	' _ "$mpv_bin" "$url" >/dev/null 2>&1 &
+	' _ "$mpv_bin" "$url" "$stuck_polls" "${extra_args[@]}" >/dev/null 2>&1 &
 }
