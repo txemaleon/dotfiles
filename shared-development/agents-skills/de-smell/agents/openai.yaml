@@ -1,0 +1,4 @@
+interface:
+  display_name: "De-smell"
+  short_description: "Remove obvious LLM writing tells"
+  default_prompt: "Use $de-smell to revise this copy so it sounds like a specific human wrote it, without changing the facts."

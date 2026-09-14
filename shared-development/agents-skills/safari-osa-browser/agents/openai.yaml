@@ -1,0 +1,4 @@
+interface:
+  display_name: "Safari OSA Browser"
+  short_description: "Control logged-in Safari sessions with OSA"
+  default_prompt: "Use $safari-osa-browser to work in my existing logged-in Safari session."

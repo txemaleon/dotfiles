@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session Review"
+  short_description: "Review session changes against spec and standards"
+  default_prompt: "Use $session-review to review this session's changes against its specification and repository standards."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Umami Analytics"
+  short_description: "Query product traffic from self-hosted Umami"
+  default_prompt: "Use $umami-analytics to show traffic and visitors for Airtable to Calendar this week."

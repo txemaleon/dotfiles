@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web de producto"
+  short_description: "Coordina home, posicionamiento, copy y SEO/GEO"
+  default_prompt: "Usa $build-product-site para generar o mejorar la home y las páginas de posicionamiento de este proyecto, reutilizando su contexto y comprobando el resultado."

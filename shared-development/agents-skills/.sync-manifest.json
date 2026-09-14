@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "skills": {
+    "babysit": {
+      "lastSyncedAt": 1783012955479
+    },
+    "loop": {
+      "lastSyncedAt": 1783012955479
+    },
+    "review": {
+      "lastSyncedAt": 1783012955479
+    },
+    "review-bugbot": {
+      "lastSyncedAt": 1783012955479
+    },
+    "review-security": {
+      "lastSyncedAt": 1783012955479
+    },
+    "shell": {
+      "lastSyncedAt": 1783012955479
+    },
+    "split-to-prs": {
+      "lastSyncedAt": 1783012955479
+    }
+  },
+  "lastInventoryAt": 1783012622606
+}

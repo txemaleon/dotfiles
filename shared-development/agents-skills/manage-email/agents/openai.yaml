@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gestión de email"
+  short_description: "Lee, busca y gestiona el correo personal"
+  default_prompt: "Usa $manage-email para revisar y gestionar mi correo según lo que te pida."

@@ -1,0 +1,400 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'USAGE'
+Usage: safari_osa COMMAND [ARGS]
+
+Read-only:
+  status
+  find-tabs QUERY
+  list-tabs
+  get title|url|text|source [WINDOW_INDEX] [TAB_INDEX]
+
+Navigation and state:
+  activate
+  open URL [WINDOW_INDEX]       Open a new tab in an existing window
+  open-window URL               Open URL in a new Safari window
+  focus WINDOW_INDEX TAB_INDEX
+  wait-ready [WINDOW_INDEX] [TAB_INDEX] [TIMEOUT_SECONDS]
+  js [WINDOW_INDEX] [TAB_INDEX] < script.js
+
+Mutating commands:
+  close-tab WINDOW_INDEX TAB_INDEX
+  close-window WINDOW_INDEX
+  bounds WINDOW_INDEX LEFT TOP RIGHT BOTTOM
+  add-reading-list URL [TITLE] [PREVIEW_TEXT]
+  search QUERY [WINDOW_INDEX] [TAB_INDEX]
+  show-bookmarks
+
+Indices are 1-based and can change after window/tab mutations. `open` defaults to
+the front window; specify a window after using `list-tabs` when profile/session
+continuity matters. Multiline JavaScript is read from stdin, not shell arguments.
+USAGE
+}
+
+die() {
+  printf 'safari_osa: %s\n' "$*" >&2
+  exit 2
+}
+
+require_uint() {
+  [[ "${1:-}" =~ ^[1-9][0-9]*$ ]] || die "expected a positive integer, got '${1:-}'"
+}
+
+command="${1:-help}"
+if [[ $# -gt 0 ]]; then
+  shift
+fi
+
+case "$command" in
+  help|-h|--help)
+    usage
+    ;;
+
+  status)
+    version=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' /Applications/Safari.app/Contents/Info.plist 2>/dev/null || printf 'unknown')
+    if ! /usr/bin/pgrep -x Safari >/dev/null 2>&1; then
+      printf 'version\t%s\nrunning\tfalse\n' "$version"
+      exit 0
+    fi
+    /usr/bin/osascript - "$version" <<'APPLESCRIPT'
+on run argv
+    set safariVersion to item 1 of argv
+    set fieldSeparator to ASCII character 9
+    tell application "Safari"
+        set windowCount to count of windows
+        set tabCount to 0
+        repeat with w in windows
+            set tabCount to tabCount + (count of tabs of w)
+        end repeat
+        return "version" & fieldSeparator & safariVersion & linefeed & "running" & fieldSeparator & "true" & linefeed & "windows" & fieldSeparator & windowCount & linefeed & "tabs" & fieldSeparator & tabCount & linefeed & "frontmost" & fieldSeparator & frontmost
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  list-tabs)
+    /usr/bin/osascript - <<'APPLESCRIPT'
+on cleanText(v)
+    set cleaned to ""
+    repeat with c in characters of (v as text)
+        set codePoint to id of c
+        if codePoint < 32 or codePoint = 127 or (codePoint >= 128 and codePoint <= 159) then
+            set cleaned to cleaned & " "
+        else
+            set cleaned to cleaned & c
+        end if
+    end repeat
+    return cleaned
+end cleanText
+
+tell application "Safari"
+    set fieldSeparator to ASCII character 9
+    set rows to {"window" & fieldSeparator & "tab" & fieldSeparator & "visible" & fieldSeparator & "title" & fieldSeparator & "url"}
+    repeat with wi from 1 to count of windows
+        repeat with ti from 1 to count of tabs of window wi
+            set t to tab ti of window wi
+            set end of rows to (wi as text) & fieldSeparator & (ti as text) & fieldSeparator & (visible of t as text) & fieldSeparator & my cleanText(name of t) & fieldSeparator & my cleanText(URL of t)
+        end repeat
+    end repeat
+    set oldDelimiters to AppleScript's text item delimiters
+    set AppleScript's text item delimiters to linefeed
+    set output to rows as text
+    set AppleScript's text item delimiters to oldDelimiters
+    return output
+end tell
+APPLESCRIPT
+    ;;
+
+  find-tabs)
+    [[ $# -eq 1 && -n "$1" ]] || die 'find-tabs requires a non-empty QUERY'
+    /usr/bin/osascript - "$1" <<'APPLESCRIPT'
+on cleanText(v)
+    set cleaned to ""
+    repeat with c in characters of (v as text)
+        set codePoint to id of c
+        if codePoint < 32 or codePoint = 127 or (codePoint >= 128 and codePoint <= 159) then
+            set cleaned to cleaned & " "
+        else
+            set cleaned to cleaned & c
+        end if
+    end repeat
+    return cleaned
+end cleanText
+
+on run argv
+    set queryText to item 1 of argv
+    set fieldSeparator to ASCII character 9
+    tell application "Safari"
+        set rows to {"window" & fieldSeparator & "tab" & fieldSeparator & "visible" & fieldSeparator & "title" & fieldSeparator & "url"}
+        repeat with wi from 1 to count of windows
+            repeat with ti from 1 to count of tabs of window wi
+                set t to tab ti of window wi
+                set tabTitle to my cleanText(name of t)
+                set tabURL to my cleanText(URL of t)
+                set isMatch to false
+                ignoring case
+                    if tabTitle contains queryText or tabURL contains queryText then set isMatch to true
+                end ignoring
+                if isMatch then set end of rows to (wi as text) & fieldSeparator & (ti as text) & fieldSeparator & (visible of t as text) & fieldSeparator & tabTitle & fieldSeparator & tabURL
+            end repeat
+        end repeat
+        set oldDelimiters to AppleScript's text item delimiters
+        set AppleScript's text item delimiters to linefeed
+        set output to rows as text
+        set AppleScript's text item delimiters to oldDelimiters
+        return output
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  activate)
+    /usr/bin/osascript -e 'tell application "Safari" to activate'
+    ;;
+
+  open)
+    [[ $# -ge 1 && $# -le 2 ]] || die 'open requires URL [WINDOW_INDEX]'
+    url=$1
+    window_index=${2:-1}
+    require_uint "$window_index"
+    /usr/bin/osascript - "$url" "$window_index" <<'APPLESCRIPT'
+on run argv
+    set targetURL to item 1 of argv
+    set wi to item 2 of argv as integer
+    set fieldSeparator to ASCII character 9
+    tell application "Safari"
+        if (count of windows) is 0 then
+            make new document with properties {URL:targetURL}
+            activate
+            return "opened new window"
+        end if
+        if wi > (count of windows) then error "Safari window index out of range"
+        set newTab to make new tab at end of tabs of window wi with properties {URL:targetURL}
+        set current tab of window wi to newTab
+        set index of window wi to 1
+        activate
+        return "opened tab" & fieldSeparator & "window" & fieldSeparator & "1" & fieldSeparator & "url" & fieldSeparator & targetURL
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  open-window)
+    [[ $# -eq 1 ]] || die 'open-window requires URL'
+    /usr/bin/osascript - "$1" <<'APPLESCRIPT'
+on run argv
+    set targetURL to item 1 of argv
+    set fieldSeparator to ASCII character 9
+    tell application "Safari"
+        make new document with properties {URL:targetURL}
+        activate
+        return "opened window" & fieldSeparator & "1" & fieldSeparator & "url" & fieldSeparator & targetURL
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  focus)
+    [[ $# -eq 2 ]] || die 'focus requires WINDOW_INDEX TAB_INDEX'
+    require_uint "$1"
+    require_uint "$2"
+    /usr/bin/osascript - "$1" "$2" <<'APPLESCRIPT'
+on run argv
+    set wi to item 1 of argv as integer
+    set ti to item 2 of argv as integer
+    set fieldSeparator to ASCII character 9
+    tell application "Safari"
+        if wi > (count of windows) then error "Safari window index out of range"
+        if ti > (count of tabs of window wi) then error "Safari tab index out of range"
+        set current tab of window wi to tab ti of window wi
+        set index of window wi to 1
+        activate
+        return "focused" & fieldSeparator & "window" & fieldSeparator & "1" & fieldSeparator & "tab" & fieldSeparator & ti
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  get)
+    [[ $# -ge 1 && $# -le 3 ]] || die 'get requires title|url|text|source [WINDOW_INDEX] [TAB_INDEX]'
+    property=$1
+    [[ "$property" == title || "$property" == url || "$property" == text || "$property" == source ]] || die "unknown property '$property'"
+    window_index=${2:-1}
+    tab_index=${3:-1}
+    require_uint "$window_index"
+    require_uint "$tab_index"
+    /usr/bin/osascript - "$property" "$window_index" "$tab_index" <<'APPLESCRIPT'
+on run argv
+    set requestedProperty to item 1 of argv
+    set wi to item 2 of argv as integer
+    set ti to item 3 of argv as integer
+    tell application "Safari"
+        if wi > (count of windows) then error "Safari window index out of range"
+        if ti > (count of tabs of window wi) then error "Safari tab index out of range"
+        set targetTab to tab ti of window wi
+        if requestedProperty is "title" then return name of targetTab
+        if requestedProperty is "url" then return URL of targetTab
+        if requestedProperty is "text" then return text of targetTab
+        if requestedProperty is "source" then return source of targetTab
+        error "Unsupported property"
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  js)
+    [[ $# -le 2 ]] || die 'js accepts [WINDOW_INDEX] [TAB_INDEX] and reads JavaScript from stdin'
+    window_index=${1:-1}
+    tab_index=${2:-1}
+    require_uint "$window_index"
+    require_uint "$tab_index"
+    tmp_js=$(/usr/bin/mktemp "${TMPDIR:-/tmp}/safari-osa-js.XXXXXX")
+    trap '/bin/rm -f "$tmp_js"' EXIT
+    /bin/chmod 600 "$tmp_js"
+    /bin/cp /dev/stdin "$tmp_js"
+    [[ -s "$tmp_js" ]] || die 'js requires JavaScript on stdin'
+    /usr/bin/osascript - "$tmp_js" "$window_index" "$tab_index" <<'APPLESCRIPT'
+on run argv
+    set jsPath to item 1 of argv
+    set wi to item 2 of argv as integer
+    set ti to item 3 of argv as integer
+    set jsText to read POSIX file jsPath as «class utf8»
+    tell application "Safari"
+        if wi > (count of windows) then error "Safari window index out of range"
+        if ti > (count of tabs of window wi) then error "Safari tab index out of range"
+        return do JavaScript jsText in tab ti of window wi
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  wait-ready)
+    [[ $# -le 3 ]] || die 'wait-ready accepts [WINDOW_INDEX] [TAB_INDEX] [TIMEOUT_SECONDS]'
+    window_index=${1:-1}
+    tab_index=${2:-1}
+    timeout=${3:-30}
+    require_uint "$window_index"
+    require_uint "$tab_index"
+    require_uint "$timeout"
+    /usr/bin/osascript - "$window_index" "$tab_index" "$timeout" <<'APPLESCRIPT'
+on run argv
+    set wi to item 1 of argv as integer
+    set ti to item 2 of argv as integer
+    set timeoutSeconds to item 3 of argv as integer
+    set deadline to (current date) + timeoutSeconds
+    tell application "Safari"
+        repeat
+            if wi > (count of windows) then error "Safari window index out of range"
+            if ti > (count of tabs of window wi) then error "Safari tab index out of range"
+            if (do JavaScript "document.readyState" in tab ti of window wi) is "complete" then return "complete"
+            if (current date) > deadline then error "Timed out waiting for document.readyState=complete"
+            delay 0.2
+        end repeat
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  close-tab)
+    [[ $# -eq 2 ]] || die 'close-tab requires WINDOW_INDEX TAB_INDEX'
+    require_uint "$1"
+    require_uint "$2"
+    /usr/bin/osascript - "$1" "$2" <<'APPLESCRIPT'
+on run argv
+    set wi to item 1 of argv as integer
+    set ti to item 2 of argv as integer
+    tell application "Safari"
+        close tab ti of window wi
+        return "closed tab"
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  close-window)
+    [[ $# -eq 1 ]] || die 'close-window requires WINDOW_INDEX'
+    require_uint "$1"
+    /usr/bin/osascript - "$1" <<'APPLESCRIPT'
+on run argv
+    set wi to item 1 of argv as integer
+    tell application "Safari"
+        close window wi
+        return "closed window"
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  bounds)
+    [[ $# -eq 5 ]] || die 'bounds requires WINDOW_INDEX LEFT TOP RIGHT BOTTOM'
+    require_uint "$1"
+    [[ "$2" =~ ^-?[0-9]+$ && "$3" =~ ^-?[0-9]+$ && "$4" =~ ^-?[0-9]+$ && "$5" =~ ^-?[0-9]+$ ]] || die 'bounds coordinates must be integers'
+    /usr/bin/osascript - "$1" "$2" "$3" "$4" "$5" <<'APPLESCRIPT'
+on run argv
+    set wi to item 1 of argv as integer
+    set leftEdge to item 2 of argv as integer
+    set topEdge to item 3 of argv as integer
+    set rightEdge to item 4 of argv as integer
+    set bottomEdge to item 5 of argv as integer
+    tell application "Safari"
+        set bounds of window wi to {leftEdge, topEdge, rightEdge, bottomEdge}
+        return "set bounds"
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  add-reading-list)
+    [[ $# -ge 1 && $# -le 3 ]] || die 'add-reading-list requires URL [TITLE] [PREVIEW_TEXT]'
+    /usr/bin/osascript - "$1" "${2:-}" "${3:-}" <<'APPLESCRIPT'
+on run argv
+    set targetURL to item 1 of argv
+    set itemTitle to item 2 of argv
+    set previewText to item 3 of argv
+    tell application "Safari"
+        if itemTitle is "" and previewText is "" then
+            add reading list item targetURL
+        else if previewText is "" then
+            add reading list item targetURL with title itemTitle
+        else if itemTitle is "" then
+            add reading list item targetURL and preview text previewText
+        else
+            add reading list item targetURL with title itemTitle and preview text previewText
+        end if
+        return "added reading list item"
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  search)
+    [[ $# -ge 1 && $# -le 3 ]] || die 'search requires QUERY [WINDOW_INDEX] [TAB_INDEX]'
+    query=$1
+    window_index=${2:-1}
+    tab_index=${3:-1}
+    require_uint "$window_index"
+    require_uint "$tab_index"
+    /usr/bin/osascript - "$query" "$window_index" "$tab_index" <<'APPLESCRIPT'
+on run argv
+    set queryText to item 1 of argv
+    set wi to item 2 of argv as integer
+    set ti to item 3 of argv as integer
+    tell application "Safari"
+        search the web in tab ti of window wi for queryText
+        return "searched"
+    end tell
+end run
+APPLESCRIPT
+    ;;
+
+  show-bookmarks)
+    [[ $# -eq 0 ]] || die 'show-bookmarks takes no arguments'
+    /usr/bin/osascript -e 'tell application "Safari" to show bookmarks'
+    ;;
+
+  *)
+    die "unknown command '$command'; run 'safari_osa help'"
+    ;;
+esac

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Derive Web Client"
+  short_description: "Build deterministic clients from web traffic"
+  default_prompt: "Use $derive-web-client to turn this web workflow into a tested HTTP client."

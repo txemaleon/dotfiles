@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy en VPS"
+  short_description: "CD autónomo en N2C con Kamal rootless"
+  default_prompt: "Usa $deploy-en-vps para desplegar este proyecto desde su propio repositorio mediante GitHub Actions y Kamal rootless."
