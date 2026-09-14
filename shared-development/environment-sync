@@ -1,0 +1,2 @@
+#!/bin/sh
+exec python3 "$HOME/.config/dotfiles/shared-development/environment_sync.py" --source "$HOME/.config/dotfiles/shared-development" "$@"
